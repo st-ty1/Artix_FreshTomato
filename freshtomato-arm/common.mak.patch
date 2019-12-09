@@ -1,0 +1,13 @@
+*** common.mak_a	2019-11-02 17:19:59.579902513 +0100
+--- common.mak_b	2019-10-12 15:26:57.109977032 +0200
+***************
+*** 100,102 ****
+--- 100,107 ----
+  #	else
+  SIZECHECK = @$(SIZE) $@
+  #	endif
++ 
++ export PKG_CONFIG_DIR=
++ 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
++ 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
++ 

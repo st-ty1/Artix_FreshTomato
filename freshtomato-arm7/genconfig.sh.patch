@@ -1,0 +1,23 @@
+*** genconfig_a.sh	2019-11-02 17:20:00.019902507 +0100
+--- genconfig_b.sh	2019-10-12 15:29:17.669976000 +0200
+***************
+*** 387,395 ****
+  		if grep uuid_create /usr/include/uuid.h > /dev/null 2>&1 ; then
+  			echo "#define BSD_UUID" >> ${CONFIGFILE}
+  		fi
+! 		if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
+! 			echo "#define LIB_UUID" >> ${CONFIGFILE}
+! 		fi
+  		;;
+  esac
+  
+--- 399,407 ----
+  		if grep uuid_create /usr/include/uuid.h > /dev/null 2>&1 ; then
+  			echo "#define BSD_UUID" >> ${CONFIGFILE}
+  		fi
+! #		if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
+! #			echo "#define LIB_UUID" >> ${CONFIGFILE}
+! #		fi
+  		;;
+  esac
+  
