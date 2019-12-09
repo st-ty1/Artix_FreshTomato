@@ -12,6 +12,6 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
    - Make shell script executable.
    - Please have a look into shell script, where it expects your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). You can change the path to your own needs.
    - Start shell script. 
-   BR
-   st-ty1
+BR
+st-ty1
 
