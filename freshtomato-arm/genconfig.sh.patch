@@ -1,5 +1,5 @@
-*** /home/stephan/freshtomato-arm/release/src-rt-6.x.4708/router/miniupnpd/genconfig.sh	2019-11-02 17:20:00.019902507 +0100
---- genconfig.sh	2019-10-12 15:29:17.669976000 +0200
+*** freshtomato-arm/release/src-rt-6.x.4708/router/miniupnpd/genconfig.sh_a	2019-11-02 17:20:00.019902507 +0100
+--- genconfig.sh_b	2019-10-12 15:29:17.669976000 +0200
 ***************
 *** 387,395 ****
   		if grep uuid_create /usr/include/uuid.h > /dev/null 2>&1 ; then
