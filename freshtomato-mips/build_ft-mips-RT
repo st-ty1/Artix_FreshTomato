@@ -1,0 +1,31 @@
+#! /bin/sh
+
+FT_PATCHES_DIR=$HOME/Dokumente/freshtomato-mips
+FT_REPO_DIR=$HOME/freshtomato-mips
+
+PATH="$HOME/freshtomato-mips/tools/brcm/hndtools-mipsel-linux/bin:$PATH"
+PATH="$HOME/freshtomato-mips/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
+
+cd $FT_REPO_DIR 
+git clean -dxf 
+git reset --hard
+#git pull
+
+git checkout mips-master
+
+patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
+
+### error: "uuid/uuid.h: No such file or directory"
+patch -i $FT_PATCHES_DIR/genconfig.sh.patch $FT_REPO_DIR/release/src/router/miniupnpd/genconfig.sh
+
+rm -f $FT_REPO_DI/release/src/router/nettle/desdata.stamp
+
+patch -i $FT_PATCHES_DIR/Makefile_master.patch $FT_REPO_DIR/release/src/router/Makefile
+
+patch -i $FT_PATCHES_DIR/mksquashfs.c.patch $FT_REPO_DIR/release/src-rt/linux/linux-2.6/scripts/squashfs/mksquashfs.c
+
+cd release/src-rt 
+
+make f ## > build.txt; AIO: z; VPN: e; mini:f
+
+
