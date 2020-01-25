@@ -43,9 +43,7 @@
 	
 	- colored output with ANSI escape sequences in bash terminal is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
-	 	echo "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
-	  into
-	 	printf "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
+	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two positions in file)
 
 
 5. a) only needed for freshtomato-mips/RT-AC-branch: modification of release/src-rt-6.x/linux/linux-2.6/scrpits/squashfs/mksquashfs.c:
