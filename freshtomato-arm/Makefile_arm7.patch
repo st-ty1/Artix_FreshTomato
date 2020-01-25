@@ -1,0 +1,147 @@
+*** Makefile	2020-01-25 19:20:37.620373000 +0100
+--- Makefile_mod	2020-01-25 19:25:12.543710926 +0100
+***************
+*** 38,44 ****
+  #
+  #
+  SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
+! echo "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
+  
+  export CFLAGS += -DBCMWPA2
+  ifeq ($(TCONFIG_BCMWL6),y)
+--- 38,44 ----
+  #
+  #
+  SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
+! printf "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
+  
+  export CFLAGS += -DBCMWPA2
+  ifeq ($(TCONFIG_BCMWL6),y)
+***************
+*** 460,466 ****
+  	@echo ${totalSteps}
+  
+  install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
+! 	@echo "\033[41;1m   Installing \033[0m\033]2;Installing\007"
+  	install -d $(TARGETDIR)
+  
+  
+--- 462,468 ----
+  	@echo ${totalSteps}
+  
+  install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
+! 	@printf "\033[41;1m   Installing \033[0m\033]2;Installing\007"
+  	install -d $(TARGETDIR)
+  
+  
+***************
+*** 1691,1697 ****
+  	cd $(TOP)/flac && autoreconf -fsi && \
+  	CFLAGS="-Os $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
+  	CPPFLAGS="-I$(TOP)/libogg/include -I$(LINUXDIR)/include" \
+! 	LDFLAGS="-L$(TOP)/libogg/src/.libs -fPIC -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+  	$(CONFIGURE) --enable-shared --enable-static --prefix='' --disable-rpath \
+  		--disable-doxygen-docs --disable-xmms-plugin --disable-cpplibs --disable-thorough-tests \
+  		--without-libiconv-prefix --disable-altivec --disable-sse --disable-dependency-tracking
+--- 1693,1699 ----
+  	cd $(TOP)/flac && autoreconf -fsi && \
+  	CFLAGS="-Os $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
+  	CPPFLAGS="-I$(TOP)/libogg/include -I$(LINUXDIR)/include" \
+! 	LDFLAGS="-L$(TOP)/libogg/src/.libs -L$(TOOLCHAIN)/lib -fPIC -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+  	$(CONFIGURE) --enable-shared --enable-static --prefix='' --disable-rpath \
+  		--disable-doxygen-docs --disable-xmms-plugin --disable-cpplibs --disable-thorough-tests \
+  		--without-libiconv-prefix --disable-altivec --disable-sse --disable-dependency-tracking
+***************
+*** 2071,2077 ****
+  	cd libxml2 && \
+  	autoreconf -fsi && \
+  	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
+! 	$(CONFIGURE) --prefix=/usr --without-python --enable-static --enable-shared \
+  		--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
+  	touch $@
+  
+--- 2073,2079 ----
+  	cd libxml2 && \
+  	autoreconf -fsi && \
+  	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
+! 	$(CONFIGURE) --prefix=/usr --without-python --enable-static --enable-shared --with-zlib="$(TOP)/zlib/staged/usr" \
+  		--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
+  	touch $@
+  
+***************
+*** 2128,2134 ****
+  
+  php/stamp-h1: pcre zlib libiconv sqlite libxml2 libpng jpeg libcurl
+  	$(call patch_files,php)
+! 	cd php && CC=$(CC) CXX=$(ARCH)-g++ AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
+  	CFLAGS="-Os -Wall -I$(TOP)/zlib -I$(TOP)/libxml2/include/libxml -I$(TOP)/libxml2/include -I$(TOP)/pcre -I$(TOP)/libiconv/include \
+  		-I$(TOP)/libpng/staged/usr/include -I$(TOP)/libcurl/staged/usr/include" \
+  	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
+--- 2130,2136 ----
+  
+  php/stamp-h1: pcre zlib libiconv sqlite libxml2 libpng jpeg libcurl
+  	$(call patch_files,php)
+! 	cd php && CC=$(CC) CXX=$(HOST)-g++ AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
+  	CFLAGS="-Os -Wall -I$(TOP)/zlib -I$(TOP)/libxml2/include/libxml -I$(TOP)/libxml2/include -I$(TOP)/pcre -I$(TOP)/libiconv/include \
+  		-I$(TOP)/libpng/staged/usr/include -I$(TOP)/libcurl/staged/usr/include" \
+  	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
+***************
+*** 2605,2612 ****
+  
+  portmap/stamp-h1:
+  	$(call patch_files,portmap)
+! 	cd portmap \
+! 	$(MAKE) -C portmap
+  	@touch $@
+  
+  portmap: portmap/stamp-h1
+--- 2607,2613 ----
+  
+  portmap/stamp-h1:
+  	$(call patch_files,portmap)
+! 	cd portmap
+  	@touch $@
+  
+  portmap: portmap/stamp-h1
+***************
+*** 2720,2726 ****
+
+  sd-idle/stamp-h1:
+  	@$(SEP)
+- 	cd sd-idle \
+  	CFLAGS="-Os -Wall --host=$(HOST) --target=$(HOST) $(EXTRACFLAGS)" \
+  	$(MAKE) -C sd-idle
+  	chmod 0755 sd-idle/sd-idle
+--- 2721,2726 ----
+***************
+*** 2941,2946 ****
+--- 2941,2947 ----
+  	@$(SEP)
+  	$(MAKE) -C libmnl
+  	$(MAKE) -C libmnl DESTDIR=$(TOP)/libmnl/staged install
++ 	@rm -f libmnl/staged/usr/lib/libmnl.la
+  
+  libmnl-install:
+  	install -d $(INSTALLDIR)/libmnl/usr/lib/
+***************
+*** 2957,2966 ****
+  
+  ipset/stamp-h1: libmnl
+  	$(call patch_files,ipset)
+! 	cd $(TOP)/ipset && CC=$(CC) STRIP=$(STRIP) \
+! 	autoreconf -fsi && \
+  	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+! 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+  	libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
+  	libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
+  	$(CONFIGURE) --prefix=/usr --with-kmod=no
+--- 2958,2966 ----
+  
+  ipset/stamp-h1: libmnl
+  	$(call patch_files,ipset)
+! 	cd $(TOP)/ipset && autoreconf -fsi && CC=$(CC) STRIP=$(STRIP) \
+  	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+! 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libmnl/staged/usr/lib -lmnl" \
+  	libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
+  	libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
+  	$(CONFIGURE) --prefix=/usr --with-kmod=no
