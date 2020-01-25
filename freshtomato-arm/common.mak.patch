@@ -1,0 +1,14 @@
+*** /home/stephan/freshtomato-arm/release/src-rt-6.x.4708/router/common.mak	2019-11-02 17:36:43.949888902 +0100
+--- common.mak	2019-10-18 21:08:34.979929864 +0200
+***************
+*** 100,102 ****
+--- 100,108 ----
+  #	else
+  SIZECHECK = @$(SIZE) $@
+  #	endif
++ 
++ 
++ export PKG_CONFIG_DIR=
++ export PKG_CONFIG_LIBDIR=$(SRCBASE)
++ export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
++ 
