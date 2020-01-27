@@ -4,7 +4,7 @@
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
-2. only needed for arm-builds: in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
+2. only ARM: in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
    newer versions of tor and that theses searches will errornously find the host-versions of systemd and libzstd and will lead to build breaks.)
 	
 3. in file release/src/router/miniupnpd/genconfig.sh following 3 lines has to be commented out (due to uuid.h/libuuid already exists on host system, 
@@ -16,7 +16,7 @@
 4. Modifications needed in release/src/router/Makefile:
 	- at target portmap/stamp-h1 change
 			"cd portmap \
-		 	 $(MAKE) -C portmap CC=$(CC) AR=$(AR) LD=$(LD) RANLIB=$(RANLIB)"
+		 	 $(MAKE) -C portmap ... "
 		into
 			"cd portmap"
 
@@ -25,21 +25,19 @@
 
 	- at target flac/stamp-h1 add following option to LDFLAGS: (only needed for freshtomato-arm)
 		"-L$(TOOLCHAIN)/lib"
-	
-        - at target libxml2/stamp-h1 add following additional option to ./configure: (only needed for building freshtomato-arm)   
-		"--with-zlib="$(TOP)/zlib/staged/usr""
 
 	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(HOST)-g++"
 
-	- at end of target libmnl insert the following line: (only needed in arm-version and if ipset is installed in host system)
+	- only ARM: at end of target libmnl insert the following line: (only needed in arm-version and if ipset is installed in host system)
 		@rm -f libmnl/staged/usr/lib/libmnl.la 
 	
 		(libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of
 		 $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably 
 		 causes error message)
 
-	- at end of target libnfsidmap-install insert following line: (only needed if nfs-utils are installed in host system)
-	  	@rm -f libmnl/staged/usr/lib/libnfsidmap.la 
+	- only MIPS (and only needed if nfs-utils are installed in host system): 
+          at end of target libnfsidmap-install insert following line:
+	  	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la 
 	
 	- colored output with ANSI escape sequences in bash terminal is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
