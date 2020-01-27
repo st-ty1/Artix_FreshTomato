@@ -52,23 +52,6 @@
   		--disable-doxygen-docs --disable-xmms-plugin --disable-cpplibs --disable-thorough-tests \
   		--without-libiconv-prefix --disable-altivec --disable-sse --disable-dependency-tracking
 ***************
-*** 1944,1950 ****
-  	cd libxml2 && \
-  	autoreconf -fsi && \
-  	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-! 	$(CONFIGURE) --prefix=/usr --without-python --enable-static --enable-shared \
-  		--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
-  	touch $@
-  
---- 1946,1952 ----
-  	cd libxml2 && \
-  	autoreconf -fsi && \
-  	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-! 	$(CONFIGURE) --prefix=/usr --without-python --enable-static --enable-shared --with-zlib="$(TOP)/zlib/staged/usr" \
-  		--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
-  	touch $@
-  
-***************
 *** 2001,2007 ****
   
   php/stamp-h1: pcre zlib libiconv sqlite libxml2 libpng jpeg libcurl
@@ -123,25 +106,3 @@
   
   libmnl-install:
   	install -d $(INSTALLDIR)/libmnl/usr/lib/
-***************
-*** 2830,2839 ****
-  
-  ipset/stamp-h1: libmnl
-  	$(call patch_files,ipset)
-! 	cd $(TOP)/ipset && CC=$(CC) STRIP=$(STRIP) \
-! 	autoreconf -fsi && \
-  	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-! 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
-  	libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
-  	libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
-  	$(CONFIGURE) --prefix=/usr --with-kmod=no
---- 2831,2839 ----
-  
-  ipset/stamp-h1: libmnl
-  	$(call patch_files,ipset)
-! 	cd $(TOP)/ipset && autoreconf -fsi && CC=$(CC) STRIP=$(STRIP) \
-  	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-! 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libmnl/staged/usr/lib -lmnl" \
-  	libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
-  	libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
-  	$(CONFIGURE) --prefix=/usr --with-kmod=no
