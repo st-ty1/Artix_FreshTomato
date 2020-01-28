@@ -18,7 +18,7 @@ patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common
 ### error: "uuid/uuid.h: No such file or directory"
 patch -i $FT_PATCHES_DIR/genconfig.sh.patch $FT_REPO_DIR/release/src/router/miniupnpd/genconfig.sh
 
-rm -f $FT_REPO_DI/release/src/router/nettle/desdata.stamp
+rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
 
 patch -i $FT_PATCHES_DIR/Makefile_master.patch $FT_REPO_DIR/release/src/router/Makefile
 
