@@ -4,7 +4,7 @@
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
-2. only ARM: in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
+2. in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
    newer versions of tor and that theses searches will errornously find the host-versions of systemd and libzstd and will lead to build breaks.)
 	
 3. in file release/src/router/miniupnpd/genconfig.sh following 3 lines has to be commented out (due to uuid.h/libuuid already exists on host system, 
