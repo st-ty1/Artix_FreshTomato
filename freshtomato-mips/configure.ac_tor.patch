@@ -1,0 +1,32 @@
+--- configure.ac	2020-01-25 18:49:53.560342000 +0100
++++ configure.ac_mod	2020-01-25 19:48:13.903733587 +0100
+@@ -160,10 +160,10 @@
+         have_systemd=no)
+     if test "x$have_systemd" = "xno"; then
+         AC_MSG_NOTICE([Okay, checking for systemd a different way...])
+-        PKG_CHECK_MODULES(SYSTEMD,
+-            [libsystemd],
+-            have_systemd=yes,
+-            have_systemd=no)
++#        PKG_CHECK_MODULES(SYSTEMD,
++#            [libsystemd],
++#            have_systemd=yes,
++#            have_systemd=no)
+     fi
+ fi
+ 
+@@ -1114,10 +1114,10 @@
+ if test "x$enable_zstd" = "xno"; then
+     have_zstd=no;
+ else
+-    PKG_CHECK_MODULES([ZSTD],
+-                      [libzstd >= 1.1],
+-                      have_zstd=yes,
+-                      have_zstd=no)
++#    PKG_CHECK_MODULES([ZSTD],
++#                      [libzstd >= 1.1],
++#                      have_zstd=yes,
++#                      have_zstd=no)
+ 
+     if test "x$have_zstd" = "xno" ; then
+         AC_MSG_WARN([Unable to find libzstd, $pkg_config_user_action, or set ZSTD_CFLAGS and ZSTD_LIBS.])
