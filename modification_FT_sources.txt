@@ -23,7 +23,7 @@
         - at target sd-idle delete following line:
 		"cd sd-idle && \"
 
-	- at target flac/stamp-h1 add following option to LDFLAGS: (only needed for freshtomato-arm)
+	- only ARM: at target flac/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 
 	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(HOST)-g++"
