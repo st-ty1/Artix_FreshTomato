@@ -64,7 +64,7 @@
   
   php/stamp-h1: pcre zlib libiconv sqlite libxml2 libpng jpeg libcurl
   	$(call patch_files,php)
-! 	cd php && CC=$(CC) CXX=$(HOST)-g++ AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
+! 	cd php && CC=$(CC) CXX=$(CROSS-COMPILE)g++ AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
   	CFLAGS="-Os -Wall -I$(TOP)/zlib -I$(TOP)/libxml2/include/libxml -I$(TOP)/libxml2/include -I$(TOP)/pcre -I$(TOP)/libiconv/include \
   		-I$(TOP)/libpng/staged/usr/include -I$(TOP)/libcurl/staged/usr/include" \
   	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
