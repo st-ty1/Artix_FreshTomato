@@ -20,10 +20,10 @@
 		into
 			"cd portmap"
 
-        - at target sd-idle delete following line:
+       - at target sd-idle delete following line:
 		"cd sd-idle && \"
 
-	- only ARM: at target flac/stamp-h1 add following option to LDFLAGS: 
+	- at target flac/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 
 	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++"
