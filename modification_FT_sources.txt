@@ -34,12 +34,8 @@
 		(libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of
 		 $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably 
 		 causes error message)
-
-	- ~~only MIPS (and only needed if nfs-utils are installed in host system): 
-          at end of target libnfsidmap-install insert following line:
-	  	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la ~~
 	
-	- colored output with ANSI escape sequences in bash terminal is only possible with "printf" command but not with "echo"; 
+	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two positions in file)
 
