@@ -33,7 +33,7 @@
 	
 		(libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of
 		 $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably 
-		 causes error message)
+		 causes error message, alternatively this issue can also be solved by amending libmnl_CFLAGS- and libmnl_LIBS-option in target ipset/stamp-h1)
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
