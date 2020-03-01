@@ -20,10 +20,10 @@
 		into
 			"cd portmap"
 
-       - at target sd-idle delete following line:
+        - at target sd-idle delete following line:
 		"cd sd-idle && \"
 
-	- at target flac/stamp-h1 add following option to LDFLAGS: 
+	- only arm: at target flac/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 
 	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++"
@@ -35,9 +35,9 @@
 		 $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably 
 		 causes error message)
 
-	- only MIPS (and only needed if nfs-utils are installed in host system): 
+	- ~~only MIPS (and only needed if nfs-utils are installed in host system): 
           at end of target libnfsidmap-install insert following line:
-	  	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la 
+	  	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la ~~
 	
 	- colored output with ANSI escape sequences in bash terminal is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
