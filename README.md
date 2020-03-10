@@ -8,10 +8,10 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 2. Also some of the files of both FT-repos need some small minor modifications. These mods are listed in attached file
    modification_FT_sources.txt.
 3. Best practice:
-   - Copy patches and shell script into "documents" subfolder of your home directory and complete shell script with your username.
-   - Make shell script executable.
-   - Please have a look into shell script, where it expects your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). You can change the path to your own needs.
-   - Start shell script. Applying shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. 
+   - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
+   - Make the shell scripts executable.
+   - Please have a look into shell scripts, where they expect path to your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). You can change the path to your own needs.
+   - Start your needed shell script (depending on architecture of CPU of router). Applying the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources.  Cleaning sources only with "make clean" the script is not needed anymore. 
 
 BR
 st-ty1
