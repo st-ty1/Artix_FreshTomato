@@ -11,7 +11,7 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
    - Copy patches and shell script into "documents" subfolder of your home directory and complete shell script with your username.
    - Make shell script executable.
    - Please have a look into shell script, where it expects your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). You can change the path to your own needs.
-   - Start shell script. 
+   - Start shell script. Applying shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. 
 
 BR
 st-ty1
