@@ -28,17 +28,17 @@
 
 	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++"
 
-	- only ARM: at end of target libmnl insert the following line: (only needed in arm-version and if ipset is installed in host system)
-		@rm -f libmnl/staged/usr/lib/libmnl.la 
-	
-		(libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of
-		 $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably 
-		 causes error message, alternatively this issue can also be solved by amending libmnl_CFLAGS- and libmnl_LIBS-option in target ipset/stamp-h1)
+	- only ARM: at target ipset/stamp-h1 insert at LDFLAGS 
+			"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
+		(only needed in arm-version and if ipset is installed in host system; libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably causes error message, alternatively this issue can also be solved by amending libmnl_CFLAGS- and libmnl_LIBS-option in target ipset/stamp-h1)
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two positions in file)
-
+		
+        - add at getdns/build/Makefile-target these options:
+ 		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
+		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 
 5. a) only needed for freshtomato-mips/RT-AC-branch: modification of release/src-rt-6.x/linux/linux-2.6/scrpits/squashfs/mksquashfs.c:
 		insert "#include <sys/sysmacros.h>" between line 37 and 38 (somwhere in the header list; exact position not important)
@@ -47,4 +47,6 @@
   (mod. needed as Artix uses newer glibc(2.30) than Debian 9 (glibc2.24); since glibc2.27 some functions have moved within the glibc header files.)
 
 6. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
+
+
 
