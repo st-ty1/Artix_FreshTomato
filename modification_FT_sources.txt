@@ -30,7 +30,9 @@
 
 	- only ARM: at target ipset/stamp-h1 insert at LDFLAGS 
 			"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
-		(only needed in arm-version and if ipset is installed in host system; libtool links libmnl to ipset, but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, so libtool wants to link the libmnl of host system, which understandably causes error message, alternatively this issue can also be solved by amending libmnl_CFLAGS- and libmnl_LIBS-option in target ipset/stamp-h1)
+		(only needed in arm-version and if ipset is installed in host system; libtool links libmnl to ipset, 
+		but in libmnl.la the wrong search path is hardcoded: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
+		so libtool wants to link the libmnl of host system and causes error message)
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
