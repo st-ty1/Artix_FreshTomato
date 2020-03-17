@@ -26,7 +26,18 @@
 	- only arm: at target flac/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 
-	- at target php change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++"
+	- at target php/stamp-h1 change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++" and
+	  add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
+	
+	- add at end of target libcurl the following line:
+	        "@rm -f libcurl/staged/usr/lib/libcurl.la"
+        
+	- add at end of target libnfsidmap-install the following line:
+	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
+		
+	- add at getdns/build/Makefile-target these two additional -D arguments to cmake:
+ 		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
+		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 
 	- only ARM: at target ipset/stamp-h1 insert at LDFLAGS 
 			"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
@@ -38,10 +49,6 @@
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two positions in file)
 		
-        - add at getdns/build/Makefile-target these options:
- 		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
-		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
-
 5. a) only needed for freshtomato-mips/RT-AC-branch: modification of release/src-rt-6.x/linux/linux-2.6/scrpits/squashfs/mksquashfs.c:
 		insert "#include <sys/sysmacros.h>" between line 37 and 38 (somwhere in the header list; exact position not important)
    b) only needed for freshtomato-mips/master-branch: mod. of release/src-rt/linux/linux-2.6/scripts/squashfs/mksquashfs.c:
