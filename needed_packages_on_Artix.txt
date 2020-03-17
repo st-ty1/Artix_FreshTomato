@@ -7,7 +7,7 @@ Necessary packages for building Freshtomato on Artix:
   autoconf, automake (1.16), binutils, bison, flex, gcc, g++, libstdc++ (included in package gcc), libtool (2.4.6), m4, patch, pkg-config (included in package pkgconf)
 
 - Packages to be installed from Arch-repos, with same package name as in Debian 9: 
-  autogen, dos2unix, gconf-editor, git (includes gitk too), gperf, intltool, make, mc, mtd-tools, no-dejs, re2c, sqlite (needed by pacakge python2), unzip
+  autogen, dos2unix, gconf-editor, git (includes gitk too), gperf, intltool, make, mc, mtd-tools, no-dejs, re2c, sqlite (needed by pacakge python2), unzip and cmake
 
 - Packages to be installed from Arch-repos, but with altering package name as in Debian 9: 
 
