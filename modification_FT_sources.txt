@@ -25,7 +25,10 @@
 
 	- only arm: at target flac/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
-
+		
+	- only arm: at target libxml2/stamp-h1 add following option to $(CONFIGURE):
+		"  --with-zlib="$(TOP)/zlib/staged/usr"  "
+	
 	- only mips: at target php/stamp-h1 change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++" and
 	         add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
 	
