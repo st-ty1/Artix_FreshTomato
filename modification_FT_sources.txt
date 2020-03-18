@@ -35,8 +35,7 @@
 	- add at end of target libnfsidmap-install the following line:
 	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
 		
-	- only for mips-master, mips-RT-AC, arm-master- and arm-ng-branch (still not for arm-sdk7-branch!):
-	       Add these two additional -D arguments to cmake command getdns/build/Makefile-target:
+	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
  		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
 		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 
