@@ -35,19 +35,20 @@
 	- add at end of target libnfsidmap-install the following line:
 	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
 		
-	- add at getdns/build/Makefile-target these two additional -D arguments to cmake:
- 		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
-		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
+	- only for mips-master, mips-RT-AC, arm-master- and arm-ng-branch (still not for arm-sdk7-branch!):
+	       Add these two additional -D arguments to cmake command getdns/build/Makefile-target:
+ 		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
+		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 
 	- only ARM: at target ipset/stamp-h1 insert at LDFLAGS 
 			"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
-		(only needed if ipset is installed in host system; libtool links libmnl to ipset, but in libmnl.la 
-		the wrong search path is hardcoded: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
+		(only needed if ipset is installed in your host system; libtool links libmnl to ipset, but  
+		the wrong search path is hardcoded in libmnl.la: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
 		so libtool wants to link the libmnl of host system and causes error message)
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
-	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two positions in file)
+	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
 5. a) only needed for freshtomato-mips/RT-AC-branch: modification of release/src-rt-6.x/linux/linux-2.6/scrpits/squashfs/mksquashfs.c:
 		insert "#include <sys/sysmacros.h>" between line 37 and 38 (somwhere in the header list; exact position not important)
