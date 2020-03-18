@@ -6,7 +6,9 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in needed_packages_on_Artix.txt.
    Most of them can be obtained from Artix repos, some need Arch user repos (AUR). So be familiar with installing progs from AUR.
 2. Also some of the files of both FT-repos need some small minor modifications. These mods are listed in attached file
-   modification_FT_sources.txt.
+   modification_FT_sources.txt. Some of the mods are only needed for arm- or for mips-builds, some of them are needed for both.
+   (Applying errornously a modification to the source code of the wrong architecture has no negative effect.)
+   
 3. Best practice:
    - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
    - Make the shell scripts executable.
