@@ -1,5 +1,5 @@
 # Artix_FreshTomato
-HowTo: Build FreshTomato-mips/-arm with Artix host system 
+HowTo: Build FreshTomato-mips/-arm on Artix host system 
 
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 
