@@ -21,4 +21,4 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 
 BR
 
-st-ty1
+st-ty1/_st_ty/st_ty_
