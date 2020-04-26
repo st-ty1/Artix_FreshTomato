@@ -5,6 +5,14 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 (tested with state of source code: freshtomato-mips: commit eae6210, 23/04/20 
                                     freshtomato-arm: commit 0287976; 22/04/20)
 
+####### actual news  26/04/20
+
+Building of Freshtomato-arm with new wl-driver *.126 breaks as in dropbear folder  several files are missing.
+
+As workaround replace content of dropbear folder in your freshtomato-arm repo by content of dropbear repo (master branch) https://github.com/mkj/dropbear (>>>>Do not use the content of snapshot dropbear-2019.78.tar.bz2!!!!<<<<) and start building process.
+
+#######
+
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in needed_packages_on_Artix.txt.
    Most of them can be obtained from Artix repos, some need Arch user repos (AUR). So be familiar with installing progs from AUR.
 2. Also some of the files of both FT-repos need some small minor modifications. These mods are listed in attached file
