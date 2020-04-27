@@ -22,7 +22,6 @@ rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
 
 patch -i $FT_PATCHES_DIR/Makefile_master.patch $FT_REPO_DIR/release/src/router/Makefile
 
-patch -i $FT_PATCHES_DIR/mksquashfs.c.patch $FT_REPO_DIR/release/src-rt/linux/linux-2.6/scripts/squashfs/mksquashfs.c
 
 cd release/src-rt 
 
