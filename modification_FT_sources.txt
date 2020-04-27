@@ -52,9 +52,4 @@
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-
-
 5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
-
-
-
