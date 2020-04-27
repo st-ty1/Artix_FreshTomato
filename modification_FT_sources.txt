@@ -52,13 +52,9 @@
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-5. a) only needed for freshtomato-mips/RT-AC-branch: modification of release/src-rt-6.x/linux/linux-2.6/scrpits/squashfs/mksquashfs.c:
-		insert "#include <sys/sysmacros.h>" between line 37 and 38 (somwhere in the header list; exact position not important)
-   b) only needed for freshtomato-mips/master-branch: mod. of release/src-rt/linux/linux-2.6/scripts/squashfs/mksquashfs.c:
-		insert "#include <sys/sysmacros.h>" between line 37 and 38 (somwhere in the header list; exact position not important)
-  (mod. needed as Artix uses newer glibc(2.30) than Debian 9 (glibc2.24); since glibc2.27 some functions have moved within the glibc header files.)
 
-6. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
+
+5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
 
 
 
