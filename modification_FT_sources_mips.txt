@@ -1,0 +1,43 @@
+1. Add at end of file release/src/router/common.mak following lines (to inhibit error message, e.g. by iptables-1.6.x or by samba3, due to shared
+   libraries needed by the FT-progs but already existing on host system as shared x64-libs)
+	export PKG_CONFIG_DIR=
+	export PKG_CONFIG_LIBDIR=$(SRCBASE)
+	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
+
+2. in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
+   newer versions of tor and that theses searches will errornously find the host-versions of systemd and libzstd and will lead to build breaks.)
+	
+3. in file release/src/router/miniupnpd/genconfig.sh following 3 lines has to be commented out (due to uuid.h/libuuid already exists on host system, 
+   but cannot be uninstalled on host system)	
+		"if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
+		 	 echo "#define LIB_UUID" >> ${CONFIGFILE}
+		 fi"
+
+4. Modifications needed in release/src/router/Makefile:
+	- at target portmap/stamp-h1 change
+			"cd portmap \
+		 	 $(MAKE) -C portmap ... "
+		into
+			"cd portmap"
+
+  - at target sd-idle delete following line:
+	   "cd sd-idle && \"
+
+	- at target php/stamp-h1 change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++" and
+	         add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
+	
+	- add at end of target libcurl the following line:
+	        "@rm -f libcurl/staged/usr/lib/libcurl.la"
+        
+	- add at end of target libnfsidmap-install the following line:
+	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
+		
+	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
+ 		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
+		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
+	
+	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
+	  If color support in terminal output is wanted, change 
+	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
+		
+5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
