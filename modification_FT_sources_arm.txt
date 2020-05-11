@@ -29,8 +29,8 @@
 	- at target libxml2/stamp-h1 add following option to $(CONFIGURE):
 		"  --with-zlib="$(TOP)/zlib/staged/usr"  "
     
-	- add at end of target libnfsidmap-install the following line:
-	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
+	- add at end of target libmnl the following line:
+	        "@rm -f libmnl/staged/usr/lib/libmnl.la"
 		
 	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
  		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
