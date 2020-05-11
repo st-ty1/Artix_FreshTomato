@@ -29,14 +29,14 @@
 	- at target libxml2/stamp-h1 add following option to $(CONFIGURE):
 		"  --with-zlib="$(TOP)/zlib/staged/usr"  "
     
-	- add at end of target libmnl the following line:
+	- at end of target libmnl add the following line:
 	        "@rm -f libmnl/staged/usr/lib/libmnl.la"
 		
-	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
+	- at target getdns/build/Makefile add these two additional -D arguments to the cmake command:
  		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
 		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 
-	- at target ipset/stamp-h1 insert at LDFLAGS 
+	- at target ipset/stamp-h1 add to LDFLAGS: 
 			"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
 		(only needed if ipset is installed in your host system; libtool links libmnl to ipset, but  
 		the wrong search path is hardcoded in libmnl.la: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
