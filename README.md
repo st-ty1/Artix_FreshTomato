@@ -7,7 +7,7 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 
   freshtomato-mips: commit eae6210, 23/04/20 
 
-freshtomato-arm: commit 5af1533; 27/04/20)
+freshtomato-arm: commit dd6fff3; 09/05/20)
 
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in needed_packages_on_Artix.txt.
    Most of them can be obtained from Artix repos, some need Arch user repos (AUR). So be familiar with installing progs from AUR.
