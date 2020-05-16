@@ -1,6 +1,6 @@
 Actually, do not use the building procedure for arm/arm7/arm-ng:
-- Makefile patches for arm arm7 missing a patch for flac due to new toolchain, and 
-   Makefile patch for arm is missing supprt for conntrack-tools.
-As arm-ng branch has no new toolcahin support there is a need for creation of an separate Makefile.patch for arm-ng.
+- Makefile patches for arm/arm7 missing a patch for flac due to new toolchain, and 
+   Makefile patch for arm is also missing support for conntrack-tools.
+As arm-ng branch has neither support for new toolcahin nor for conntrack-tools, there is a need for creation of an separate Makefile.patch for arm-ng.
 
 I'm working on it.
