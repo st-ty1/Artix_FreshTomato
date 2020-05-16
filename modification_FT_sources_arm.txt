@@ -23,18 +23,19 @@
         - at target sd-idle delete following line:
 		"cd sd-idle && \"
 
-	- at targets flac/stamp-h1, libnetfilter_log/stamp-h1 (only arm, needed not arm7), libnetfilter_queue/stamp-h1 
-	  (not needed for arm7) and libnetfilter_conntrack/stamp-h1 (not arm7) add following option to LDFLAGS: 
+	- at targets flac/stamp-h1, libnetfilter_log/stamp-h1 (only arm, needed not arm7 or arm-ng),
+	  libnetfilter_queue/stamp-h1 (not needed for arm7/arm-ng) and libnetfilter_conntrack/stamp-h1 (not arm7/arm-ng) 
+	  add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 		
-	- only arm, not needed for arm7: at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1 and 
-	  conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
+	- only arm, not needed for arm7 or Arm-ng: at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
+	  and conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
 	  	"$(TOP)/libmnl" 
 	
-	- not needed for arm7: at end of libnfnetlink add the following line: 
+	- not needed for arm7/arm-ng: at end of libnfnetlink add the following line: 
 		"@rm -f libnfnetlink/src/libnfnetlink.la"
 		
-	- not needed for arm7: at end of target libnetfilter_conntrack add the following line: 
+	- not needed for arm7/arm-ng: at end of target libnetfilter_conntrack add the following line: 
 		"@rm -f libnetfilter_conntrack/staged/usr/lib/ibnetfilter_conntrack.la"
 		
 	- at target libxml2/stamp-h1 add following option to $(CONFIGURE):
