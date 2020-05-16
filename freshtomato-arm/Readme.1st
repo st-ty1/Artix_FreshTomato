@@ -1,5 +1,0 @@
-Actually, do not use the building procedure for arm and arm7:
-- Makefile patches for arm/arm7 missing a patch for flac due to new toolchain, and 
-   Makefile patch for arm is also missing support for conntrack-tools.
-
-I'm working on it.
