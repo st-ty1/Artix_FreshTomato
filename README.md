@@ -1,6 +1,12 @@
 # Artix_FreshTomato
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
 
+
+######################################################################################################################
+17-05-20 Artix/Arch-Linux has switched to gcc-10.0 ; I have to recheck if adaption is needed (e.g. src/router/config)
+#######################################################################################################################
+
+
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 
 (tested with version of source code: 
