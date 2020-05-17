@@ -1,0 +1,32 @@
+#! /bin/sh
+
+FT_PATCHES_DIR=$HOME/Dokumente/freshtomato-mips
+FT_REPO_DIR=$HOME/freshtomato-mips
+
+PATH="$HOME/freshtomato-mips/tools/brcm/hndtools-mipsel-linux/bin:$PATH"
+PATH="$HOME/freshtomato-mips/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
+clear
+cd $FT_REPO_DIR 
+git clean -dxf 
+git reset --hard
+#git pull
+
+git checkout mips-RT-AC
+
+patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
+### error: "uuid/uuid.h: No such file or directory"
+patch -i $FT_PATCHES_DIR/genconfig.sh.patch $FT_REPO_DIR/release/src/router/miniupnpd/genconfig.sh
+#patch -i $FT_PATCHES_DIR/Makefile_RT-AC.patch $FT_REPO_DIR/release/src/router/Makefile
+cp  $FT_PATCHES_DIR/Makefile $FT_REPO_DIR/release/src/router
+patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src/router/tor/configure.ac
+
+patch -i $FT_PATCHES_DIR/Makefile_config.patch $FT_REPO_DIR/release/src/router/config/Makefile
+patch -i $FT_PATCHES_DIR/Makefile_squashfs_RT-AC.patch $FT_REPO_DIR/release/src-rt-6.x/linux/linux-2.6/scripts/squashfs/Makefile
+
+rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
+
+cd release/src-rt-6.x
+
+make wndr4500v2e ## > build.txt; AIO: z; VPN: e
+
+
