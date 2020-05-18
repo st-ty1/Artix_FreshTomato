@@ -2,18 +2,7 @@
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
 
 
-######################################################################################################################
-17-05-20 Artix/Arch-Linux has switched to gcc-10.0 ; freshtomato-mips adapted; freshtomato-arm on work
-#######################################################################################################################
-
-
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
-
-(tested with version of source code: 
-
-        freshtomato-mips: commit 	62dedfc, 07/05/20 
-
-        freshtomato-arm: commit 6896826; 14/05/20)
 
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in needed_packages_on_Artix.txt.
    Most of them can be obtained from Artix repos, some need Arch user repos (AUR). So be familiar with installing progs from AUR.
@@ -25,8 +14,10 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
    - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu sytems does, so building tools
      like libtool and pkgconfig are rather misdirected by presence of host shared libs and will fail.
    - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash:
-      o echo commands of both shells use different flags and escape sequences 
-      o with CD_COMPLAINS option is set within bash (default in bash >=4.4), multiple directory arguments to `cd' will cause error messages. 
+   
+      + echo commands of both shells use different flags and escape sequences 
+      
+      + with CD_COMPLAINS option is set within bash (default in bash >=4.4), multiple directory arguments to cd command will cause error messages. 
    
 3. Best practice:
    - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
