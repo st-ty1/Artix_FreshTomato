@@ -23,18 +23,18 @@
         - at target sd-idle delete following line:
 		"cd sd-idle && \"
 
-	- only arm, not needed arm7 or arm-ng: at targets libnetfilter_queue/stamp-h1 and
+	- only arm/arm7: at targets libnetfilter_queue/stamp-h1 and
 	  libnetfilter_conntrack/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 		
-	- only arm, not needed for arm7/arm-ng: at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
+	- only arm/arm7: at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
 	  and conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
 	  	"$(TOP)/libmnl" 
 	
-	- not needed for arm7/arm-ng: at end of libnfnetlink add the following line: 
+	- only arm/arm7: at end of libnfnetlink add the following line: 
 		"@rm -f libnfnetlink/src/libnfnetlink.la"
 		
-	- not needed for arm7/arm-ng: at end of target libnetfilter_conntrack add the following line: 
+	- only arm/arm7: at end of target libnetfilter_conntrack add the following line: 
 		"@rm -f libnetfilter_conntrack/staged/usr/lib/ibnetfilter_conntrack.la"
 		
 	- at target libxml2/stamp-h1 add following option to $(CONFIGURE):
@@ -53,7 +53,7 @@
 		the wrong search path is hardcoded in libmnl.la: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
 		so libtool wants to link the libmnl of host system and causes error message)
 		
-	- not needed for arm-ng: at target flac/stamp-h1 and libnetfilter_log/stamp-h1 add to LDFLAGS:
+	- only arm/arm7: at target flac/stamp-h1 and libnetfilter_log/stamp-h1 add to LDFLAGS:
 		"-L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOOLCHAIN)/lib" 
 		(libtool can't find new toolchain's libc.a and libgcc_s.so and wants to use host's versions.)
 	
