@@ -16,7 +16,7 @@ git checkout mips-RT-AC
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
 ### error: "uuid/uuid.h: No such file or directory"
 patch -i $FT_PATCHES_DIR/genconfig.sh.patch $FT_REPO_DIR/release/src/router/miniupnpd/genconfig.sh
-patch -i $FT_PATCHES_DIR/Makefile_RT-AC.patch $FT_REPO_DIR/release/src/router/Makefile
+patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src/router/tor/configure.ac
 
 patch -i $FT_PATCHES_DIR/Makefile_config.patch $FT_REPO_DIR/release/src/router/config/Makefile
