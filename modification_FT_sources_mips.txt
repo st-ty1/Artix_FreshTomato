@@ -1,6 +1,6 @@
 1. Add at end of file release/src/router/common.mak following lines (to inhibit error message, e.g. by iptables-1.6.x or by samba3, due to shared
    libraries needed by the FT-progs but already existing on host system as shared x64-libs)
-	export PKG_CONFIG_DIR=
+	export PKG_CONFIG_PATH=
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
@@ -15,16 +15,15 @@
 
 4. Modifications needed in release/src/router/Makefile:
 	- at target portmap/stamp-h1 change
-			"cd portmap \
-		 	 $(MAKE) -C portmap ... "
-		into
-			"cd portmap"
+		"cd portmap \
+		 $(MAKE) -C portmap ... "
+	       to
+		"cd portmap"
 
-  - at target sd-idle delete following line:
-	   "cd sd-idle && \"
+        - at target sd-idle delete following line:
+	         "cd sd-idle && \"
 
-	- at target php/stamp-h1 change "CXX=$(ARCH)-g++" into "CXX=$(CROSS_COMPILE)g++" and
-	         add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
+	- at target php/stamp-h1 add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
 	
 	- add at end of target libcurl the following line:
 	        "@rm -f libcurl/staged/usr/lib/libcurl.la"
