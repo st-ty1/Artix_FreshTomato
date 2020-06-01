@@ -13,7 +13,7 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
    - Arch Linux/Artix use more recent versions of applications, needed for building process (still valid for Debian 10; 
      level more comparable with Ubuntu groovy and Debian 11).
    - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu sytems does, so building tools
-     like libtool and pkgconfig are rather misdirected by presence of host shared libs and will fail.
+     like libtool and pkgconfig are more likely misdirected by presence of shared libs of host-OS and will fail.
    - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash:
    
       + echo commands of both shells use different flags and escape sequences 
