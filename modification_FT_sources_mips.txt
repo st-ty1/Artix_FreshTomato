@@ -14,15 +14,6 @@
 		 fi"
 
 4. Modifications needed in release/src/router/Makefile:
-	- at target portmap/stamp-h1 change
-		"cd portmap \
-		 $(MAKE) -C portmap ... "
-	       to
-		"cd portmap"
-
-        - at target sd-idle delete following line:
-	         "cd sd-idle && \"
-
 	- at target php/stamp-h1 add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
 	
 	- add at end of target libcurl the following line:
