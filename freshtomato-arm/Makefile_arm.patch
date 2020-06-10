@@ -44,24 +44,6 @@
  			--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
  	@touch $@
  
-@@ -2470,8 +2471,7 @@
- 
- portmap/stamp-h1:
- 	$(call patch_files,portmap)
--	cd portmap \
--	$(MAKE) -C portmap
-+	cd portmap
- 	@touch $@
- 
- portmap: portmap/stamp-h1
-@@ -2586,7 +2586,6 @@
- 
- sd-idle/stamp-h1:
- 	@$(SEP)
--	cd sd-idle \
- 	CFLAGS="-Os -Wall --host=$(HOST) --target=$(HOST) $(EXTRACFLAGS)" \
- 	$(MAKE) -C sd-idle
- 	chmod 0755 sd-idle/sd-idle
 @@ -2743,6 +2742,8 @@
  		-DOPENSSL_INCLUDE_DIR=$(TOP)/$(OPENSSLDIR)/include \
  		-DOPENSSL_CRYPTO_LIBRARY=$(TOP)/$(OPENSSLDIR)/libcrypto.so \
