@@ -14,15 +14,6 @@
 		 fi"
 
 4. Modifications needed in release/src/router/Makefile:
-	- at target portmap/stamp-h1 change
-			"cd portmap \
-		 	 $(MAKE) -C portmap ... "
-		into
-			"cd portmap"
-
-        - at target sd-idle delete following line:
-		"cd sd-idle && \"
-
 	- only arm/arm7: at targets libnetfilter_queue/stamp-h1 and
 	  libnetfilter_conntrack/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
