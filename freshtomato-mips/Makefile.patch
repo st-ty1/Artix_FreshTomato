@@ -1,0 +1,56 @@
+--- Makefile.orig	2020-06-09 21:07:20.159986104 +0200
++++ Makefile	2020-06-09 21:10:56.033314885 +0200
+@@ -63,7 +63,7 @@
+ #
+ #
+ SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
+-echo "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
++printf "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
+ 
+ 
+ ifeq ($(TCONFIG_OPTIMIZE_SIZE),y)
+@@ -360,7 +360,7 @@
+ 	@echo ${totalSteps}
+ 
+ install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
+-	@echo "\033[41;1m   Installing \033[0m\033]2;Installing\007"
++	@printf "\033[41;1m   Installing \033[0m\033]2;Installing\007"
+ 	install -d $(TARGETDIR)
+ 
+ 
+@@ -1949,8 +1949,8 @@
+ 	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
+ 		-L$(TOP)/libpng/.libs -L$(TOP)/libcurl/staged/usr/lib -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
+ 	CPPFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs" \
+-	LIBS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs -L$(TOP)/libcurl/lib/.libs \
+-		-lz -lsqlite3 -ldl -lpthread -liconv -lxml2 -lstdc++ -lcurl" \
++	LIBS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs -L$(TOP)/libcurl/lib/.libs -L$(TOP)/$(OPENSSLDIR) \
++		-lz -lsqlite3 -ldl -lpthread -liconv -lxml2 -lstdc++ -lcurl -lcrypto -lssl" \
+ 	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
+ 	ac_cv_func_memcmp_working=yes \
+ 	cv_php_mbstring_stdarg=yes \
+@@ -2301,6 +2301,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
+ 	@$(MAKE) -C libcurl DESTDIR=$(TOP)/libcurl/staged install
++	@rm -f libcurl/staged/usr/lib/libcurl.la
+ 
+ libcurl-install:
+ 	install -D libcurl/lib/.libs/libcurl.so.4.6.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.6.0
+@@ -2420,6 +2421,7 @@
+ libnfsidmap-install:
+ 	install -d $(TOP)/libnfsidmap/staged
+ 	$(MAKE) -C libnfsidmap DESTDIR=$(TOP)/libnfsidmap/staged install
++	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la
+ 
+ libnfsidmap-clean:
+ 	-@$(MAKE) -C libnfsidmap clean
+@@ -2671,6 +2673,8 @@
+ 		-DOPENSSL_INCLUDE_DIR=$(TOP)/$(OPENSSLDIR)/include \
+ 		-DOPENSSL_CRYPTO_LIBRARY=$(TOP)/$(OPENSSLDIR)/libcrypto.so \
+ 		-DOPENSSL_SSL_LIBRARY=$(TOP)/$(OPENSSLDIR)/libssl.so \
++		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
++		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
+ 		-DLIBYAML_DIR=$(TOP)/libyaml \
+ 		-DLIBYAML_INCLUDE_DIR=$(TOP)/libyaml/include \
+ 		-DLIBYAML_LIBRARY=$(TOP)/libyaml/src/.libs/libyaml.a \
