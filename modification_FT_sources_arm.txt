@@ -54,5 +54,4 @@
 		
 5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
 
-6. additional C-flag "-fcommon" has to be added to release/src/router/config/Makefile due to change from gcc-9 to 
-   gcc-10 on Arch Linux/Artix
+6. Due to change from gcc-9 to gcc-10 on Artix, some old source code in release/src/router/config has to to patched.
