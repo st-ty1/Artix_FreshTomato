@@ -32,5 +32,5 @@
 		
 5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
 
-6. Due to change from gcc-9 to gcc-10 on Artix, some old source code in release/src/router/config and Makefile and mksquashfs.c in release/src-rt/linux/linux
-   -2.6/scripts/squashfs (release/src-rt-6.x/linux/linux-2.6/scripts/squashfs) has to to patched.
+6. Due to change from gcc-9 to gcc-10 on Artix, some old source code in release/src/router/config and mksquashfs.c in release/src-rt/linux/linux
+   -2.6/scripts/squashfs (resp. in release/src-rt-6.x/linux/linux-2.6/scripts/squashfs) has to be patched.
