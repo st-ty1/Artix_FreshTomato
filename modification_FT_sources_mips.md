@@ -25,8 +25,11 @@
 	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
  		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
 		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
-	
-	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
+		  
+	- at target libevent/stamp-h1 insert following line in front of $(CONFIGURE)... :
+		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/openssl-1.1" \
+		 
+	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo". 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
