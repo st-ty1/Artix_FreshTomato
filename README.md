@@ -1,8 +1,9 @@
 # Artix_FreshTomato
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
  
- --- Freshtomato-arm: checked with with commit a289012122 (28/06/2020)
- --- Freshtomato-mips: checked with with commit 7b5e0cdc04b (15/07/2020)
+ --- Freshtomato-arm: checked with commit 708078f (15/08/2020)
+ 
+ --- Freshtomato-mips: checked with commit 7b5e0cdc04b (15/07/2020)
 
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 
@@ -11,9 +12,8 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
 2. Also some of the files of both FT-repos need some small minor modifications. These mods are listed in attached files
    modification_FT_sources_arm.txt and modification_FT_sources_mips.txt (Mods will be rechecked fortnightly.)
    These modifications are needed as, e.g.:
-   - Arch Linux/Artix use more recent versions of applications, needed for building process (still valid for Debian 10; 
-     level more comparable with Ubuntu groovy and Debian 11).
-   - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu sytems does, so building tools
+   - Arch Linux/Artix use more recent versions of applications which are needed for building process (statement still valid concerning Debian 10).
+   - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu systems does, so building tools
      like libtool and pkgconfig are more likely misdirected by presence of shared libs of host-OS and will fail.
    - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash:
    
@@ -25,7 +25,7 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
    - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
    - Make the shell scripts executable.
    - Please have a look into shell scripts, as they expect complete path to your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). Change it to your own needs.
-   - Start your needed shell script (depending on architecture of CPU of router). Applying the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources.  Cleaning sources only with "make clean" the script is not needed anymore. 
+   - Start your needed shell script (depending on architecture of CPU of router). Applying the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. If cleaning of sources is done only by "make clean", the script is not needed anymore. 
 
 BR
 
