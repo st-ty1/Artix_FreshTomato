@@ -1,4 +1,4 @@
-1. Add at end of file release/src/router/common.mak following lines (to inhibit error message, e.g. by iptables-1.6.x or by samba3, due to shared
+1. Add following lines at end of file release/src/router/common.mak (to inhibit error message, e.g. by iptables-1.6.x or by samba3, due to shared
    libraries needed by the FT-progs but already existing on host system as shared x64-libs)
 	export PKG_CONFIG_PATH=
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
