@@ -15,18 +15,4 @@
      fi
  fi
  
-@@ -1114,10 +1114,10 @@
- if test "x$enable_zstd" = "xno"; then
-     have_zstd=no;
- else
--    PKG_CHECK_MODULES([ZSTD],
--                      [libzstd >= 1.1],
--                      have_zstd=yes,
--                      have_zstd=no)
-+#    PKG_CHECK_MODULES([ZSTD],
-+#                      [libzstd >= 1.1],
-+#                      have_zstd=yes,
-+#                      have_zstd=no)
- 
-     if test "x$have_zstd" = "xno" ; then
-         AC_MSG_WARN([Unable to find libzstd, $pkg_config_user_action, or set ZSTD_CFLAGS and ZSTD_LIBS.])
+

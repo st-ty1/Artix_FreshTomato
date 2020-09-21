@@ -1,5 +1,5 @@
---- Makefile.orig	2020-07-18 18:24:54.509979338 +0200
-+++ Makefile	2020-07-18 14:59:00.746666122 +0200
+--- Makefile	2020-09-26 18:15:41.656277748 +0200
++++ Makefile_mod	2020-09-26 18:16:29.309608895 +0200
 @@ -63,7 +63,7 @@
  #
  #
@@ -18,7 +18,7 @@
  	install -d $(TARGETDIR)
  
  
-@@ -1951,8 +1951,8 @@
+@@ -1955,8 +1955,8 @@
  	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
  		-L$(TOP)/libpng/.libs -L$(TOP)/libcurl/staged/usr/lib -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	CPPFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs" \
@@ -29,7 +29,7 @@
  	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
  	ac_cv_func_memcmp_working=yes \
  	cv_php_mbstring_stdarg=yes \
-@@ -2303,6 +2303,7 @@
+@@ -2307,6 +2307,7 @@
  	@$(SEP)
  	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
  	@$(MAKE) -C libcurl DESTDIR=$(TOP)/libcurl/staged install
@@ -37,7 +37,7 @@
  
  libcurl-install:
  	install -D libcurl/lib/.libs/libcurl.so.4.6.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.6.0
-@@ -2322,6 +2323,7 @@
+@@ -2326,6 +2327,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib $(if $(TCONFIG_HTTPS),-I$(TOP)/$(OPENSSLDIR)/include,) -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC -L$(TOP)/zlib $(if $(TCONFIG_HTTPS),-L$(TOP)/$(OPENSSLDIR),)" \
@@ -45,7 +45,7 @@
  		$(CONFIGURE) $(if $(TCONFIG_HTTPS),,--disable-openssl) --disable-doxygen-html \
  			--disable-debug-mode --disable-samples --disable-dependency-tracking
  	@touch $@
-@@ -2424,6 +2426,7 @@
+@@ -2428,6 +2430,7 @@
  libnfsidmap-install:
  	install -d $(TOP)/libnfsidmap/staged
  	$(MAKE) -C libnfsidmap DESTDIR=$(TOP)/libnfsidmap/staged install
@@ -53,7 +53,7 @@
  
  libnfsidmap-clean:
  	-@$(MAKE) -C libnfsidmap clean
-@@ -2675,6 +2678,8 @@
+@@ -2679,6 +2682,8 @@
  		-DOPENSSL_INCLUDE_DIR=$(TOP)/$(OPENSSLDIR)/include \
  		-DOPENSSL_CRYPTO_LIBRARY=$(TOP)/$(OPENSSLDIR)/libcrypto.so \
  		-DOPENSSL_SSL_LIBRARY=$(TOP)/$(OPENSSLDIR)/libssl.so \
@@ -62,3 +62,21 @@
  		-DLIBYAML_DIR=$(TOP)/libyaml \
  		-DLIBYAML_INCLUDE_DIR=$(TOP)/libyaml/include \
  		-DLIBYAML_LIBRARY=$(TOP)/libyaml/src/.libs/libyaml.a \
+@@ -2709,7 +2714,7 @@
+ 			--with-openssl-dir=$(TOP)/$(OPENSSLDIR) --with-zlib-dir=$(TOP)/zlib \
+ 			--disable-asciidoc --disable-tool-name-check --disable-unittests --disable-lzma \
+ 			--disable-seccomp --disable-libscrypt --disable-zstd-advanced-apis \
+-			--disable-manpage --disable-html-manual --disable-dependency-tracking
++			--disable-manpage --disable-html-manual --disable-dependency-tracking --disable-zstd
+ 	@touch $@
+ 
+ tor: tor/stamp-h1
+@@ -2880,7 +2885,7 @@
+ %-distclean:
+ 	@-[ ! -d $* ] || $(MAKE) -C $* distclean
+ 
+-%-install: %
++%-install:
+ 	@[ ! -d $* ] || $(MAKE) -C $* install INSTALLDIR=$(INSTALLDIR)/$*
+ 
+ %-build:

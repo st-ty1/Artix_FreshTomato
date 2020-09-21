@@ -4,16 +4,10 @@
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
-2. in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
-   newer versions of tor and that theses searches will errornously find the host-versions of systemd and libzstd and will lead to build breaks.)
+2. in file release/src/router/tor/configure.ac the search routines for systemd has to be commented out (due to more aggressive search for host-version of systemd;
+   Artix is non-systemd-OS but still has a dummy libsystemd.so, so building breaks at configuring tor.)
 	
-3. in file release/src/router/miniupnpd/genconfig.sh following 3 lines has to be commented out (due to uuid.h/libuuid already exists on host system, 
-   but cannot be uninstalled on host system)	
-		"if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
-		 	 echo "#define LIB_UUID" >> ${CONFIGFILE}
-		 fi"
-
-4. Modifications needed in release/src/router/Makefile:
+3. Modifications needed in release/src/router/Makefile:
 	- at target php/stamp-h1 add to LIBS " -L$(TOP)/$(OPENSSLDIR)" and "-lcrypto -lssl"
 	
 	- add at end of target libcurl the following line:
@@ -22,18 +16,20 @@
 	- add at end of target libnfsidmap-install the following line:
 	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
 		
-	- add these two additional -D arguments to cmake command getdns/build/Makefile-target:
+	- add these two additional -D arguments to cmake command in target getdns/build/Makefile:
  		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
 		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
 		  
 	- at target libevent/stamp-h1 insert following line in front of $(CONFIGURE)... :
 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/openssl-1.1" \
+		
+	- at target tor/stamp-h1 add argument "-disable-zstd" to $(CONFIGURE)
 		 
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo". 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-5. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
+4. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
 
-6. Due to change from gcc-9 to gcc-10 on Artix, some old source code in release/src/router/config and mksquashfs.c in release/src-rt/linux/linux
-   -2.6/scripts/squashfs (resp. in release/src-rt-6.x/linux/linux-2.6/scripts/squashfs) has to be patched.
+6. Due to change from gcc-9 to gcc-10 on Artix, some old source code in mksquashfs.c (located at release/src-rt/linux/linux
+   -2.6/scripts/squashfs resp. at release/src-rt-6.x/linux/linux-2.6/scripts/squashfs) has to be patched.

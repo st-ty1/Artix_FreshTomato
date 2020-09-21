@@ -1,26 +1,23 @@
 # Artix_FreshTomato
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
  
- --- Freshtomato-arm: checked with commit 708078f (15/08/2020)
+ --- Freshtomato-arm: checked with commit 7a9d305 (20/09/2020)
  
- --- Freshtomato-mips: checked with commit 7b5e0cdc04b (15/07/2020)
+ --- Freshtomato-mips: checked with commit 2d5ad2941 (16/09/2020)
 
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in needed_packages_on_Artix.txt.
    Most of them can be obtained from Artix repos, some need Arch user repos (AUR). So be familiar with installing progs from AUR.
 2. Also some of the files of both FT-repos need some small minor modifications. These mods are listed in attached files
-   modification_FT_sources_arm.txt and modification_FT_sources_mips.txt (Mods will be rechecked fortnightly.)
+   modification_FT_sources_arm.txt and modification_FT_sources_mips.txt (I'm trying to rechecked the mods fortnightly.)
    These modifications are needed as, e.g.:
-   - Arch Linux/Artix use more recent versions of applications which are needed for building process (statement still valid concerning Debian 10).
+   - Arch Linux/Artix use more recent versions of applications which are needed for building process.
    - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu systems does, so building tools
      like libtool and pkgconfig are more likely misdirected by presence of shared libs of host-OS and will fail.
-   - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash:
-   
+   - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash:  
       + echo commands of both shells use different flags and escape sequences 
-      
-      + with CD_COMPLAINS option is set within bash (default in bash >=4.4), multiple directory arguments to cd command will cause error messages. 
-   
+
 3. Best practice:
    - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
    - Make the shell scripts executable.

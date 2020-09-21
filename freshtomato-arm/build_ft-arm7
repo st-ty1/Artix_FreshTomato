@@ -11,15 +11,10 @@ git reset --hard
 #git pull
 
 git checkout arm-sdk7
+
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/common.mak
-
 patch -i $FT_PATCHES_DIR/Makefile_arm7.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/Makefile
-#cp -v $FT_PATCHES_DIR/Makefile $FT_REPO_DIR/release/src-rt-7.x.main/src/router/Makefile
-
 patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/tor/configure.ac
-patch -i $FT_PATCHES_DIR/genconfig.sh.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/miniupnpd/genconfig.sh
-
-patch -p1 -d$FT_REPO_DIR/release/src-rt-7.x.main/router/config < $FT_PATCHES_DIR/config_gcc10.patch
 
 cd release/src-rt-7.x.main/src
 
