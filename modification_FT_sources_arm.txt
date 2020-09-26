@@ -1,11 +1,10 @@
-1. Add at end of file release/src/router/common.mak following lines (to inhibit error message, e.g. by iptables-1.6.x or by samba3, due to shared
-   libraries needed by the FT-progs but already existing on host system as shared x64-libs)
+1. Add at end of file release/src/router/common.mak following lines (to inhibit error message by miniupnpd and samba3, due to search for shared
+   libs which can be used by them, but only existing on host system as shared x64-libs)
 	export PKG_CONFIG_DIR=
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
-2. in file release/src/router/tor/configure.ac two of the search routines for systemd and libzstd has to be commented out (due to more aggressive search to them in
-   newer versions of tor and that theses searches will errornously find the host-versions of systemd and libzstd and will lead to build breaks.)
+2. in file release/src/router/tor/configure.ac the search routine for systemd has to be commented out (due to more aggressive search to systemd-files by tor's autoconf-tool, whichh will errornously find the dummy-file "libsystemd.so" of Artix but no other systemd files (as Artix is non-systemd-OS), so ./configure of tor stopd.)
 	
 3. Modifications needed in release/src/router/Makefile:
 	- only arm/arm7: at targets libnetfilter_queue/stamp-h1 and
@@ -41,6 +40,8 @@
 	- only arm/arm7: at target flac/stamp-h1 and libnetfilter_log/stamp-h1 add to LDFLAGS:
 		"-L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOOLCHAIN)/lib" 
 		(libtool can't find new toolchain's libc.a and libgcc_s.so and wants to use host's versions.)
+		
+	- at end of target tor/stamp-h1 add "--disable-zstd" as an additional argument of $(CONFIGURE).
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
