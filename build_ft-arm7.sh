@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/Dokumente/freshtomato-arm
+FT_PATCHES_DIR=$HOME/documents/freshtomato-arm
 FT_REPO_DIR=$HOME/freshtomato-arm
 
 PATH="$PATH:$FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin"

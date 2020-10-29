@@ -20,12 +20,10 @@ WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix 
      different flags and escape sequences) 
 
 3. Best practice:
-   - Copy repo (patches and shell scripts) into a subfolder of your home directory. 
-   - Make the shell scripts executable.
-   - Please have a look into shell scripts, as they expect complete path to your local FT-repo (e.g. for FT-mips: $HOME/freshtomato-mips/). Change it to your own needs.
-   - Start your needed shell script (depending on architecture of CPU of router). 
-   - Applying of the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. 
-      If cleaning of sources is done only by "make clean", the start script and patches are not needed anymore. 
+   - Copy or clone this repo into a subfolder of your home directory. 
+   - Make the shell script executable you need for your router model (depending on architecture of CPU of router) .
+   - Please have a look into the shell script, as the path to your local FT-repo is defined in FT_REPO_DIR and the path to your local copy/repo of Artix_FreshTomato is defined in FT_PATCHES_DIR. You should change them to your own needs.
+   - Start the shell script. Applying of the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. If cleaning of sources is done only by "make clean", the start script and patches are not needed anymore. 
 
 BR
 
