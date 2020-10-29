@@ -1,11 +1,11 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/Dokumente/freshtomato-arm
+FT_PATCHES_DIR=$HOME/freshtomato_artix
 FT_REPO_DIR=$HOME/freshtomato-arm
 
 PATH="$PATH:$FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin"
 
-cd $HOME/freshtomato-arm 
+cd $FT_REPO_DIR
 git clean -dxf 
 git reset --hard
 #git pull
@@ -22,4 +22,4 @@ patch -p1 -d$FT_REPO_DIR/release/src-rt-6.x.4708/router/config < $FT_PATCHES_DIR
 cd release/src-rt-6.x.4708
 
 time make ac68z #1> log.txt 2>&1
-# AIO:z; VPN:e > build.txt
+# AIO:z; VPN:e

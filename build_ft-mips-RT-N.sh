@@ -1,9 +1,9 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/documents/freshtomato-mips
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-mips
 
-export PATH="$FT_REPO_DIR/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
+PATH="$FT_REPO_DIR/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
 
 cd $FT_REPO_DIR 
 git clean -dxf 
@@ -22,7 +22,3 @@ rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
 cd release/src-rt 
 
 make r64z ## > build.txt; AIO: z; VPN: e; 
-
-
-
-

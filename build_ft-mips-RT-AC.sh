@@ -1,9 +1,10 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/Documents/freshtomato-mips
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-mips
 
 PATH="$HOME/freshtomato-mips/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
+
 clear
 cd $FT_REPO_DIR 
 git clean -dxf 
@@ -22,5 +23,3 @@ rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
 cd release/src-rt-6.x
 
 make wndr4500v2e ## > build.txt; AIO: z; VPN: e
-
-

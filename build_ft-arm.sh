@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/documents/freshtomato-arm
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-arm
 
 PATH="$PATH:$FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin"
@@ -19,9 +19,5 @@ patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src-rt-6.x.
 
 cd release/src-rt-6.x.4708
 
-make n18z ##1>log.txt 2>&1
-## now also for “NG“-router, arm-ng branch merged in arm-master branch
-#time make ac68z #1> log.txt 2>&1
-
-
+time make ac68z #1> log.txt 2>&1
 ## AIO:z; VPN:e
