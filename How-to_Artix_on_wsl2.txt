@@ -32,10 +32,10 @@ $ ./artix
    ------ automatic switch to Linux  -------
 [<username>@PC-NAME ~]$ cd $HOME
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-mips 
-[<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-arm
-[<username>@PC-NAME ~]$ makedir documents/freshtomato	
-[<username>@PC-NAME ~]$ git clone https://github.com/st-ty1/Artix_FreshTomato  documents/freshtomato
-[<username>@PC-NAME ~]$ cd documents/freshtomato
+[<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-arm	
+[<username>@PC-NAME ~]$ git clone https://github.com/st-ty1/Artix_FreshTomato
+[<username>@PC-NAME ~]$ cd Artix_FreshTomato
+[<username>@PC-NAME ~]$ chmod 744 *.sh
 [<username>@PC-NAME ~]$ ./build_ft-arm.sh 
 		(or ./build_ft-arm7.sh or ./build_ft-mips-RT-AC.sh or ./build_ft-mips-RT-N.sh or ./build_ft-mips-RT.sh)
   

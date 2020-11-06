@@ -138,12 +138,3 @@
  		libmnl_CFLAGS="-I$(TOP)/libmnl/staged/usr/include" \
  		libmnl_LIBS="-L$(TOP)/libmnl/staged/usr/lib -lmnl" \
  		$(CONFIGURE) --prefix=/usr --with-kmod=no
-@@ -3106,7 +3111,7 @@
- %-distclean:
- 	@-[ ! -d $* ] || $(MAKE) -C $* distclean
- 
--%-install: %
-+%-install:
- 	@[ ! -d $* ] || $(MAKE) -C $* install INSTALLDIR=$(INSTALLDIR)/$*
- 
- %-build:

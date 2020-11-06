@@ -71,12 +71,3 @@
  	@touch $@
  
  tor: tor/stamp-h1
-@@ -2880,7 +2885,7 @@
- %-distclean:
- 	@-[ ! -d $* ] || $(MAKE) -C $* distclean
- 
--%-install: %
-+%-install:
- 	@[ ! -d $* ] || $(MAKE) -C $* install INSTALLDIR=$(INSTALLDIR)/$*
- 
- %-build:
