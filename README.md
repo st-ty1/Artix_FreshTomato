@@ -1,9 +1,11 @@
 # Artix_FreshTomato
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
- 
- --- Freshtomato-arm: checked with commit 3de14151f (20/10/2020)
- 
- --- Freshtomato-mips: checked with commit 2d5ad2941 (16/09/2020)
+
+!!!! dockerfiles will come soon!
+
+!!!! Artix with Freshtomato-arm: working with status of source code commit 3de14151f (20/10/2020)
+
+!!!! Artix with Freshtomato-mips: working with status of source code status commit 2a315a0 (06/11/2020)
 
 WARNING: Don't start this, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 

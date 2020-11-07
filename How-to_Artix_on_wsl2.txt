@@ -28,7 +28,7 @@ $ ./artix
 [PC-NAME Artix]# exit
    ----- automatic switch to Windows  -------
 $ artix config --default-user <username>
-$ ./artix
+$ .\Artix
    ------ automatic switch to Linux  -------
 [<username>@PC-NAME ~]$ cd $HOME
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-mips 
@@ -39,5 +39,13 @@ $ ./artix
 [<username>@PC-NAME ~]$ ./build_ft-arm.sh 
 		(or ./build_ft-arm7.sh or ./build_ft-mips-RT-AC.sh or ./build_ft-mips-RT-N.sh or ./build_ft-mips-RT.sh)
   
-(Of course creation of rootfs.tar.gz by using rootfs.img of official Artix-iso is possible. 
- Even if using smallest Artix base-iso (without any desktop environment) results in bigger roots.tar.gz than that of https://github.com/hdk5/ArtixWSL)
+(Of course creating of rootfs.tar.gz by using rootfs.img of official Artix-iso is possible, but this results in bigger rootfs.tar.gz than that of
+ https://github.com/hdk5/ArtixWSL. To do so in Windows 10:
+ Download squashfs-tools-ng-1.0.3-mingw64.zip at https://infraroot.at/pub/squashfs/windows. Extract archive into a squashfs-tools-ng-1.0.3-mingw64 folder.
+ Download artix-base-openrc-YYYYMMDD-x86_64.iso at https://iso.artixlinux.org/weekly-iso. Mount the iso-file.
+ Copy /LiveOS/rootfs.img of mouted iso-file into the /bin-subfolder of squashfs-tools-ng-1.0.3-mingw64 directory.
+ Open Windows Command Prompt and change to bin-subfolder in the extracted squashfs-tools-ng-1.0.3-mingw64 directory. 
+ Then run:
+ 	sqfs2tar rootfs.img | gzip > artix-rootfs.tar.gz
+
+ Copy generated rootfs.tar.gz to your start directory (%USERPROFILE%\wsl\artix). Continue at line "$ wsl --import artix artix-rootfs.tar.gz" as described above.)
