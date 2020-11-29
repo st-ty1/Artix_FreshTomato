@@ -20,5 +20,7 @@ patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src/router/
 
 cd release/src-rt-6.x.4708
 
-time make ac68z #1> log.txt 2>&1
-## AIO:z; VPN:e
+make $@
+
+mkdir /image
+cp $FT_REPO_DIR/release/src-rt-6.x4708/image/* /image

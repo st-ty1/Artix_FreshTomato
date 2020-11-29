@@ -17,6 +17,7 @@ patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common
 patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src/router/tor/configure.ac
 patch -i $FT_PATCHES_DIR/mksquashfs.c.patch $FT_REPO_DIR/release/src-rt-6.x/linux/linux-2.6/scripts/squashfs/mksquashfs.c
+patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src/router/miniupnpd/configure
 
 rm -f $FT_REPO_DIR/release/src/router/nettle/desdata.stamp
 
