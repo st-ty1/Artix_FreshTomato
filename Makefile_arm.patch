@@ -1,5 +1,5 @@
---- Makefile.orig	2020-09-25 18:33:27.746640000 +0200
-+++ Makefile	2020-09-26 19:07:49.259467576 +0200
+--- Makefile.orig	2020-12-05 16:34:02.550797100 +0100
++++ Makefile	2020-12-05 16:32:42.530797100 +0100
 @@ -63,7 +63,7 @@
  #
  #
@@ -9,7 +9,7 @@
  
  export CFLAGS += -DBCMWPA2
  ifeq ($(TCONFIG_BCMWL6),y)
-@@ -452,7 +452,7 @@
+@@ -439,7 +439,7 @@
  	@echo ${totalSteps}
  
  install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
@@ -18,7 +18,7 @@
  	install -d $(TARGETDIR)
  
  
-@@ -1141,6 +1141,7 @@
+@@ -1124,6 +1124,7 @@
  libnfnetlink: libnfnetlink/stamp-h1
  	@$(SEP)
  	$(MAKE) -C libnfnetlink $(PARALLEL_BUILD)
@@ -26,16 +26,7 @@
  
  libnfnetlink-install:
  	install -D libnfnetlink/src/.libs/libnfnetlink.so.0.2.0 $(INSTALLDIR)/libnfnetlink/usr/lib/libnfnetlink.so.0.2.0
-@@ -1573,7 +1574,7 @@
- 	cd $(TOP)/flac && autoreconf -fsi && \
- 	CFLAGS="-Os $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
- 	CPPFLAGS="-I$(TOP)/libogg/include -I$(LINUXDIR)/include -fPIC" \
--	LDFLAGS="-L$(TOP)/libogg/src/.libs -fPIC -ffunction-sections -fdata-sections -Wl,--gc-sections" \
-+	LDFLAGS="-L$(TOP)/libogg/src/.libs -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOOLCHAIN)/lib -fPIC -ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 	$(CONFIGURE) --enable-shared --enable-static --prefix='' --disable-rpath \
- 		--disable-doxygen-docs --disable-xmms-plugin --disable-cpplibs --disable-thorough-tests \
- 		--without-libiconv-prefix --disable-altivec --disable-sse --disable-dependency-tracking \
-@@ -1944,7 +1945,7 @@
+@@ -1930,7 +1931,7 @@
  libxml2/stamp-h1:
  	cd libxml2 && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
@@ -44,16 +35,7 @@
  			--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
  	@touch $@
  
-@@ -2735,6 +2736,8 @@
- 		-DOPENSSL_INCLUDE_DIR=$(TOP)/$(OPENSSLDIR)/include \
- 		-DOPENSSL_CRYPTO_LIBRARY=$(TOP)/$(OPENSSLDIR)/libcrypto.so \
- 		-DOPENSSL_SSL_LIBRARY=$(TOP)/$(OPENSSLDIR)/libssl.so \
-+		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
-+		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
- 		-DLIBYAML_DIR=$(TOP)/libyaml \
- 		-DLIBYAML_INCLUDE_DIR=$(TOP)/libyaml/include \
- 		-DLIBYAML_LIBRARY=$(TOP)/libyaml/src/.libs/libyaml.a \
-@@ -2764,7 +2767,7 @@
+@@ -2760,7 +2761,7 @@
  			--with-openssl-dir=$(TOP)/$(OPENSSLDIR) --with-zlib-dir=$(TOP)/zlib \
  			--disable-asciidoc --disable-tool-name-check --disable-unittests --disable-lzma \
  			--disable-seccomp --disable-libscrypt --disable-zstd-advanced-apis \
@@ -62,7 +44,7 @@
  	@touch $@
  
  tor: tor/stamp-h1
-@@ -2820,6 +2823,7 @@
+@@ -2818,6 +2819,7 @@
  	@$(SEP)
  	$(MAKE) -C libmnl
  	$(MAKE) -C libmnl DESTDIR=$(TOP)/libmnl/staged install
@@ -70,18 +52,16 @@
  
  libmnl-install:
  	install -d $(INSTALLDIR)/libmnl/usr/lib/
-@@ -2837,8 +2841,8 @@
- libnetfilter_conntrack/stamp-h1: libmnl libnfnetlink
+@@ -2836,7 +2838,7 @@
  	cd libnetfilter_conntrack && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include -I$(TOP)/libmnl/staged/usr/include" \
--		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libnfnetlink/src/.libs -L$(TOP)/libmnl/staged/usr/lib" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libnfnetlink/src/.libs -L$(TOP)/libmnl/staged/usr/lib" \
 -		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
-+		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOP)/libnfnetlink/src/.libs -L$(TOP)/libmnl/staged/usr/lib" \
 +		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink:$(TOP)/libmnl" \
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
  
-@@ -2846,6 +2850,7 @@
+@@ -2844,6 +2846,7 @@
  	@$(SEP)
  	$(MAKE) -C libnetfilter_conntrack
  	$(MAKE) -C libnetfilter_conntrack DESTDIR=$(TOP)/libnetfilter_conntrack/staged install
@@ -89,16 +69,16 @@
  
  libnetfilter_conntrack-install:
  	install -d $(INSTALLDIR)/libnetfilter_conntrack/usr/lib/
-@@ -2865,7 +2870,7 @@
+@@ -2863,7 +2866,7 @@
  libnetfilter_log/stamp-h1: libnfnetlink
  	cd libnetfilter_log && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include" \
 -		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libnfnetlink/src/.libs" \
-+		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOOLCHAIN)/lib -L$(TOP)/libnfnetlink/src/.libs" \
++		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOP)/libnfnetlink/src/.libs" \
  		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
-@@ -2893,8 +2898,8 @@
+@@ -2891,8 +2894,8 @@
  libnetfilter_queue/stamp-h1: libnfnetlink
  	cd libnetfilter_queue && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include -I$(TOP)/libmnl/staged/usr/include" \
@@ -109,7 +89,7 @@
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
  
-@@ -2922,9 +2927,9 @@
+@@ -2920,9 +2923,9 @@
  	cd conntrack-tools && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include -I$(TOP)/libmnl/staged/usr/include \
  			-I$(TOP)/libnetfilter_conntrack/staged/usr/include -I$(TOP)/libnetfilter_log/staged/usr/include -I$(TOP)/libnetfilter_queue/staged/usr/include" \
@@ -121,7 +101,7 @@
  		$(CONFIGURE) --prefix=/usr --disable-cthelper --disable-cttimeout
  	@touch $@
  
-@@ -2941,14 +2946,14 @@
+@@ -2939,14 +2942,14 @@
  
  conntrack-tools-install:
  	install -d $(INSTALLDIR)/conntrack-tools/usr/sbin
