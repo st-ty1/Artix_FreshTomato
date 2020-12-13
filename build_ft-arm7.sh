@@ -15,6 +15,7 @@ git checkout arm-sdk7
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/common.mak
 patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/Makefile
 patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src-rt-7.x.main/src/router/tor/configure.ac
+patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.main/router/miniupnpd/configure
 
 cd release/src-rt-7.x.main/src
 
