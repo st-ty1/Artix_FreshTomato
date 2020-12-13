@@ -4,21 +4,18 @@
 	export PKG_CONFIG_LIBDIR=$(SRCBASE)
 	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
 
-2. in file release/src/router/tor/configure.ac the search routine for systemd has to be commented out (due to more aggressive search to systemd-files by tor's autoconf-tool, whichh will errornously find the dummy-file "libsystemd.so" of Artix but no other systemd files (as Artix is non-systemd-OS), so ./configure of tor stopd.)
-	
-3. Modifications needed in release/src/router/Makefile:
-	- only arm/arm7: at targets libnetfilter_queue/stamp-h1 and
-	  libnetfilter_conntrack/stamp-h1 add following option to LDFLAGS: 
+2. Modifications needed in release/src/router/Makefile:
+	- at targets libnetfilter_queue/stamp-h1 and libnetfilter_conntrack/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 		
-	- only arm/arm7: at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
+	- at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
 	  and conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
 	  	"$(TOP)/libmnl" 
 	
-	- only arm/arm7: at end of libnfnetlink add the following line: 
+	- at end of libnfnetlink add the following line: 
 		"@rm -f libnfnetlink/src/libnfnetlink.la"
 		
-	- only arm/arm7: at end of target libnetfilter_conntrack add the following line: 
+	- at end of target libnetfilter_conntrack add the following line: 
 		"@rm -f libnetfilter_conntrack/staged/usr/lib/ibnetfilter_conntrack.la"
 		
 	- at target libxml2/stamp-h1 add following option to $(CONFIGURE):
@@ -27,24 +24,23 @@
 	- at end of target libmnl add the following line:
 	        "@rm -f libmnl/staged/usr/lib/libmnl.la"
 		
-	- at target getdns/build/Makefile add these two additional -D arguments to the cmake command:
- 		  -DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
-		  -DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
-
 	- at target ipset/stamp-h1 add to LDFLAGS: 
 		"-L$(TOP)/libmnl/staged/usr/lib -lmnl" 
 		(only needed if ipset is installed in your host system; libtool links libmnl to ipset, but  
 		the wrong search path is hardcoded in libmnl.la: /usr/lib instead of $(TOPDIR)/libmnl/staged/usr/lib/, 
 		so libtool wants to link the libmnl of host system and causes error message)
 		
-	- only arm/arm7: at target flac/stamp-h1 and libnetfilter_log/stamp-h1 add to LDFLAGS:
+	- at target libnetfilter_log/stamp-h1 add to LDFLAGS:
 		"-L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOOLCHAIN)/lib" 
 		(libtool can't find new toolchain's libc.a and libgcc_s.so and wants to use host's versions.)
+	
+	- at target conntrack-tools-install change line
+	 	"install conntrack-tools/src/.libs/conntrack... " to "install conntrack-tools/src/conntrack ..."
 		
-	- at end of target tor/stamp-h1 add "--disable-zstd" as an additional argument of $(CONFIGURE).
+	- at end of target tor/stamp-h1 add "--disable-zstd" and "--disable-systemd" as additional arguments of $(CONFIGURE).
 	
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-4. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
+3. Delete file desdata.stamp in folder /release/src/router/nettle (as it crashes building process!)
