@@ -40,7 +40,7 @@
  			--disable-asciidoc --disable-tool-name-check --disable-unittests --disable-lzma \
  			--disable-seccomp --disable-libscrypt --disable-zstd-advanced-apis \
 -			--disable-manpage --disable-html-manual --disable-dependency-tracking
-+			--disable-manpage --disable-html-manual --disable-dependency-tracking --disable-zstd
++			--disable-manpage --disable-html-manual --disable-dependency-tracking --disable-zstd --disable-systemd
  	@touch $@
  
  tor: tor/stamp-h1
