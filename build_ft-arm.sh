@@ -16,7 +16,7 @@ clear
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/common.mak
 patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 patch -i $FT_PATCHES_DIR/configure.ac_tor.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/tor/configure.ac
-patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src/router/miniupnpd/configure
+patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/miniupnpd/configure
 
 cd release/src-rt-6.x.4708
 
