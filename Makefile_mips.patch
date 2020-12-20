@@ -1,0 +1,64 @@
+--- Makefile	2020-12-20 16:54:48.340000000 +0100
++++ Makefile_mod	2020-12-20 17:07:29.270000000 +0100
+@@ -63,7 +63,7 @@
+ #
+ #
+ SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
+-echo "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
++printf "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
+ 
+ 
+ ifeq ($(TCONFIG_OPTIMIZE_SIZE),y)
+@@ -351,7 +353,7 @@
+ 	@echo ${totalSteps}
+ 
+ install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
+-	@echo "\033[41;1m   Installing \033[0m\033]2;Installing\007"
++	@printf "\033[41;1m   Installing \033[0m\033]2;Installing\007"
+ 	install -d $(TARGETDIR)
+ 
+ 
+@@ -1949,8 +1952,8 @@
+ 	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
+ 		-L$(TOP)/libpng/.libs -L$(TOP)/libcurl/staged/usr/lib -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
+ 	CPPFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs" \
+-	LIBS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs -L$(TOP)/libcurl/lib/.libs \
+-		-lz -lsqlite3 -ldl -lpthread -liconv -lxml2 -lstdc++ -lcurl" \
++	LIBS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs -L$(TOP)/libcurl/lib/.libs -L$(TOP)/$(OPENSSLDIR) \
++		-lz -lsqlite3 -ldl -lpthread -liconv -lxml2 -lstdc++ -lcurl -lcrypto -lssl" \
+ 	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
+ 	ac_cv_func_memcmp_working=yes \
+ 	cv_php_mbstring_stdarg=yes \
+@@ -2329,6 +2332,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
+ 	@$(MAKE) -C libcurl DESTDIR=$(TOP)/libcurl/staged install
++	@rm -f libcurl/staged/usr/lib/libcurl.la
+ 
+ libcurl-install:
+ 	install -D libcurl/lib/.libs/libcurl.so.4.6.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.6.0
+@@ -2348,6 +2352,7 @@
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
+ 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib $(if $(TCONFIG_HTTPS),-I$(TOP)/$(OPENSSLDIR)/include,) -fPIC" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC -L$(TOP)/zlib $(if $(TCONFIG_HTTPS),-L$(TOP)/$(OPENSSLDIR),)" \
++		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/$(OPENSSLDIR)" \
+ 		$(CONFIGURE) $(if $(TCONFIG_HTTPS),,--disable-openssl) --disable-doxygen-html \
+ 			--disable-debug-mode --disable-samples --disable-dependency-tracking
+ 	@touch $@
+@@ -2446,6 +2451,7 @@
+ libnfsidmap-install:
+ 	install -d $(TOP)/libnfsidmap/staged
+ 	$(MAKE) -C libnfsidmap DESTDIR=$(TOP)/libnfsidmap/staged install
++	@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la
+ 
+ libnfsidmap-clean:
+ 	-@$(MAKE) -C libnfsidmap clean
+@@ -2761,7 +2769,7 @@
+ 			--with-openssl-dir=$(TOP)/$(OPENSSLDIR) --with-zlib-dir=$(TOP)/zlib \
+ 			--disable-asciidoc --disable-tool-name-check --disable-unittests --disable-lzma \
+ 			--disable-seccomp --disable-libscrypt --disable-zstd-advanced-apis \
+-			--disable-manpage --disable-html-manual --disable-dependency-tracking
++			--disable-manpage --disable-html-manual --disable-dependency-tracking --disable-zstd --disable-systemd
+ 	@touch $@
+ 
+ tor: tor/stamp-h1
