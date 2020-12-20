@@ -1,5 +1,5 @@
---- genconfig.sh.orig	2020-04-23 20:17:36.920348116 +0200
-+++ genconfig.sh	2020-04-23 20:17:37.610348123 +0200
+--- configure.orig	2020-04-23 20:17:36.920348116 +0200
++++ configure	2020-04-23 20:17:37.610348123 +0200
 @@ -434,9 +434,9 @@
  		if grep uuid_create /usr/include/uuid.h > /dev/null 2>&1 ; then
  			echo "#define BSD_UUID" >> ${CONFIGFILE}
