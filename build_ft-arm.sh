@@ -3,8 +3,6 @@
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-arm
 
-PATH="$PATH:$FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin"
-
 cd $HOME/freshtomato-arm 
 git clean -dxf 
 git reset --hard
