@@ -3,6 +3,8 @@
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-mips
 
+PATH="$FT_REPO_DIR/tools/brcm/hndtools-mipsel-uclibc/bin:$PATH"
+
 cd $FT_REPO_DIR 
 git clean -dxf 
 git reset --hard
