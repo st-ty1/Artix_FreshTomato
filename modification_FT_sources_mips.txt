@@ -16,11 +16,31 @@
 	- at target libevent/stamp-h1 insert following line in front of $(CONFIGURE)... :
 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/openssl-1.1" \
 		
-	- at target tor/stamp-h1 add argument "--disable-zstd" and "--disable-systemd" to $(CONFIGURE)
+	- at target tor/stamp-h1, tinc/stamp-h1 and tor/stamp-h1 add argument "--disable-zstd" and "--disable-systemd" to $(CONFIGURE)
+	
+	- at target imgpproy add argument "-std=gnu99" to CFLAGS
+	
+	- at target nano/stamp-h1 change line "cd nano && autoreconf && \"  to  "cd nano && autoreconf -fsi && \"
+	
+	- at target transmission/stamp-h1 change line "cd transmission && ./autogen.sh && \"  to  "cd transmission && \"
 		 
 	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo". 
 	  If color support in terminal output is wanted, change 
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-3. Due to change from gcc-9 to gcc-10 on Artix, some old source code in mksquashfs.c (located at release/src-rt/linux/linux
+3. Due to update to gcc-10 on host-OS, some old source code in mksquashfs.c (located at release/src-rt/linux/linux
    -2.6/scripts/squashfs resp. at release/src-rt-6.x/linux/linux-2.6/scripts/squashfs) has to be patched.
+   
+4. In release/src/router/miniupnpd/configure following code has to be commented (due to existance of uuid.h/libuuid on host-OS, which can't be uninstalled):
+    
+    	if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
+    	echo "#define LIB_UUID" >> ${CONFIGFILE}
+    	fi
+    to
+    	#if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
+    	#echo "#define LIB_UUID" >> ${CONFIGFILE}
+    	#fi
+   
+5. Configure.in in release/src/router/apcupsd/autoconf has to be patched due to update to autoconf 2.70 on host-OS.
+
+6. std-gnu11.m4 has to be removed from release/src/router/nano/m4 .
