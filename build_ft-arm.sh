@@ -11,9 +11,12 @@ git reset --hard
 git checkout arm-master
 
 clear
+
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/common.mak
 patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/miniupnpd/configure
+patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/apcupsd/autoconf/configure.in
+patch -i $FT_PATCHES_DIR/std-gnu11.m4.patch $FT_REPO_DIR/release/src/router/nano/m4/std-gnu11.m4
 
 cd release/src-rt-6.x.4708
 
