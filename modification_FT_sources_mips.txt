@@ -16,9 +16,9 @@
 	- at target libevent/stamp-h1 insert following line in front of $(CONFIGURE)... :
 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/openssl-1.1" \
 		
-	- at target tor/stamp-h1, tinc/stamp-h1 and tor/stamp-h1 add argument "--disable-zstd" and "--disable-systemd" to $(CONFIGURE)
+	- at target tor/stamp-h1 add argument "--disable-zstd" and "--disable-systemd" to $(CONFIGURE)
 	
-	- at target imgpproy add argument "-std=gnu99" to CFLAGS
+	- at target imgpproxy, tinc/stamp-h1 and tor/stamp-h1 add argument "-std=gnu99" to CFLAGS
 	
 	- at target nano/stamp-h1 change line "cd nano && autoreconf && \"  to  "cd nano && autoreconf -fsi && \"
 	
