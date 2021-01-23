@@ -9,7 +9,7 @@ WARNING: Don't start, if you are not familiar with both - Arch Linux/Artix and t
    "modification_FT_sources_arm.txt" and "modification_FT_sources_mips.txt" (I'm trying to rechecked the mods fortnightly.)
    Appropriate patches for these mods are located in this repo.
    These modifications are needed as, e.g.:
-   - Arch Linux/Artix use more recent versions of applications which are needed for building process.
+   - Arch Linux/Artix use more recent versions of applications which are needed for building process. (acuatlly challenging: update to autoconf-2.70)
    - Arch Linux/Artix based systems depends much more on shared libraries than Debian/Ubuntu systems does, so building tools
      like libtool and pkgconfig are more likely misdirected by presence of shared libs of host-OS and will fail.
    - Arch linux/Artix uses bash as non-interactive shell, whereas Debian/Ubuntu uses dash (echo commands of both shells use 
