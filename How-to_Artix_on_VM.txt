@@ -44,6 +44,8 @@ After system has booted start typing:
 Login as <username> and type:
 
   [<username>@PC-NAME ~]$ cd $HOME
+  [<username>@PC-NAME ~]$ git config --global core.eol lf
+  [<username>@PC-NAME ~]$ git config --global core.autocrlf false
   [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-mips 
   [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-arm
   [<username>@PC-NAME ~]$ git clone https://github.com/st-ty1/Artix_FreshTomato  
