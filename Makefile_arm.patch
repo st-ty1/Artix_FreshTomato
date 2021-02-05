@@ -1,5 +1,5 @@
---- Makefile.orig	2021-01-25 13:13:01.728821600 +0100
-+++ Makefile	2021-01-25 13:17:33.458821600 +0100
+--- Makefile.orig	2021-02-05 08:07:48.770000000 +0100
++++ Makefile	2021-02-05 11:30:24.110000000 +0100
 @@ -63,7 +63,7 @@
  #
  #
@@ -9,7 +9,7 @@
  
  export CFLAGS += -DBCMWPA2
  ifeq ($(TCONFIG_BCMWL6),y)
-@@ -445,7 +445,7 @@
+@@ -446,7 +447,7 @@
  	@echo ${totalSteps}
  
  install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
@@ -18,7 +18,15 @@
  	install -d $(TARGETDIR)
  
  
-@@ -1741,7 +1741,7 @@
+@@ -1131,6 +1132,7 @@
+ libnfnetlink: libnfnetlink/stamp-h1
+ 	@$(SEP)
+ 	$(MAKE) -C libnfnetlink $(PARALLEL_BUILD)
++	@rm -f libnfnetlink/src/libnfnetlink.la
+ 
+ libnfnetlink-install:
+ 	install -D libnfnetlink/src/.libs/libnfnetlink.so.0.2.0 $(INSTALLDIR)/libnfnetlink/usr/lib/libnfnetlink.so.0.2.0
+@@ -1742,7 +1744,7 @@
  igmpproxy: igmpproxy/src/Makefile
  	@$(SEP)
  	@$(MAKE) -C igmpproxy/src \
@@ -27,7 +35,7 @@
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
  	$(PARALLEL_BUILD)
  
-@@ -1936,7 +1936,7 @@
+@@ -1937,7 +1939,7 @@
  libxml2/stamp-h1:
  	cd libxml2 && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
@@ -36,8 +44,8 @@
  			--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
  	@touch $@
  
-@@ -2294,8 +2294,8 @@
- openvpn_plugin_auth_nvram: nvram$(BCMEX)
+@@ -2307,8 +2309,8 @@
+ 	@rm -f $(TOP)/wireguard-tools/staged/bin/wg
  
  nano/stamp-h1: libncurses
 -	cd nano && autoreconf && \
@@ -47,7 +55,7 @@
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
  		NCURSES_LIBS="-lncurses" \
-@@ -2402,7 +2402,7 @@
+@@ -2415,7 +2417,7 @@
  		ln -sf libiconv.so.2.6.1 libiconv.so
  
  transmission/stamp-h1: $(OPENSSLDIR) libcurl libevent zlib
@@ -56,7 +64,7 @@
  		CFLAGS="-O3 -Wall -pipe -marm -fno-delete-null-pointer-checks -funit-at-a-time -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
  		CPPFLAGS="-O3 -Wall -pipe -marm -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
  		CXXFLAGS="-O3 -Wall -pipe -marm -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
-@@ -2560,7 +2560,7 @@
+@@ -2573,7 +2575,7 @@
  tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
  	$(call patch_files,tinc)
  	cd tinc && autoreconf -fsi && \
@@ -65,7 +73,7 @@
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/$(OPENSSLDIR) -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	LIBS="-lpthread" \
  	$(CONFIGURE) \
-@@ -2760,13 +2760,13 @@
+@@ -2773,13 +2775,13 @@
  
  tor/stamp-h1: $(OPENSSLDIR) zlib libevent
  	cd tor && autoreconf -fsi && \
@@ -81,7 +89,15 @@
  	@touch $@
  
  tor: tor/stamp-h1
-@@ -2842,7 +2842,7 @@
+@@ -2837,6 +2839,7 @@
+ 	@$(SEP)
+ 	$(MAKE) -C libmnl
+ 	$(MAKE) -C libmnl DESTDIR=$(TOP)/libmnl/staged install
++	rm -f $(TOP)/libmnl/staged/usr/lib/libmnl.la
+ 
+ libmnl-install:
+ 	install -d $(INSTALLDIR)/libmnl/usr/lib/
+@@ -2855,7 +2858,7 @@
  	cd libnetfilter_conntrack && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include -I$(TOP)/libmnl/staged/usr/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libnfnetlink/src/.libs -L$(TOP)/libmnl/staged/usr/lib" \
@@ -90,7 +106,15 @@
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
  
-@@ -2869,7 +2869,7 @@
+@@ -2863,6 +2866,7 @@
+ 	@$(SEP)
+ 	$(MAKE) -C libnetfilter_conntrack
+ 	$(MAKE) -C libnetfilter_conntrack DESTDIR=$(TOP)/libnetfilter_conntrack/staged install
++	@rm -f libnetfilter_conntrack/staged/usr/lib/libnetfilter_conntrack.la
+ 
+ libnetfilter_conntrack-install:
+ 	install -d $(INSTALLDIR)/libnetfilter_conntrack/usr/lib/
+@@ -2882,7 +2886,7 @@
  libnetfilter_log/stamp-h1: libnfnetlink
  	cd libnetfilter_log && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include" \
@@ -99,7 +123,7 @@
  		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
-@@ -2897,8 +2897,8 @@
+@@ -2910,8 +2914,8 @@
  libnetfilter_queue/stamp-h1: libnfnetlink
  	cd libnetfilter_queue && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include -I$(TOP)/libmnl/staged/usr/include" \
@@ -110,7 +134,7 @@
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
  
-@@ -2928,7 +2928,7 @@
+@@ -2941,7 +2945,7 @@
  			-I$(TOP)/libnetfilter_conntrack/staged/usr/include -I$(TOP)/libnetfilter_log/staged/usr/include -I$(TOP)/libnetfilter_queue/staged/usr/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections 	-L$(TOP)/libnfnetlink/src/.libs -L$(TOP)/libmnl/staged/usr/lib \
  			-L$(TOP)/libnetfilter_conntrack/staged/usr/lib -L$(TOP)/libnetfilter_log/staged/usr/lib -L$(TOP)/libnetfilter_queue/staged/usr/lib" \
@@ -119,7 +143,7 @@
  		$(CONFIGURE) --prefix=/usr --disable-cthelper --disable-cttimeout
  	@touch $@
  
-@@ -2945,14 +2945,14 @@
+@@ -2958,14 +2962,14 @@
  
  conntrack-tools-install:
  	install -d $(INSTALLDIR)/conntrack-tools/usr/sbin

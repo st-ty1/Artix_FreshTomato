@@ -58,4 +58,5 @@
 	#	 "if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
 	#	 	echo "#define LIB_UUID" >> ${CONFIGFILE}
 	#	 fi"
-		 
+
+4. configure.in of apcupsd and mysql has to be patched due to newer versions of GNU-autotools (autoconf, automake,...)	on host-OS. 

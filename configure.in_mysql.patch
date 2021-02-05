@@ -1,0 +1,11 @@
+--- configure.in.orig	2021-02-05 12:38:19.920000000 +0100
++++ configure.in	2021-02-05 11:26:22.750000000 +0100
+@@ -21,7 +21,7 @@
+ # first part and a 100 character second part.
+ AM_INIT_AUTOMAKE([1.9 tar-ustar])
+ AC_PROG_LIBTOOL
+-
++AC_DEFINE([CRAY_STACKSEG_END], [], [Description])
+ AC_CONFIG_HEADERS([include/config.h])
+ 
+ # Request support for automake silent-rules if available.
