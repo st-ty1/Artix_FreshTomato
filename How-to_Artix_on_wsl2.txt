@@ -27,8 +27,8 @@ $ ./artix
 [PC-NAME Artix]# passwd <username>
 [PC-NAME Artix]# exit
    ----- automatic switch to Windows  -------
-$ artix config --default-user <username>
-$ .\Artix
+$ .\artix config --default-user <username>
+$ .\artix
    ------ automatic switch to Linux  -------
 [<username>@PC-NAME ~]$ cd $HOME
 [<username>@PC-NAME ~]$ git config --global core.eol lf
