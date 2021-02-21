@@ -11,7 +11,7 @@ $ ./artix
 [PC-NAME Artix]# pacman-key --init
 [PC-NAME Artix]# pacman-key --populate archlinux artix
 [PC-NAME Artix]# pacman -Syu
-[PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils
+[PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git
 [PC-NAME Artix]# nano /etc/pacman.conf  (enable multilib repository by uncomment the [multilib] section: 
 					[multilib]
 					Include = /etc/pacman.d/mirrorlist	
