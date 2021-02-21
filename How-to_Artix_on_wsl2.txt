@@ -17,7 +17,7 @@ $ ./artix
 					Include = /etc/pacman.d/mirrorlist	
 					)
 [PC-NAME Artix]# pacman -Syy
-[PC-NAME Artix]# pacman -S sudo lib32-glibc, lib32-gcc-libs and lib32-zlib
+[PC-NAME Artix]# pacman -S lib32-glibc lib32-gcc-libs lib32-zlib
 [PC-NAME Artix]# nano /etc/wsl.conf  	(add the following:
 					[interop]
 					appendWindowsPath=false
