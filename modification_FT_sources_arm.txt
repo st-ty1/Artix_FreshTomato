@@ -12,8 +12,12 @@
 	  and conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
 	  	"$(TOP)/libmnl" 
 	
-	- at end of libnfnetlink add the following line: 
+	- at end of target libnfnetlink add the following line: 
 		"@rm -f libnfnetlink/src/libnfnetlink.la"
+		
+	- at end of taget libpng add the following line: 
+		"@rm -f $(TOP)/libpng/staged/usr/lib/libpng.la
+		 @rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la"
 		
 	- at end of target libnetfilter_conntrack add the following line: 
 		"@rm -f libnetfilter_conntrack/staged/usr/lib/ibnetfilter_conntrack.la"
