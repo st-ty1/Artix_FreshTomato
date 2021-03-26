@@ -50,7 +50,7 @@
 	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
 3. In release/src/router/miniupnpd/configure the lines 437-439 has to be commented (because on host system already exists uuid.h/libuuid, 
-    which can not be deleted.):
+    which can not be deleted):
 		"if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
 		 	echo "#define LIB_UUID" >> ${CONFIGFILE}
 		 fi"
@@ -59,4 +59,4 @@
 	#	 	echo "#define LIB_UUID" >> ${CONFIGFILE}
 	#	 fi"
 
-4. configure.in of apcupsd and mysql has to be patched due to newer versions of GNU-autotools (autoconf, automake,...)	on host-OS. 
+4. configure.in of apcupsd has to be patched due to newer versions of GNU-autotools (autoconf, automake,...) on host-OS. 
