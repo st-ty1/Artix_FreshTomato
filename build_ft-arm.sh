@@ -16,7 +16,6 @@ patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-6.x.4708/r
 patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/miniupnpd/configure
 patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/apcupsd/autoconf/configure.in
-patch -i $FT_PATCHES_DIR/configure.in_mysql.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql/configure.in
 
 cd release/src-rt-6.x.4708
 
