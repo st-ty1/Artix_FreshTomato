@@ -64,3 +64,5 @@
 	#	 fi"
 
 4. configure.in of apcupsd has to be patched due to newer versions of GNU-autotools (autoconf, automake,...) on host-OS. 
+
+5. configure.ac of transmission has to be patched because of break by intltoolize.
