@@ -1,5 +1,5 @@
---- Makefile	2021-01-13 16:46:26.780000000 +0100
-+++ Makefile_RT-AC	2021-01-13 16:44:15.040000000 +0100
+--- Makefile_orig	2021-03-27 17:41:31.205341743 +0100
++++ Makefile	2021-03-27 15:22:02.082726783 +0100
 @@ -63,7 +63,7 @@
  #
  #
@@ -9,7 +9,15 @@
  
  
  ifeq ($(TCONFIG_OPTIMIZE_SIZE),y)
-@@ -351,7 +351,7 @@
+@@ -82,6 +82,7 @@
+ #
+ # standard packages
+ #
++obj-y += php
+ obj-y += lzma-loader
+ obj-y += shared
+ obj-y += nvram
+@@ -351,7 +352,7 @@
  	@echo ${totalSteps}
  
  install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
@@ -18,7 +26,7 @@
  	install -d $(TARGETDIR)
  
  
-@@ -1682,7 +1682,7 @@
+@@ -1682,7 +1683,7 @@
  igmpproxy: igmpproxy/src/Makefile
  	@$(SEP)
  	@$(MAKE) -C igmpproxy/src \
@@ -27,7 +35,16 @@
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
  	$(PARALLEL_BUILD)
  
-@@ -1949,8 +1949,8 @@
+@@ -1905,6 +1906,8 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C libpng all $(PARALLEL_BUILD)
+ 	@$(MAKE) -C libpng DESTDIR=$(TOP)/libpng/staged install
++	@rm -f $(TOP)/libpng/staged/usr/lib/libpng.la
++	@rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la
+ 
+ libpng-install:
+ 	install -D libpng/.libs/libpng.so.3.59.0 $(INSTALLDIR)/libpng/usr/lib/libpng.so.3.59.0
+@@ -1949,8 +1952,8 @@
  	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
  		-L$(TOP)/libpng/.libs -L$(TOP)/libcurl/staged/usr/lib -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	CPPFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs" \
@@ -38,7 +55,7 @@
  	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
  	ac_cv_func_memcmp_working=yes \
  	cv_php_mbstring_stdarg=yes \
-@@ -2279,8 +2279,8 @@
+@@ -2279,8 +2282,8 @@
  openvpn_plugin_auth_nvram: nvram
  
  nano/stamp-h1: libncurses
@@ -49,7 +66,7 @@
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
  		NCURSES_LIBS="-lncurses" \
-@@ -2329,6 +2329,7 @@
+@@ -2329,6 +2332,7 @@
  	@$(SEP)
  	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
  	@$(MAKE) -C libcurl DESTDIR=$(TOP)/libcurl/staged install
@@ -57,7 +74,7 @@
  
  libcurl-install:
  	install -D libcurl/lib/.libs/libcurl.so.4.6.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.6.0
-@@ -2348,6 +2349,7 @@
+@@ -2348,6 +2352,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib $(if $(TCONFIG_HTTPS),-I$(TOP)/$(OPENSSLDIR)/include,) -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC -L$(TOP)/zlib $(if $(TCONFIG_HTTPS),-L$(TOP)/$(OPENSSLDIR),)" \
@@ -65,7 +82,7 @@
  		$(CONFIGURE) $(if $(TCONFIG_HTTPS),,--disable-openssl) --disable-doxygen-html \
  			--disable-debug-mode --disable-samples --disable-dependency-tracking
  	@touch $@
-@@ -2446,6 +2448,7 @@
+@@ -2446,6 +2451,7 @@
  libnfsidmap-install:
  	install -d $(TOP)/libnfsidmap/staged
  	$(MAKE) -C libnfsidmap DESTDIR=$(TOP)/libnfsidmap/staged install
@@ -73,7 +90,7 @@
  
  libnfsidmap-clean:
  	-@$(MAKE) -C libnfsidmap clean
-@@ -2553,7 +2556,7 @@
+@@ -2553,7 +2559,7 @@
  tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
  	$(call patch_files,tinc)
  	cd tinc && autoreconf -fsi && \
@@ -82,7 +99,7 @@
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/$(OPENSSLDIR) -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	LIBS="-lpthread" \
  	$(CONFIGURE) \
-@@ -2754,14 +2757,14 @@
+@@ -2754,14 +2760,14 @@
  
  tor/stamp-h1: $(OPENSSLDIR) zlib libevent
  	cd tor && autoreconf -fsi && \
