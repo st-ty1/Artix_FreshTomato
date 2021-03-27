@@ -64,15 +64,6 @@
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
  		NCURSES_LIBS="-lncurses" \
-@@ -2415,7 +2418,7 @@
- 		ln -sf libiconv.so.2.6.1 libiconv.so
- 
- transmission/stamp-h1: $(OPENSSLDIR) libcurl libevent zlib
--	cd transmission && ./autogen.sh && \
-+	cd transmission && \
- 		CFLAGS="-O3 -Wall -pipe -marm -fno-delete-null-pointer-checks -funit-at-a-time -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
- 		CPPFLAGS="-O3 -Wall -pipe -marm -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
- 		CXXFLAGS="-O3 -Wall -pipe -marm -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
 @@ -2569,7 +2572,7 @@
  tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
  	$(call patch_files,tinc)
