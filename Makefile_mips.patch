@@ -65,15 +65,6 @@
  		$(CONFIGURE) $(if $(TCONFIG_HTTPS),,--disable-openssl) --disable-doxygen-html \
  			--disable-debug-mode --disable-samples --disable-dependency-tracking
  	@touch $@
-@@ -2393,7 +2395,7 @@
- 		ln -sf libiconv.so.2.6.1 libiconv.so
- 
- transmission/stamp-h1: $(OPENSSLDIR) libcurl libevent zlib
--	cd transmission && ./autogen.sh && \
-+	cd transmission && \
- 		CFLAGS="-O3 -Wall -pipe $(if $(TCONFIG_MIPSR2),-march=mips32r2 -mips32r2 -mtune=mips32r2,-march=mips32 -mips32 -mtune=mips32) -fno-delete-null-pointer-checks -funit-at-a-time -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
- 		CPPFLAGS="-O3 -Wall -pipe $(if $(TCONFIG_MIPSR2),-march=mips32r2 -mips32r2 -mtune=mips32r2,-march=mips32 -mips32 -mtune=mips32) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
- 		CXXFLAGS="-O3 -Wall -pipe $(if $(TCONFIG_MIPSR2),-march=mips32r2 -mips32r2 -mtune=mips32r2,-march=mips32 -mips32 -mtune=mips32) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
 @@ -2446,6 +2448,7 @@
  libnfsidmap-install:
  	install -d $(TOP)/libnfsidmap/staged
