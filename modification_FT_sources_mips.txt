@@ -12,6 +12,10 @@
         
 	- add at end of target libnfsidmap-install the following line:
 	        "@rm -f libnfsidmap/staged/usr/lib/libnfsidmap.la"
+	
+	- at end of taget libpng add the following line: 
+		"@rm -f $(TOP)/libpng/staged/usr/lib/libpng.la
+		 @rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la"
 		
 	- at target libevent/stamp-h1 insert following line in front of $(CONFIGURE)... :
 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/openssl-1.1" \
@@ -42,5 +46,3 @@
     	#fi
    
 5. Configure.in in release/src/router/apcupsd/autoconf has to be patched due to update to autoconf 2.70 on host-OS.
-
-6. std-gnu11.m4 has to be removed from release/src/router/nano/m4 .
