@@ -1,5 +1,5 @@
---- Makefile_orig	2021-03-27 17:41:31.205341743 +0100
-+++ Makefile	2021-03-27 15:22:02.082726783 +0100
+--- Makefile.orig	2021-04-16 18:16:22.240000000 +0200
++++ Makefile	2021-04-16 18:21:10.890000000 +0200
 @@ -63,7 +63,7 @@
  #
  #
@@ -95,8 +95,8 @@
  
  tor/stamp-h1: $(OPENSSLDIR) zlib libevent
  	cd tor && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections" \
-+		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections -std=gnu99" \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections $(if $(TCONFIG_KEYGEN),,-DOPENSSL_NO_ENGINE)" \
++		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections $(if $(TCONFIG_KEYGEN),,-DOPENSSL_NO_ENGINE) -std=gnu99" \
  		CPPFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
  		$(CONFIGURE) --prefix=/usr --with-libevent-dir=$(TOP)/libevent/staged/usr/local \
