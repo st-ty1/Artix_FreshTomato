@@ -9,14 +9,6 @@
  
  
  ifeq ($(TCONFIG_OPTIMIZE_SIZE),y)
-@@ -82,6 +82,7 @@
- #
- # standard packages
- #
-+obj-y += php
- obj-y += lzma-loader
- obj-y += shared
- obj-y += nvram
 @@ -351,7 +352,7 @@
  	@echo ${totalSteps}
  
