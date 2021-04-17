@@ -1,5 +1,5 @@
-Use windows terminal:
-====================
+From windows command prompt:
+===========================
 
 $ mkdir %USERPROFILE%\wsl\artix
 $ cd %USERPROFILE%\wsl\artix
