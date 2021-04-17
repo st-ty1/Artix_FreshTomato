@@ -5,7 +5,7 @@ $ mkdir %USERPROFILE%\wsl\artix
 $ cd %USERPROFILE%\wsl\artix
 $ curl -LJO https://github.com/hdk5/ArtixWSL/releases/download/20210114175009-0a7d8e5/Artix.zip
 $ tar -xf Artix.zip
-$ wsl --import artix %USERPROFILE%\wsl\artix artix-rootfs.tar.gz
+$ wsl --import artix %USERPROFILE%\wsl\artix rootfs.tar.gz
 $ ./artix
    ------  automatic switch to Linux  -------
 [PC-NAME Artix]# pacman-key --init
