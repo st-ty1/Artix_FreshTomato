@@ -1,33 +1,15 @@
---- Makefile.orig	2021-04-16 18:16:22.240000000 +0200
-+++ Makefile	2021-04-16 18:21:10.890000000 +0200
-@@ -63,7 +63,7 @@
- #
- #
- SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
--echo "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
-+printf "\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007"
- 
- 
- ifeq ($(TCONFIG_OPTIMIZE_SIZE),y)
-@@ -351,7 +352,7 @@
- 	@echo ${totalSteps}
- 
- install package: countInstallSteps $(obj-install) $(LINUXDIR)/.config
--	@echo "\033[41;1m   Installing \033[0m\033]2;Installing\007"
-+	@printf "\033[41;1m   Installing \033[0m\033]2;Installing\007"
- 	install -d $(TARGETDIR)
- 
- 
-@@ -1682,7 +1683,7 @@
+--- Makefile.orig	2021-05-31 18:17:15.919727100 +0200
++++ Makefile	2021-05-31 18:31:50.579727100 +0200
+@@ -1683,7 +1683,7 @@
  igmpproxy: igmpproxy/src/Makefile
  	@$(SEP)
  	@$(MAKE) -C igmpproxy/src \
--	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_MORE_FLAG)" \
-+	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_MORE_FLAG) -std=gnu99" \
+-	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_FLAG)" \
++	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_FLAG) -std=gnu99" \
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
  	$(PARALLEL_BUILD)
  
-@@ -1905,6 +1906,8 @@
+@@ -1905,6 +1905,8 @@
  	@$(SEP)
  	@$(MAKE) -C libpng all $(PARALLEL_BUILD)
  	@$(MAKE) -C libpng DESTDIR=$(TOP)/libpng/staged install
@@ -36,7 +18,7 @@
  
  libpng-install:
  	install -D libpng/.libs/libpng.so.3.59.0 $(INSTALLDIR)/libpng/usr/lib/libpng.so.3.59.0
-@@ -1949,8 +1952,8 @@
+@@ -1949,8 +1951,8 @@
  	LDFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs \
  		-L$(TOP)/libpng/.libs -L$(TOP)/libcurl/staged/usr/lib -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	CPPFLAGS="-L$(TOP)/pcre/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/zlib -L$(TOP)/libxml2/.libs -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libpng/.libs" \
@@ -47,34 +29,24 @@
  	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
  	ac_cv_func_memcmp_working=yes \
  	cv_php_mbstring_stdarg=yes \
-@@ -2279,8 +2282,8 @@
- openvpn_plugin_auth_nvram: nvram
+@@ -2280,7 +2282,7 @@
  
  nano/stamp-h1: libncurses
--	cd nano && autoreconf && \
+ 	cd nano && autoreconf -fsi && \
 -		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
-+	cd nano && autoreconf -fsi && \
 +		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC -std=gnu99" \
  		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
  		NCURSES_LIBS="-lncurses" \
-@@ -2329,6 +2332,7 @@
+@@ -2329,6 +2331,7 @@
  	@$(SEP)
  	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
  	@$(MAKE) -C libcurl DESTDIR=$(TOP)/libcurl/staged install
 +	@rm -f libcurl/staged/usr/lib/libcurl.la
  
  libcurl-install:
- 	install -D libcurl/lib/.libs/libcurl.so.4.6.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.6.0
-@@ -2348,6 +2352,7 @@
- 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
- 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib $(if $(TCONFIG_HTTPS),-I$(TOP)/$(OPENSSLDIR)/include,) -fPIC" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC -L$(TOP)/zlib $(if $(TCONFIG_HTTPS),-L$(TOP)/$(OPENSSLDIR),)" \
-+		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/$(OPENSSLDIR)" \
- 		$(CONFIGURE) $(if $(TCONFIG_HTTPS),,--disable-openssl) --disable-doxygen-html \
- 			--disable-debug-mode --disable-samples --disable-dependency-tracking
- 	@touch $@
-@@ -2446,6 +2451,7 @@
+ 	install -D libcurl/lib/.libs/libcurl.so.4.7.0 $(INSTALLDIR)/libcurl/usr/lib/libcurl.so.4.7.0
+@@ -2447,6 +2450,7 @@
  libnfsidmap-install:
  	install -d $(TOP)/libnfsidmap/staged
  	$(MAKE) -C libnfsidmap DESTDIR=$(TOP)/libnfsidmap/staged install
@@ -82,7 +54,7 @@
  
  libnfsidmap-clean:
  	-@$(MAKE) -C libnfsidmap clean
-@@ -2553,7 +2559,7 @@
+@@ -2554,7 +2558,7 @@
  tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
  	$(call patch_files,tinc)
  	cd tinc && autoreconf -fsi && \
@@ -91,7 +63,7 @@
  	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/$(OPENSSLDIR) -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
  	LIBS="-lpthread" \
  	$(CONFIGURE) \
-@@ -2754,14 +2760,14 @@
+@@ -2755,7 +2759,7 @@
  
  tor/stamp-h1: $(OPENSSLDIR) zlib libevent
  	cd tor && autoreconf -fsi && \
@@ -100,11 +72,3 @@
  		CPPFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
  		$(CONFIGURE) --prefix=/usr --with-libevent-dir=$(TOP)/libevent/staged/usr/local \
- 			--with-openssl-dir=$(TOP)/$(OPENSSLDIR) --with-zlib-dir=$(TOP)/zlib \
- 			--disable-asciidoc --disable-tool-name-check --disable-unittests --disable-lzma \
- 			--disable-seccomp --disable-libscrypt --disable-zstd-advanced-apis \
--			--disable-manpage --disable-html-manual --disable-dependency-tracking
-+			--disable-manpage --disable-html-manual --disable-dependency-tracking --disable-zstd --disable-systemd
- 	@touch $@
- 
- tor: tor/stamp-h1
