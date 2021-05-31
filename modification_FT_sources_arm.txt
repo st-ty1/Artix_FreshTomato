@@ -1,17 +1,7 @@
-1. Add at end of file release/src/router/common.mak following lines (to inhibit error message by miniupnpd and samba3, due to search for shared
-   libs which can be used by them, but only existing on host system as shared x64-libs)
-	export PKG_CONFIG_DIR=
-	export PKG_CONFIG_LIBDIR=$(SRCBASE)
-	export PKG_CONFIG_SYSROOT_DIR=$(SRCBASE)
-
-2. Modifications needed in release/src/router/Makefile:
+1. Modifications needed in release/src/router/Makefile:
 	- at targets libnetfilter_queue/stamp-h1 and libnetfilter_conntrack/stamp-h1 add following option to LDFLAGS: 
 		"-L$(TOOLCHAIN)/lib"
 		
-	- at targets libnetfilter_queue/stamp-h1, libnetfilter_conntrack/stamp-h1
-	  and conntrack-tools/stamp-h1 add following option to PKG_CONFIG_PATH:
-	  	"$(TOP)/libmnl" 
-	
 	- at end of target libnfnetlink add the following line: 
 		"@rm -f libnfnetlink/src/libnfnetlink.la"
 		
@@ -39,21 +29,13 @@
 		(libtool can't find new toolchain's libc.a and libgcc_s.so and wants to use host's versions.)
 	
 	- at target conntrack-tools-install change line
-	 	"install conntrack-tools/src/.libs/conntrack... " to "install conntrack-tools/src/conntrack ..."
+	 	"install conntrack-tools/src/.libs/conntrack ... " to "install conntrack-tools/src/conntrack ..."
 		
-	- at end of target tor/stamp-h1 add "--disable-zstd" and "--disable-systemd" as additional arguments of $(CONFIGURE).
-	
 	- at target imgpproxy, tinc/stamp-h1, tor/stamp-h1 and nano/stamp-h1 add argument "-std=gnu99" to CFLAGS
 	
-	- at target nano/stamp-h1 change line "cd nano && autoreconf && \"  to  "cd nano && autoreconf -fsi && \"
-	
 	- at target transmission/stamp-h1 change line "cd transmission && ./autogen.sh && \"  to  "cd transmission && \"
-	
-	- colored output with ANSI escape sequences in bash shell is only possible with "printf" command but not with "echo"; 
-	  If color support in terminal output is wanted, change 
-	 	“echo "\033[41;1m““ into “printf "\033[41;1m““ (overall two different positions in Makefile)
 		
-3. In release/src/router/miniupnpd/configure the lines 437-439 has to be commented (because on host system already exists uuid.h/libuuid, 
+2. In release/src/router/miniupnpd/configure the lines 437-439 has to be commented (because on host system already exists uuid.h/libuuid, 
     which can not be deleted):
 		"if grep uuid_generate /usr/include/uuid/uuid.h > /dev/null 2>&1 ; then
 		 	echo "#define LIB_UUID" >> ${CONFIGFILE}
@@ -63,6 +45,6 @@
 	#	 	echo "#define LIB_UUID" >> ${CONFIGFILE}
 	#	 fi"
 
-4. configure.in of apcupsd has to be patched due to newer versions of GNU-autotools (autoconf, automake,...) on host-OS. 
+3. configure.in of apcupsd has to be patched due to newer versions of GNU-autotools (autoconf, automake,...) on host-OS. 
 
-5. configure.ac of transmission has to be patched because of break by intltoolize.
+4. configure.ac of transmission has to be patched because of break by intltoolize.
