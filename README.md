@@ -1,6 +1,6 @@
 # Artix_FreshTomato
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
-(checked with commit 6cb11ac3e /arm-master)
+(checked with commit 6cb11ac3e /arm-master and with commit 4ec7bb86939 /mips-master)
 
 WARNING: Don't start, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
 
