@@ -2,6 +2,7 @@
 HowTo: Build FreshTomato-mips/-arm on Artix host system 
 
 WARNING: Don't start, if you are not familiar with both - Arch Linux/Artix and the standard building process of FreshTomato!!
+(checked with commit 6cb11ac3e /arm-master)
 
 1. The packages needed for the building process of FreshTomato (FT) on Artix are listed in "needed_packages_on_Artix.txt".
 
