@@ -8,15 +8,6 @@
  
  libnfnetlink-install:
  	install -D libnfnetlink/src/.libs/libnfnetlink.so.0.2.0 $(INSTALLDIR)/libnfnetlink/usr/lib/libnfnetlink.so.0.2.0
-@@ -1745,7 +1746,7 @@
- igmpproxy: igmpproxy/src/Makefile
- 	@$(SEP)
- 	@$(MAKE) -C igmpproxy/src \
--	CFLAGS="-O3 -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+	CFLAGS="-O3 -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -std=gnu99" \
- 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 	$(PARALLEL_BUILD)
- 
 @@ -1940,7 +1941,7 @@
  libxml2/stamp-h1:
  	cd libxml2 && autoreconf -fsi && \
@@ -35,33 +26,6 @@
  
  libpng-install:
  	install -D libpng/.libs/libpng.so.3.59.0 $(INSTALLDIR)/libpng/usr/lib/libpng.so.3.59.0
-@@ -2311,7 +2314,7 @@
- 
- nano/stamp-h1: libncurses
- 	cd nano && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
-+		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC -std=gnu99" \
- 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
- 		NCURSES_LIBS="-lncurses" \
-@@ -2572,7 +2575,7 @@
- tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
- 	$(call patch_files,tinc)
- 	cd tinc && autoreconf -fsi && \
--	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/$(OPENSSLDIR)/include" \
-+	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/$(OPENSSLDIR)/include -std=gnu99" \
- 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/$(OPENSSLDIR) -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
- 	LIBS="-lpthread" \
- 	$(CONFIGURE) \
-@@ -2772,7 +2775,7 @@
- 
- tor/stamp-h1: $(OPENSSLDIR) zlib libevent
- 	cd tor && autoreconf -fsi && \
--		CFLAGS="-O2 -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include" \
-+		CFLAGS="-O2 -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -std=gnu99" \
- 		CPPFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
- 		$(CONFIGURE) --prefix=/usr --with-libevent-dir=$(TOP)/libevent/staged/usr/local \
- 			--with-openssl-dir=$(TOP)/$(OPENSSLDIR) --with-zlib-dir=$(TOP)/zlib \
 @@ -2836,6 +2839,7 @@
  	@$(SEP)
  	$(MAKE) -C libmnl
