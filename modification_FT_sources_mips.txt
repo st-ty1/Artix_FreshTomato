@@ -11,8 +11,6 @@
 		"@rm -f $(TOP)/libpng/staged/usr/lib/libpng.la
 		 @rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la"
 	
-	- at target imgpproxy, tinc/stamp-h1 and tor/stamp-h1 add argument "-std=gnu99" to CFLAGS
-	
 	- at target transmission/stamp-h1 change line "cd transmission && ./autogen.sh && \"  to  "cd transmission && \"
 		
 2. In release/src/router/miniupnpd/configure following code has to be commented (due to existance of uuid.h/libuuid on host-OS, which can't be uninstalled):
