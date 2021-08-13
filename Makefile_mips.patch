@@ -1,14 +1,5 @@
 --- Makefile.orig	2021-05-31 18:17:15.919727100 +0200
 +++ Makefile	2021-05-31 18:31:50.579727100 +0200
-@@ -1683,7 +1683,7 @@
- igmpproxy: igmpproxy/src/Makefile
- 	@$(SEP)
- 	@$(MAKE) -C igmpproxy/src \
--	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_FLAG)" \
-+	CFLAGS="-Os -g -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections $(OPTSIZE_FLAG) -std=gnu99" \
- 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 	$(PARALLEL_BUILD)
- 
 @@ -1905,6 +1905,8 @@
  	@$(SEP)
  	@$(MAKE) -C libpng all $(PARALLEL_BUILD)
@@ -29,15 +20,6 @@
  	PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
  	ac_cv_func_memcmp_working=yes \
  	cv_php_mbstring_stdarg=yes \
-@@ -2280,7 +2282,7 @@
- 
- nano/stamp-h1: libncurses
- 	cd nano && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
-+		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC -std=gnu99" \
- 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/libncurses/staged/usr/include -ffunction-sections -fdata-sections -fPIC" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libncurses/staged/usr/lib -fPIC" \
- 		NCURSES_LIBS="-lncurses" \
 @@ -2329,6 +2331,7 @@
  	@$(SEP)
  	@$(MAKE) -C libcurl $(PARALLEL_BUILD)
@@ -54,21 +36,3 @@
  
  libnfsidmap-clean:
  	-@$(MAKE) -C libnfsidmap clean
-@@ -2554,7 +2558,7 @@
- tinc/stamp-h1: $(OPENSSLDIR) zlib lzo
- 	$(call patch_files,tinc)
- 	cd tinc && autoreconf -fsi && \
--	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/$(OPENSSLDIR)/include" \
-+	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/$(OPENSSLDIR)/include -std=gnu99" \
- 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/$(OPENSSLDIR) -Wl,-rpath,$(TOP)/$(OPENSSLDIR)" \
- 	LIBS="-lpthread" \
- 	$(CONFIGURE) \
-@@ -2755,7 +2759,7 @@
- 
- tor/stamp-h1: $(OPENSSLDIR) zlib libevent
- 	cd tor && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections $(if $(TCONFIG_KEYGEN),,-DOPENSSL_NO_ENGINE)" \
-+		CFLAGS="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/include -ffunction-sections -fdata-sections $(if $(TCONFIG_KEYGEN),,-DOPENSSL_NO_ENGINE) -std=gnu99" \
- 		CPPFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --with-libevent-dir=$(TOP)/libevent/staged/usr/local \
