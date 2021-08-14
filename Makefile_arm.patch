@@ -1,6 +1,6 @@
---- Makefile.orig	2021-05-31 18:42:23.279727100 +0200
-+++ Makefile	2021-05-31 18:51:40.739727100 +0200
-@@ -1132,6 +1132,7 @@
+--- Makefile.orig	2021-08-12 20:35:57.643437600 +0200
++++ "Makefile_neu_ohne gnu 99"	2021-08-12 20:48:13.023437600 +0200
+@@ -1138,6 +1139,7 @@
  libnfnetlink: libnfnetlink/stamp-h1
  	@$(SEP)
  	$(MAKE) -C libnfnetlink $(PARALLEL_BUILD)
@@ -8,7 +8,7 @@
  
  libnfnetlink-install:
  	install -D libnfnetlink/src/.libs/libnfnetlink.so.0.2.0 $(INSTALLDIR)/libnfnetlink/usr/lib/libnfnetlink.so.0.2.0
-@@ -1940,7 +1941,7 @@
+@@ -1940,7 +1942,7 @@
  libxml2/stamp-h1:
  	cd libxml2 && autoreconf -fsi && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
@@ -17,7 +17,7 @@
  			--includedir="$(TOP)/libxml2/include" --without-lzma --disable-dependency-tracking
  	@touch $@
  
-@@ -1971,6 +1972,8 @@
+@@ -1971,6 +1973,8 @@
  	@$(SEP)
  	@$(MAKE) -C libpng all $(PARALLEL_BUILD)
  	@$(MAKE) -C libpng DESTDIR=$(TOP)/libpng/staged install
@@ -25,8 +25,17 @@
 +	@rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la
  
  libpng-install:
- 	install -D libpng/.libs/libpng.so.3.59.0 $(INSTALLDIR)/libpng/usr/lib/libpng.so.3.59.0
-@@ -2836,6 +2839,7 @@
+ 	install -D libpng/.libs/libpng16.so.16.37.0 $(INSTALLDIR)/libpng/usr/lib/libpng16.so.16.37.0
+@@ -2631,7 +2635,7 @@
+ 	$(STRIP) $(INSTALLDIR)/zfs/usr/sbin/zpool
+ 
+ util-linux/stamp-h1:
+-	cd util-linux && \
++	cd util-linux && ./autogen.sh && \
+ 	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 	$(CONFIGURE) \
+@@ -2905,6 +2909,7 @@
  	@$(SEP)
  	$(MAKE) -C libmnl
  	$(MAKE) -C libmnl DESTDIR=$(TOP)/libmnl/staged install
@@ -34,7 +43,7 @@
  
  libmnl-install:
  	install -d $(INSTALLDIR)/libmnl/usr/lib/
-@@ -2862,6 +2866,7 @@
+@@ -2931,6 +2936,7 @@
  	@$(SEP)
  	$(MAKE) -C libnetfilter_conntrack
  	$(MAKE) -C libnetfilter_conntrack DESTDIR=$(TOP)/libnetfilter_conntrack/staged install
@@ -42,7 +51,7 @@
  
  libnetfilter_conntrack-install:
  	install -d $(INSTALLDIR)/libnetfilter_conntrack/usr/lib/
-@@ -2881,7 +2886,7 @@
+@@ -2950,7 +2956,7 @@
  libnetfilter_log/stamp-h1: libnfnetlink
  	cd libnetfilter_log && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include" \
@@ -51,7 +60,7 @@
  		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
  		$(CONFIGURE) --prefix=/usr
  	@touch $@
-@@ -2957,14 +2962,14 @@
+@@ -3026,14 +3032,14 @@
  
  conntrack-tools-install:
  	install -d $(INSTALLDIR)/conntrack-tools/usr/sbin
