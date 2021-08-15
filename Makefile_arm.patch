@@ -26,15 +26,6 @@
  
  libpng-install:
  	install -D libpng/.libs/libpng16.so.16.37.0 $(INSTALLDIR)/libpng/usr/lib/libpng16.so.16.37.0
-@@ -2631,7 +2635,7 @@
- 	$(STRIP) $(INSTALLDIR)/zfs/usr/sbin/zpool
- 
- util-linux/stamp-h1:
--	cd util-linux && \
-+	cd util-linux && ./autogen.sh && \
- 	CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 	$(CONFIGURE) \
 @@ -2905,6 +2909,7 @@
  	@$(SEP)
  	$(MAKE) -C libmnl
