@@ -1,0 +1,32 @@
+--- Makefile	2020-10-02 12:31:00.043309000 +0200
++++ Makefile_mysql	2020-10-01 21:43:29.649794415 +0200
+@@ -2168,8 +2170,20 @@
+ 		ln -sf libmenu.so.6 libmenu.so
+ 
+ mysql/stamp-h1: $(OPENSSLDIR) zlib libncurses
+-	@cp -f $(TOP)/patches/mysql/.host.tgz $(TOP)/mysql/ || true
++	@cd mysql  && CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump CFLAGS="" CPPFLAGS="" ./configure 
++	@cp mysql/include/config.h mysql/include/my_config.h
++	@$(MAKE) -C mysql/vio
++	@$(MAKE) -C mysql/mysys
++	@$(MAKE) -C mysql/strings
++	@$(MAKE) -C mysql/dbug
++	@$(MAKE) -C mysql/regex
++	@$(MAKE) -C mysql/sql gen_lex_hash
++	@$(MAKE) -C mysql/scripts comp_sql
++	@$(MAKE) -C mysql/extra comp_err
++	@mkdir -p mysql/host
++	@cp -vf mysql/sql/gen_lex_hash mysql/scripts/comp_sql mysql/extra/comp_err mysql/host
++	@$(MAKE) -C mysql clean
+ 	$(call patch_files,mysql)
+ 	cd mysql && \
+ 	CFLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 \
+ 		--param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib \
+@@ -2191,7 +2205,6 @@
+ 		--enable-assembler \
+ 		--with-zlib-dir="$(TOP)/zlib/staged/usr" \
+ 		ac_cv_c_stack_direction=-1
+-	cd mysql && tar xvfz .host.tgz
+ 	@touch $@
+ 
+ mysql: mysql/stamp-h1

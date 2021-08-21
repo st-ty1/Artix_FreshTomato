@@ -1,0 +1,87 @@
+--- Makefile_arm	2021-08-21 13:29:41.000000000 +0000
++++ Makefile_arm_cmake	2021-01-31 17:13:59.000000000 +0000
+@@ -2159,36 +2169,58 @@
+ 		ln -sf libmenu.so.6 libmenu.so
+ 
+ mysql/stamp-h1: $(OPENSSLDIR) zlib libncurses
+-	@cp -f $(TOP)/patches/mysql/.host.tgz $(TOP)/mysql/ || true
++	@cd mysql
++	@$(MAKE) -C mysql/vio CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/mysys CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/strings CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/dbug CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/regex CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/sql gen_lex_hash CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/scripts comp_sql CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@$(MAKE) -C mysql/extra comp_err CC=$(HOSTCC) CXX=g++ AR=ar RANLIB=ranlib NM=nm LD=ld OBJDUMP=objdump
++	@mkdir -p mysql/host
++	@cp -vf mysql/sql/gen_lex_hash mysql/scripts/comp_sql mysql/extra/comp_err mysql/host
++	@$(MAKE) -C mysql clean
++	@rm -rf mysql/build && mkdir -p mysql/build
+ 	$(call patch_files,mysql)
+-	cd mysql && \
+-	CFLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 \
+-		--param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib \
+-		-I$(TOP)/$(OPENSSLDIR)/include -I$(TOP)/libncurses/include" \
+-	CPPFLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 \
+-		--param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib \
+-		-I$(TOP)/$(OPENSSLDIR)/include -I$(TOP)/libncurses/include" \
+-	LDFLAGS="-L$(TOP)/$(OPENSSLDIR) -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/libncurses/lib -fPIC -EL" \
+-	LIBS="-lcrypt -lz -lstdc++ -lssl -lcrypto -lncurses" \
+-	$(CONFIGURE) --prefix=/usr \
+-		--without-debug --without-docs --without-man --with-charset=utf8 --with-extra-charsets=ascii,latin1,gb2312,gbk \
+-		--enable-shared --disable-static \
+-		--without-mysqlmanager \
+-		--with-pthread \
+-		--with-ssl \
+-		--without-docs \
+-		--with-geometry \
+-		--with-low-memory \
+-		--enable-assembler \
+-		--with-zlib-dir="$(TOP)/zlib/staged/usr" \
+-		ac_cv_c_stack_direction=-1
+-	cd mysql && tar xvfz .host.tgz
+-	@touch $@
++	cd mysql/build && \
++	$(call CMAKE_CrossOptions, crosscompiled.cmake) && \
++	cmake -DCMAKE_TOOLCHAIN_FILE=crosscompiled.cmake \
++		-DCMAKE_INSTALL_PREFIX:PATH=/usr \
++		-DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_SKIP_RPATH=TRUE \
++		-DCMAKE_C_FLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 --param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC" \
++		-DCMAKE_CPP_FLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 --param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC" \
++		-DCMAKE_EXE_LINKER_FLAGS="-fPIC -EL" \
++		-DENABLE_STATIC=TRUE -DENABLE_SHARED=TRUE \
++		-DOPENSSL_ROOT_DIR=$(TOP)/$(OPENSSLDIR) \
++		-DOPENSSL_INCLUDE_DIR=$(TOP)/$(OPENSSLDIR)/include \
++		-DOPENSSL_CRYPTO_LIBRARY=$(TOP)/$(OPENSSLDIR)/libcrypto.so \
++		-DOPENSSL_SSL_LIBRARY=$(TOP)/$(OPENSSLDIR)/libssl.so \
++		-DCURSES_INCLUDE_PATH=$(TOP)/libncurses/include \
++		-DCURSES_LIBRARY=$(TOP)/libncurses/lib \
++		-DZLIB_INCLUDE_PATH=$(TOP)/zlib \
++		-DZLIB_LIBRARY=$(TOP)/zlib/staged/usr/lib \
++		-DSTRPTIME_WORKS_EXITCODE="PLEASE_FILL_OUT-FAILED_TO_RUN" \
++		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT="PLEASE_FILL_OUT-NOTFOUND" -Hforce \
++		-DCMAKE_DISABLE_FIND_PACKAGE_Libsystemd=TRUE \
++		-DSTRPTIME_WORKS_EXITCODE=0 \
++		-DSTRPTIME_WORKS_EXITCODE__TRYRUN_OUTPUT=1 \
++		-DWITH_DEBUG=FALSE \
++		-DHAVE_LIBPTHREAD=TRUE \
++		-DLOW_MEMORY=TRUE \
++		-DSTACK_DIRECTION=1 \
++		-DDISABLE_SHARED=FALSE
++		..
++
++#		--without-debug --without-docs --without-man --with-charset=utf8 --with-extra-charsets=ascii,latin1,gb2312,gbk \
++#		--enable-shared --disable-static  --without-mysqlmanager \
++#		--with-pthread  --with-ssl --with-geometry --with-low-memory --enable-assembler \
++		--with-zlib-dir="$(TOP)/zlib/staged/usr" ac_cv_c_stack_direction=-1
+ 
+ mysql: mysql/stamp-h1
+ 	@$(SEP)
+-	@$(MAKE) -C mysql
+-	@$(MAKE) -C mysql DESTDIR=$(TOP)/mysql/staged install
++	@$(MAKE) -C mysql/build
++	@$(MAKE) -C mysql/build DESTDIR=$(TOP)/mysql/staged install
+ 
+ mysql-clean:
+ 	-@$(MAKE) -C mysql clean
