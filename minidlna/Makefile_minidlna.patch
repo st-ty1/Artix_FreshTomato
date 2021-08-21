@@ -1,0 +1,40 @@
+--- Makefile	2021-08-21 13:29:41.000000000 +0000
++++ Makefile_minidlna	2021-08-21 15:04:01.000000000 +0000
+@@ -90,6 +90,7 @@
+ #
+ # standard packages
+ #
++obj-y += minidlna
+ ifeq ($(TCONFIG_BCMARM),y)
+ obj-y += libbcm
+ else
+@@ -1723,10 +1724,26 @@
+ endif
+ 	@true
+ 
+-minidlna: zlib sqlite ffmpeg libogg flac jpeg libexif libid3tag libvorbis
+-	@$(SEP)
++minidlna/stamp-h1: zlib sqlite ffmpeg libogg flac jpeg libexif libid3tag libvorbis
+ 	$(call patch_files,minidlna)
+-	@$(MAKE) -C minidlna CC=$(CC) $(if $(MEDIA_SERVER_STATIC),STATIC=1,) minidlna $(PARALLEL_BUILD)
++	cd minidlna && ./autogen.sh && \
++	CFLAGS="-g -O2 $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
++	CPPFLAGS="-I$(TOP)/ffmpeg/libavutil -I$(TOP)/ffmpeg/libavcodec -I$(TOP)/ffmpeg/libavformat \
++	-I$(TOP)/ffmpeg/libswscale -I$(TOP)/ffmpeg -I$(TOP)/flac/include -I$(TOP)/sqlite -I$(TOP)/jpeg \
++	-I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib" \
++	LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs -L$(TOP)/jpeg -L$(TOP)/flac/src/libFLAC/.libs -L$(TOP)/libid3tag/.libs -L$(TOP)/zlib -L$(TOP)/ffmpeg/libavformat -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavutil" \
++	LIBS="-lpthread -lm -lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil" \
++	ac_cv_lib_id3tag__lz___id3_file_open=yes \
++	ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
++	ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
++	ac_cv_header_stddef_h=no \
++	ac_cv_header_stdlib_h=no \
++	$(CONFIGURE) --prefix=/usr --libdir=/usr/lib --enable-static --enable-netgear --enable-readynas --enable-tivo --enable-nls --with-os-name="FreshTomato" --with-os-url="https://freshtomato.org/" --with-os-version="Linux/2.6.36.4brcmarm" --with-db-path="/tmp/minidlna" --with-log-path="/var/log"
++	@touch $@
++
++minidlna: minidlna/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C minidlna $(if $(MEDIA_SERVER_STATIC),STATIC=1,) $(PARALLEL_BUILD)
+ 
+ minidlna-clean:
+ 	-@$(MAKE) -C minidlna clean
