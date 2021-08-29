@@ -24,3 +24,5 @@
 3. Configure.in in release/src/router/apcupsd/autoconf has to be patched due to update to autoconf 2.70 on host-OS.
 
 4. configure.ac of transmission has to be patched because of break by intltoolize.
+
+5. alloca.m4 has to be patched due to newer versions of GNU-autotools (autoconf, automake,...) on host-OS. 

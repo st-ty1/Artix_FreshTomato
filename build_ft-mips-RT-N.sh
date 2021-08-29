@@ -11,6 +11,7 @@ git reset --hard
 git checkout mips-RT-AC
 clear
 
+patch -i $FT_PATCHES_DIR/alloca.m4.patch $FT_REPO_DIR/release/src/router/mysql/config/ac-macros/alloca.m4
 patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src/router/miniupnpd/configure
 patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src/router/apcupsd/autoconf/configure.in

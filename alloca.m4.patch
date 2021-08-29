@@ -1,0 +1,21 @@
+--- alloca.m4.orig	2021-02-21 16:38:03.750000000 +0100
++++ alloca.m4	2021-05-31 19:43:57.479727100 +0200
+@@ -54,12 +54,12 @@
+  wenotbecray
+  #endif
+  ], ac_cv_os_cray=yes, ac_cv_os_cray=no)])
+- if test "$ac_cv_os_cray" = "yes"; then
+- for ac_func in _getb67 GETB67 getb67; do
+-   AC_CHECK_FUNC($ac_func, [AC_DEFINE_UNQUOTED(CRAY_STACKSEG_END, $ac_func)
+-   break])
+- done
+- fi
++# if test "$ac_cv_os_cray" = "yes"; then
++# for ac_func in _getb67 GETB67 getb67; do
++#   AC_CHECK_FUNC($ac_func, [AC_DEFINE_UNQUOTED(CRAY_STACKSEG_END, $ac_func)
++#   break])
++# done
++# fi
+  fi
+  AC_SUBST(ALLOCA)dnl
+ else
