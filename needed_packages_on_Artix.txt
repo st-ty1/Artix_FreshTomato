@@ -1,5 +1,5 @@
 Necessary packages for building Freshtomato on Artix are:
-make, gcc, which, autoconf, automake, pkgconf, patch, bison, flex, cmake, rpcsvc-proto, gperf, python, intltool and re2c
+make, gcc, which, autoconf, automake, pkgconf, patch, bison, flex, cmake, rpcsvc-proto, gperf, python, intltool, re2c and gtk-doc
 
 The precompiled 32-bit host-tools of FT need following packages: lib32-glibc, lib32-gcc-libs and lib32-zlib
 (Therefore, don't forget to uncomment the lines of the "Multilib" and the "lib32" section in /etc/pacman.conf).
