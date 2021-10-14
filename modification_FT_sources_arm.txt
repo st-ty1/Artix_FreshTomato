@@ -30,6 +30,8 @@
 	
 	- at target conntrack-tools-install change line
 	 	"install conntrack-tools/src/.libs/conntrack ... " to "install conntrack-tools/src/conntrack ..."
+	
+	(Alternate: Instead of removing the *.la-files, same effect can be reached by amending the *.la-files instead with an amended LIB-path. This is done by using Makefile_arm_alternate.patch instead of Makefile_arm.patch)
 		
 2. In release/src/router/miniupnpd/configure the lines 437-439 has to be commented (because on host system already exists uuid.h/libuuid, 
     which can not be deleted):
