@@ -1,0 +1,16 @@
+DB-version     	with cmake		with import_executables		with autotools		last subversion using autotools
+					in CMakeLists.txt					
+mariadb 5.5 	all subversions		from 5.5.42,4x			no			5.5.68
+mariadb 10.0	all subversions		from 10.0.13, 6x		no			10.0.38
+mariadb 10.1	all subversions		from 10.1.1, 6x			no			10.1.48
+mariadb 5.3	all subversions		no				all subversions		5.3.12
+mariadb 5.2	all subversions		no				all subversions		5.2.14
+mariadb 5.1	all subversions		no				all subversions		5.1.67
+
+
+mysql 5.5	all subversions		no				up to 5.5.7		5.5.62
+mysql 5.4	all subversions		no				all subversions		5.4.3
+mysql 5.1	all subversions		no				all subversions		5.1.73
+
+unresolved:
+with which version support of libatomic starts?
