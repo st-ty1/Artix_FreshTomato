@@ -1,0 +1,14 @@
+--- Makefile.orig	2020-12-13 18:39:54.000000000 +0000
++++ Makefile	2020-12-13 18:39:56.000000000 +0000
+@@ -568,9 +568,9 @@
+ 	@echo ---
+ 
+ ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-ifneq ($(TCONFIG_BCMARM),y)
++#ifneq ($(TCONFIG_BCMARM),y)
+ 	@$(SRCBASE)/btools/libfoo.pl
+-endif
++#endif
+ else
+ 	@$(SRCBASE)/btools/libfoo.pl
+ endif

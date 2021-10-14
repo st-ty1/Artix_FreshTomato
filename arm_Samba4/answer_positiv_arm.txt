@@ -1,0 +1,40 @@
+Checking uname sysname type: "Linux"
+Checking uname machine type: "arm"
+Checking uname release type: "Linux"
+Checking uname version type: "Linux"
+Checking simple C program: OK
+rpath library support: OK
+-Wl,--version-script support: OK
+Checking for large file support without additional flags: OK
+Checking correct behavior of strtoll: OK
+Checking for working strptime: OK
+Checking for C99 vsnprintf: OK
+Checking for HAVE_SHARED_MMAP: OK
+Checking for HAVE_MREMAP: OK
+Checking for HAVE_INCOHERENT_MMAP: OK
+Checking for HAVE_SECURE_MKSTEMP: OK
+Checking for a 64-bit host to support lmdb: OK
+Checking for kernel change notify support: OK
+Checking for Linux kernel oplocks: OK
+Checking for kernel share modes: OK
+hecking errno of iconv for illegal multibyte sequence: OK
+Checking whether POSIX capabilities are available: OK
+Checking if can we convert from CP850 to UCS-2LE: OK
+Checking if can we convert from UTF-8 to UCS-2LE: OK
+Checking for ftruncate extend: OK
+getcwd takes a NULL argument: OK
+Checking getconf large file support flags work: OK
+Checking value of NSIG: "65"
+Checking value of _NSIG: "65"
+Checking value of SIGRTMAX: "64"
+Checking value of SIGRTMIN: "35"
+Checking errno of iconv for illegal multibyte sequence: OK
+Checking getconf LFS_CFLAGS: OK
+vfs_fileid checking for statfs() and struct statfs.f_fsid: OK
+Checking whether we can use Linux thread-specific credentials with 32-bit system calls: OK
+Checking whether setreuid is available: OK
+Checking whether setresuid is available: OK
+Checking whether seteuid is available: OK
+Checking whether fcntl locking is available: OK
+Checking for the maximum value of the 'time_t' type: OK
+Checking whether the realpath function allows a NULL argument: OK

@@ -1,0 +1,53 @@
+--- Makefile.orig	2020-06-11 20:03:54.536679000 +0200
++++ Makefile	2020-06-11 20:10:36.190022253 +0200
+@@ -230,7 +230,7 @@
+ export CFLAG_OPTIMIZE = -Os
+ endif
+ 
+-obj-$(NEED_SAMBA3) += samba3
++obj-$(NEED_SAMBA3) += samba4
+ obj-$(NEED_SAMBA3) += wsdd2
+ 
+ ifeq ($(CONFIG_BCMWL6),y)
+@@ -1223,7 +1223,7 @@
+ 
+ p910nd:
+ 
+-samba3: $(if $(TCONFIG_NGINX),libiconv,)
++samba4: $(if $(TCONFIG_NGINX),libiconv,) libtirpc
+ 
+ nvram: shared
+ 
+@@ -2858,6 +2858,32 @@
+ 	-@rm -rf iperf/Makefile iperf/stamp-h1
+ 	$(call unpatch_files,iperf)
+ 
++
++libtirpc/stamp-h1:
++	cd $(TOP)/libtirpc && \
++	CFLAGS="$(CFLAG_OPTIMIZE) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
++	CPPFLAGS="$(CFLAG_OPTIMIZE) -Wall -ffunction-sections -fdata-sections -fPIC" \
++	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
++	$(CONFIGURE) --prefix=/usr --host=mipsel-linux --sysconfdir=/etc --disable-static --disable-gssapi
++	touch libtirpc/stamp-h1
++
++libtirpc: libtirpc/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C libtirpc $(PARALLEL_BUILD)
++
++libtirpc-install:
++	install -d $(INSTALLDIR)/libtirpc/usr/lib/
++	install libtirpc/src/.libs/libtirpc.so.3.0.0 $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3.0.0
++	$(STRIP) $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3.0.0
++	cd $(INSTALLDIR)/libtirpc/usr/lib/ && \
++		ln -sf libtirpc.so.3.0.0 libtirpc.so.3 && \
++		ln -sf libtirpc.so.3.0.0 libtirpc.so
++
++libtirpc-clean:
++	-@$(MAKE) -C libtirpc clean
++	-@rm -rf libtirpc/Makefile libtirpc/stamp-h1
++
++
+ #
+ # Generic rules
+ #

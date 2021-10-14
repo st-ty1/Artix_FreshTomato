@@ -1,0 +1,12 @@
+To get the perl script "libfoo.pl" included in FT-arm repo working, the following step are needed:
+1. The patch "0101-Create-short-Makefiles-for-Debian.patch" has to be amended (amended version included in repo): 
+An old openssl-1.0 based libcrypto.so-library, located in arm-toolchain ($TOOLCHAINDIR/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib/) is still available for linkage. It is an odd, disturbing residue of the building process of the arm-toolchain (which used the buildroot method), as actually only openssl-1.1 is used by FT-arm. The source code of mkfs.hfs and fsck.hfs in diskdev_cmd still allows to link with the older libcrypto.so instead of the newer openssl-1.1 based libcrypto.so, so libfoo.pl will break as it can't find the old libcrypto.so in $INSTALLDIR. To avoid this, two of the Makefiles introduced by the "0101-Create-short-Makefiles-for-Debian.patch" in the diskdev_cmd folder have to be directed to the newer oppenssl-1.1 based version of libcrypto.so.
+2. In /release/src-rt-6.x.4708/router/Makefile the usage of libfoo.pl has to be reactivated (done by "Makefile_libfoo.patch") 
+3. All shared libaries intended for shrinkage have to be renamed in their \*-install targets in /release/src-rt-6.x.4708/router/Makefile to their SONAMEs. Also, all commands in the \*-install targets creating supplementary symlinks with the alternate library filenames in the $INSTALL-directory have to be commented (done by "Makefile_lib_so.patch"; not yet included).
+4. The perl script "libfoo.pl" needs the following changes (integrated in libfoo_arm2.pl, which is included in this repo) 
+	- The filename of readelf in the subroutine "load" has to be corrected.
+	- Some of the library filenames in the "genSO" command (in the main part of the perl script) and in the subroutine "fixDyn" have to be changed to their real SONAMEs.
+	- Some new libs for shrinkage (i.e. the shared libraries of samba, gnutls and libtirpc and some new shared libs from Freshtomato source code) have to be added with "genSO" commands in the main part of the perl script. 
+	- The exit command in subroutine "fillGaps" has to be uncommented. Only this ensures a stop of the script with an error code in case of a symbol can't be resolved. 
+	- In the command "fixDynDep("minidlna", "libstdc.so.6")" in the subroutine "fixDyn" libstdc.so.6 has to be changed into libstdc++.so.6.
+A build script taking care of step 1.-4. is included in this repo.

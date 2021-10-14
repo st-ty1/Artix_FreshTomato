@@ -1,0 +1,49 @@
+diff -ur /home/stephan/wl500g/toolchain/build_dir/toolchain-mipsel_gcc4.2.4/binutils-2.20.1/binutils/dwarf.h binutils_2.20.1_2.19.1/binutils/dwarf.h
+--- binutils-2.20.1/binutils/dwarf.h	2009-09-02 09:22:32.000000000 +0200
++++ binutils_2.20.1_2.19.1/binutils/dwarf.h	2020-07-01 02:45:08.169130054 +0200
+@@ -111,6 +111,7 @@
+ extern int do_debug_macinfo;
+ extern int do_debug_str;
+ extern int do_debug_loc;
++extern int do_wide;
+ 
+ extern void init_dwarf_regnames (unsigned int);
+ 
+diff -ur /home/stephan/wl500g/toolchain/build_dir/toolchain-mipsel_gcc4.2.4/binutils-2.20.1/binutils/readelf.c binutils_2.20.1_2.19.1/binutils/readelf.c
+--- binutils-2.20.1/binutils/readelf.c	2010-01-14 11:48:23.000000000 +0100
++++ binutils_2.20.1_2.19.1/binutils/readelf.c	2020-07-01 02:43:58.869133245 +0200
+@@ -149,7 +149,6 @@
+ #include "filenames.h"
+ 
+ char * program_name = "readelf";
+-int do_wide;
+ static long archive_file_offset;
+ static unsigned long archive_file_size;
+ static unsigned long dynamic_addr;
+diff -ur /home/stephan/wl500g/toolchain/build_dir/toolchain-mipsel_gcc4.2.4/binutils-2.20.1/gprof/hist.c binutils_2.20.1_2.19.1/gprof/hist.c
+--- binutils-2.20.1/gprof/hist.c	2009-09-14 13:43:27.000000000 +0200
++++ binutils_2.20.1_2.19.1/gprof/hist.c	2020-07-01 02:57:06.232430455 +0200
+@@ -48,6 +48,9 @@
+ static histogram *find_histogram (bfd_vma lowpc, bfd_vma highpc);
+ static histogram *find_histogram_for_pc (bfd_vma pc);
+ 
++histogram *histograms;
++unsigned num_histograms;
++
+ double hist_scale;
+ static char hist_dimension[16] = "seconds";
+ static char hist_dimension_abbrev = 's';
+diff -ur /home/stephan/wl500g/toolchain/build_dir/toolchain-mipsel_gcc4.2.4/binutils-2.20.1/gprof/hist.h binutils_2.20.1_2.19.1/gprof/hist.h
+--- binutils-2.20.1/gprof/hist.h	2007-07-06 12:40:34.000000000 +0200
++++ binutils_2.20.1_2.19.1/gprof/hist.h	2020-07-01 02:51:46.845778445 +0200
+@@ -30,8 +30,8 @@
+   int *sample;           /* Histogram samples (shorts in the file!).  */
+ } histogram;
+ 
+-histogram *histograms;
+-unsigned num_histograms;
++extern histogram *histograms;
++extern unsigned num_histograms;
+ 
+ /* Scale factor converting samples to pc values:
+    each sample covers HIST_SCALE bytes.  */

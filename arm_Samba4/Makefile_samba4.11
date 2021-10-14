@@ -1,0 +1,146 @@
+include ../common.mak
+
+srcdir=bin/default/source3/utils/
+
+export ASN1_COMPILE="$(TOP)/samba4/bin/asn1_compile_host"
+export COMPILE_ET="$(TOP)/samba4/bin/compile_et_host"
+
+SMBCFLAGS = $(EXTRACFLAGS) $(CFLAG_OPTIMIZE) -ffunction-sections -fdata-sections -I$(TOP)/libiconv/include $(OPTSIZE_FLAG)
+SMBLDFLAGS = -ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libiconv/lib/.libs
+
+.conf_host:
+	CC=gcc LD=ld AR=ar RANLIB=ranlib CFLAGS="-O2" PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/gnutls/lib:$(TOP)/nettle/lib/pkgconfig" ./configure --hostcc=gcc \
+		--disable-cups \
+		--disable-iprint \
+		--disable-cephfs \
+		--disable-fault-handling \
+		--disable-glusterfs \
+		--disable-rpath \
+		--disable-rpath-install \
+		--disable-rpath-private-install \
+		--enable-fhs \
+		--without-automount \
+		--without-iconv \
+		--without-lttng \
+		--without-ntvfs-fileserver \
+		--without-pam \
+		--without-systemd \
+		--without-utmp \
+		--without-json \
+		--without-dmapi \
+		--without-fam \
+		--without-gettext \
+		--without-regedit \
+		--without-gpgme \
+		--nonshared-binary=asn1_compile \
+		--disable-avahi \
+		--without-quotas --without-acl-support --without-winbind \
+		--without-ad-dc --without-libarchive \
+		--disable-python --nopyc --nopyo \
+		--without-dnsupdate --without-ads --without-ldap 
+
+	python_LDFLAGS="" python_LIBDIR="" CC=gcc LD=ld CFLAGS="-O2" ./buildtools/bin/waf build --targets=asn1_compile,compile_et  
+	install $(TOP)/samba4/bin/asn1_compile $(TOP)/samba4/bin/asn1_compile_host 
+	install $(TOP)/samba4/bin/compile_et $(TOP)/samba4/bin/compile_et_host
+	@touch $@
+
+.conf_target: .conf_host
+	python_LDFLAGS="" python_LIBDIR="" CFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC" PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/gnutls/lib:$(TOP)/nettle/lib/pkgconfig" \
+	CPPFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC -I$(TOP)/gnutls/lib/includes" \
+	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/gnutls/lib/.libs -lgnutls -L$(TOP)/gmp/.libs -lgmp" \
+	CC=arm-brcm-linux-uclibcgnueabi-gcc AR=arm-uclibc-linux-2.6.36-ar CPP=arm-uclibc-linux-2.6.36-cpp \
+	RANLIB=arm-uclibc-linux-2.6.36-ranlib ./configure --cross-compile --cross-answers=answer.txt --bundled-libraries=talloc,tevent,texpect,tdb,ldb,tdr,cmocka,replace,popt,libtasn1,NONE \
+		--disable-cups \
+		--disable-iprint \
+		--disable-cephfs \
+		--disable-fault-handling \
+		--disable-glusterfs \
+		--disable-rpath \
+		--disable-rpath-install \
+		--disable-rpath-private-install \
+		--enable-fhs \
+		--without-automount \
+		--without-iconv \
+		--without-lttng \
+		--without-ntvfs-fileserver \
+		--without-pam \
+		--without-systemd \
+		--without-utmp \
+		--without-dmapi \
+		--without-fam \
+		--without-gettext \
+		--without-regedit \
+		--without-gpgme \
+		--without-quotas \
+		--with-lockdir=/tmp/var/lock \
+		--with-logfilebase=/tmp/var/log \
+		--with-piddir=/tmp/var/run \
+		--with-privatedir=/etc/samba \
+		--with-privatelibdir=/usr/lib \
+		--localstatedir=/tmp/var \
+		--disable-avahi \
+		--without-winbind \
+		--without-acl-support \
+		--without-ad-dc \
+		--without-libarchive \
+		--disable-python --nopyc --nopyo \
+		--without-dnsupdate --without-ads --without-ldap \
+		--without-json \
+		--accel-aes=none \
+		--prefix=/usr \
+		--private-libraries=talloc,tevent,texpect,tdb,ldb,tdr,cmocka,replace \
+		--nonshared-binary=pdb_smbpasswd,pdb_tdbsam,auth_builtin,auth_sam,auth_unix,auth_script,nmbd,smbd,smbclient,cifsdd 
+
+	@touch $@
+
+all: .conf_target	
+	CC=arm-brcm-linux-uclibcgnueabi-gcc AR=arm-uclibc-linux-2.6.36-ar CPP=arm-uclibc-linux-2.6.36-cpp LD=arm-uclibc-linux-2.6.36-ld RANLIB=arm-uclibc-linux-2.6.36-ranlib ./buildtools/bin/waf build 
+	
+install:
+	install -D bin/smbpasswd $(INSTALLDIR)/usr/bin/smbpasswd
+	install -D bin/smbd $(INSTALLDIR)/usr/bin/smbd
+	install -D bin/nmbd $(INSTALLDIR)/usr/bin/nmbd
+	install -d $(INSTALLDIR)/usr/lib/
+	install -D bin/shared/private/*.so* $(INSTALLDIR)/usr/lib/
+	install -D bin/shared/*.so* $(INSTALLDIR)/usr/lib/
+
+	-rm $(INSTALLDIR)/usr/lib/libidmap-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libregistry-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libnss_wins.so.2
+	-rm $(INSTALLDIR)/usr/lib/libsmbclient.so.0
+	-rm $(INSTALLDIR)/usr/lib/winbind_krb5_locator.so
+	-rm $(INSTALLDIR)/usr/lib/libdnsserver-common-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libxattr-tdb-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libtorture-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libdsdb-module-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libnss_winbind.so
+	-rm $(INSTALLDIR)/usr/lib/libgpext-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libnet-keytab-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libposix-eadb-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libevents-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libcmocka-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libauth4-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libshares-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libcmdline-credentials-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libpopt-samba3-cmdline-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libnss_wrapper_winbind.so.2
+	-rm $(INSTALLDIR)/usr/lib/libkdc-samba4.so.2
+	-rm $(INSTALLDIR)/usr/lib/libdcerpc-samr.so.0
+	-rm $(INSTALLDIR)/usr/lib/libnon-posix-acls-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libsmbpasswdparser-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libldb-cmdline-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libheimntlm-samba4.so.1
+	-rm $(INSTALLDIR)/usr/lib/libcluster-samba4.so
+	-rm $(INSTALLDIR)/usr/lib/libnss-info-samba4.so
+	$(STRIP) -s $(INSTALLDIR)/usr/bin/smbd
+	$(STRIP) -s $(INSTALLDIR)/usr/bin/nmbd
+	$(STRIP) -s $(INSTALLDIR)/usr/bin/smbpasswd
+	$(STRIP) -s $(INSTALLDIR)/usr/lib/*.so*
+
+clean:
+	make -C samba4 clean
+	@rm -f .conf*
+
+distclean: clean
+
+

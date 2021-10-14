@@ -1,0 +1,95 @@
+--- Makefile	2020-08-01 19:30:59.290070647 +0200
++++ Makefile_mod	2020-08-01 19:33:13.966743055 +0200
+@@ -240,7 +240,9 @@
+ endif
+ 
+ obj-y += taskset
+-obj-$(NEED_SAMBA3) += samba3
++obj-$(NEED_SAMBA3) += libtirpc
++obj-$(NEED_SAMBA3) += gnutls
++obj-$(NEED_SAMBA3) += samba4
+ obj-$(NEED_SAMBA3) += wsdd2
+ 
+ ifeq ($(CONFIG_BCMWL6),y)
+@@ -1296,7 +1300,7 @@
+ 
+ p910nd:
+ 
+-samba3: $(if $(TCONFIG_MEDIA_SERVER)$(TCONFIG_NGINX),libiconv,)
++samba4: $(if $(TCONFIG_MEDIA_SERVER)$(TCONFIG_NGINX),libiconv,) libtirpc gnutls
+ 
+ nvram_arm: shared
+ 
+@@ -3082,6 +3089,72 @@
+ 	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
+ 	$(call unpatch_files,diskdev_cmds-332.25)
+ 
++libtirpc/stamp-h1:
++	cd $(TOP)/libtirpc && \
++	CFLAGS="$(CFLAG_OPTIMIZE) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
++	CPPFLAGS="$(CFLAG_OPTIMIZE) -Wall -ffunction-sections -fdata-sections -fPIC" \
++	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
++	$(CONFIGURE) --prefix=/usr --host=mipsel-linux --sysconfdir=/etc --disable-static --disable-gssapi
++	@touch $@
++
++libtirpc: libtirpc/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C libtirpc $(PARALLEL_BUILD)
++
++libtirpc-install:
++	install -d $(INSTALLDIR)/libtirpc/usr/lib
++	install -D libtirpc/src/.libs/libtirpc.so.3.0.0 $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3
++	$(STRIP) $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3
++#	cd $(INSTALLDIR)/libtirpc/usr/lib/ && \
++#		ln -sf libtirpc.so.3.0.0 libtirpc.so.3 && \
++#		ln -sf libtirpc.so.3.0.0 libtirpc.so
++
++libtirpc-clean:
++	-@$(MAKE) -C libtirpc clean
++	-@rm -rf libtirpc/Makefile libtirpc/stamp-h1
++
++gnutls/stamp-h1: nettle gmp
++	cd $(TOP)/gnutls && \
++	autoreconf -fsi && \
++	CFLAGS="$(CFLAG_OPTIMIZE) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/nettle/include -I$(TOP)/gmp" \
++	CPPFLAGS="$(CFLAG_OPTIMIZE) -Wall -ffunction-sections -fdata-sections -fPIC" \
++	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/nettle/lib -L$(TOP)/gmp/.libs" \
++	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/nettle/lib/pkgconfig" \
++	$(CONFIGURE) --prefix=/usr --host=arm-linux --with-included-libtasn1 --without-p11-kit \
++	--enable-shared \
++	--enable-static \
++	--disable-rpath \
++	--disable-libdane \
++	--with-included-unistring \
++	--disable-guile \
++	--disable-nls \
++	--without-idn \
++	--without-zlib \
++	--enable-local-libopts \
++	--disable-doc \
++	--disable-tests \
++	--with-default-trust-store-dir=/etc/ssl/certs/ \
++	--disable-crywrap \
++	--with-librt-prefix="$(LIBRT_ROOT_DIR)/"
++	@touch $@
++
++gnutls: gnutls/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C gnutls $(PARALLEL_BUILD)
++
++gnutls-install:
++	install -d $(INSTALLDIR)/gnutls/usr/lib/
++	install -D gnutls/lib/.libs/libgnutls.so.30.27.0 $(INSTALLDIR)/gnutls/usr/lib/libgnutls.so.30
++	$(STRIP) $(INSTALLDIR)/gnutls/usr/lib/libgnutls.so.30
++#	cd $(INSTALLDIR)/gnutls/usr/lib/ && \
++#		ln -sf libgnutls.so.30.27.0 libgnutls.so.30 && \
++#		ln -sf libgnutls.so.30.27.0 libgnutls.so
++
++gnutls-clean:
++	-@$(MAKE) -C gnutls clean
++	-@rm -rf gnutls/Makefile gnutls/stamp-h1
++
++
+ #
+ # Generic rules
+ #
