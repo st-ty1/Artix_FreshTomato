@@ -18,13 +18,6 @@ rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql && \
 mkdir -p $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql && \
 cp -rf $HOME/mysql-5.5.62/* $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql
 
-## standard ARTIX-patches
-patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
-patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/miniupnpd/configure
-patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/apcupsd/autoconf/configure.in
-patch -i  $FT_PATCHES_DIR/configure.ac_transmission.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/transmission/configure.ac
-
-
 cd $FT_REPO_DIR/release/src-rt-6.x.4708
 
 time make ac68z 
