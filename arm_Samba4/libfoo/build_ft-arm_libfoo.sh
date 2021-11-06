@@ -16,13 +16,6 @@ git checkout arm-master
 
 clear
 
-## Arch-Linux-patches if build on Artix/Arch Linux, not needed on Debian
-patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
-patch -i $FT_PATCHES_DIR/alloca.m4.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql/config/ac-macros/alloca.m4
-patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/miniupnpd/configure
-patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/apcupsd/autoconf/configure.in
-patch -i $FT_PATCHES_DIR/configure.ac_transmission.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/transmission/configure.ac
-
 #libfoo_arm
 cp -v $LIBFOO_DIR/0101-Create-short-Makefiles-for-Debian.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/patches/diskdev_cmds-332.25
 cp -v $LIBFOO_DIR/libfoo_arm2.pl $FT_REPO_DIR/release/src-rt-6.x.4708/btools/libfoo.pl

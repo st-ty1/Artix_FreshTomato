@@ -22,12 +22,6 @@ git reset --hard
 ## for RT-N- and RT-AC-images:
 git checkout mips-RT-AC
 
-## Arch-Linux-patches for all builds
-patch -i $FT_PATCHES_DIR/alloca.m4.patch $FT_REPO_DIR/release/src/router/mysql/config/ac-macros/alloca.m4
-patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
-patch -i $FT_PATCHES_DIR/miniupnpd_config.patch $FT_REPO_DIR/release/src/router/miniupnpd/configure
-patch -i $FT_PATCHES_DIR/configure.in_apcupsd.patch $FT_REPO_DIR/release/src/router/apcupsd/autoconf/configure.in
-patch -i  $FT_PATCHES_DIR/configure.ac_transmission.patch $FT_REPO_DIR/release/src/router/transmission/configure.ac
 
 ## patches for samba4
 mkdir $FT_REPO_DIR/release/src/router/samba4
