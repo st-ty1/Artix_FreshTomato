@@ -1,8 +1,5 @@
 #! /bin/sh
 
-## path to special Artix-patches for building FT
-FT_PATCHES_DIR=$HOME/Artix_FreshTomato
-
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-arm
 
