@@ -562,7 +562,7 @@ genSO("${root}/usr/lib/libpcreposix.so.0", "${router}/pcre/.libs/libpcreposix.a"
 genSO("${root}/usr/lib/libsqlite3.so.0", "${router}/sqlite/.libs/libsqlite3.a", "${stripshared}");
 genSO("${root}/usr/lib/libext2fs.so.2", "${router}/e2fsprogs/lib/libext2fs.a", "${stripshared}", "-L${router}/e2fsprogs/lib");
 genSO("${root}/usr/lib/libncurses.so.6", "${router}/libncurses/lib/libncurses.a", "${stripshared}");
-genSO("${root}/usr/lib/libglib-1.2.so.0", "${router}/glib/.libs/libglib.a", "${stripshared}");
+genSO("${root}/usr/lib/libglib-1.2.so.0", "${router}/glib/.libs/libglib-1.2.so.0.0.10", "${stripshared}");
 genSO("${root}/usr/lib/libiperf.so.0", "${router}/iperf/src/.libs/libiperf.a", "${stripshared}");
 genSO("${root}/usr/lib/libebtc.so.0", "${router}/ebtables/.libs/libebtc.so.0.0.0", "${stripshared}");
 genSO("${root}/usr/lib/libbcmcrypto.so", "${router}/libbcmcrypto/libbcmcrypto.so", "${stripshared}");
@@ -585,8 +585,19 @@ genSO("${root}/usr/lib/libmnl.so.0", "${router}/libmnl/src/.libs/libmnl.so.0.2.0
 genSO("${root}/usr/lib/libnetfilter_log.so.1", "${router}/libnetfilter_log/src/.libs/libnetfilter_log.so.1.1.0", "${stripshared}");
 genSO("${root}/usr/lib/libnetfilter_queue.so.1", "${router}/libnetfilter_queue/src/.libs/libnetfilter_queue.so.1.4.0", "${stripshared}");
 genSO("${root}/usr/lib/libpanel.so.6", "${router}/libncurses/lib/libpanel.a", "${stripshared}");
-genSO("${root}/usr/lib/libpng16.so.16", "${router}/libpng/.libs/libpng16.a", "${stripshared}");
+genSO("${root}/usr/lib/libpng16.so.16", "${router}/libpng/.libs/libpng16.a", "${stripshared}", "-L${router}/zlib");
 genSO("${root}/usr/lib/libuuid.so.1", "${router}/e2fsprogs/lib/libuuid.a", "${stripshared}");
+genSO("${root}/usr/lib/libavcodec.so.52", "${router}/ffmpeg//libavcodec/libavcodec.so.52", "${stripshared}", "-L${router}/ffmpeg/libavutil -L${router}/zlib");
+genSO("${root}/usr/lib/libavformat.so.52", "${router}/ffmpeg/libavformat/libavformat.so.52", "${stripshared}", "-L${router}/ffmpeg/libavutil -L${router}/ffmpeg/libavcodec -L${router}/zlib");
+genSO("${root}/usr/lib/libavutil.so.50", "${router}/ffmpeg/libavutil/libavutil.so.50", "${stripshared}");
+genSO("${root}/usr/lib/libexif.so.12", "${router}/libexif/libexif/.libs/libexif.so.12", "${stripshared}");
+genSO("${root}/usr/lib/libFLAC.so.8", "${router}/flac/src/libFLAC/.libs/libFLAC.so.8", "${stripshared}", "-L${router}/libogg/src/.libs");
+genSO("${root}/usr/lib/libogg.so.0", "${router}/libogg/src/.libs/libogg.so.0", "${stripshared}");
+genSO("${root}/usr/lib/libmssl.so", "${router}/mssl/libmssl.so", "${stripshared}", "-L${router}/openssl-1.1");
+genSO("${root}/usr/lib/libvorbis.so.0", "${router}/libvorbis/lib/.libs/libvorbis.so.0", "${stripshared}", "-L${router}/libogg/src/.libs");
+genSO("${root}/usr/lib/libid3tag.so.0", "${router}/libid3tag/.libs/libid3tag.a", "${stripshared}", "-L${router}/zlib");
+genSO("${root}/usr/lib/libffi.so.6.0.4", "${router}/libffi/.libs/libffi.so.6", "${stripshared}");
+genSO("${root}/usr/lib/libglib-2.0.so.0", "${router}/glib2/staged/usr/lib/libglib-2.0.so.0", "${stripshared}", "-L${router}/libiconv/lib/.libs -L${router}/libffi/.libs -L${router}/zlib");
 
 print "\n";
 
