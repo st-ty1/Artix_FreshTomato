@@ -1,0 +1,566 @@
+--- minidlna/config.h
++++ minidlna/config.h
+@@ -0,0 +1,46 @@
++#ifndef __CONFIG_H__
++#define __CONFIG_H__
++
++#define OS_NAME			"FreshTomato"
++#define OS_VERSION		"Linux/2.6.22.19"
++#define OS_URL			"https://freshtomato.org/"
++
++#define HAVE_CLOCK_GETTIME 1
++#define HAVE_CLOCK_GETTIME_SYSCALL 1
++#define HAVE_GETIFADDRS 1
++#define HAVE_INOTIFY 1
++#define HAVE_LIBAVCODEC_AVCODEC_H 1
++#define HAVE_LIBAVFORMAT_AVFORMAT_H 1
++#define HAVE_LIBAVUTIL_AVUTIL_H 1
++#define HAVE_LINUX_SENDFILE_API 1
++#define HAVE_SENDFILE 1
++#define HAVE_SQLITE3_MALLOC 1
++#define HAVE_SQLITE3_PREPARE_V2 1
++#define HAVE_SYS_INOTIFY_H 1
++#define SCANDIR_CONST 1
++
++/* full path of the file database */
++#define DEFAULT_DB_PATH		"/tmp/minidlna"
++
++/* full path of the log directory */
++#define DEFAULT_LOG_PATH	"/var/log"
++
++/* Enable if the system inotify.h exists. Otherwise our own inotify.h will be used. */
++#define HAVE_INOTIFY_H
++
++/* Enable if the system iconv.h exists. ID3 tag reading in various character sets will not work properly otherwise. */
++/* #define HAVE_ICONV_H */
++
++/* Enable if the system libintl.h exists for NLS support. */
++/* #define ENABLE_NLS */
++
++/* Enable NETGEAR-specific tweaks. */
++/*#define NETGEAR*/
++/* Enable ReadyNAS-specific tweaks. */
++/*#define READYNAS*/
++/* Compile in TiVo support. */
++#define TIVO_SUPPORT
++/* Enable PnPX support. */
++#define PNPX 0
++
++#endif
+--- minidlna/getifaddr.c
++++ minidlna/getifaddr.c
+@@ -66,6 +66,7 @@
+ #include "minissdp.h"
+ #include "utils.h"
+ #include "log.h"
++#include "ifaddrs.c"
+ 
+ static int
+ getifaddr(const char *ifname)
+--- minidlna/Makefile
++++ minidlna/Makefile
+@@ -0,0 +1,150 @@
++# $Id: Makefile,v 1.31.2.2 2012/11/05 07:01:21 jmaggard Exp $
++# MiniDLNA project
++# http://sourceforge.net/projects/minidlna/
++# (c) 2008-2009 Justin Maggard
++# for use with GNU Make
++# To install use :
++# $ DESTDIR=/dummyinstalldir make install
++# or :
++# $ INSTALLPREFIX=/usr/local make install
++# or :
++# $ make install
++#
++#CFLAGS = -Wall -O -D_GNU_SOURCE -g -DDEBUG
++#CFLAGS = -Wall -g -Os -D_GNU_SOURCE
++
++include ../common.mak
++
++LDFLAGS+= -Wl,--gc-sections
++CFLAGS = -Wall -Os $(EXTRACFLAGS) -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 \
++	-ffunction-sections -fdata-sections \
++	-I$(TOP)/ffmpeg/libavutil -I$(TOP)/ffmpeg/libavcodec -I$(TOP)/ffmpeg/libavformat \
++	-I$(TOP)/ffmpeg/libswscale -I$(TOP)/ffmpeg \
++	-I$(TOP)/flac/include -I$(TOP)/sqlite -I$(TOP)/jpeg \
++	-I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include \
++	-I$(TOP)/libvorbis/include \
++
++RM = rm -f
++INSTALL = install
++
++CFLAGS += -I$(TOP)/shared
++
++INSTALLPREFIX ?= $(DESTDIR)/usr
++SBININSTALLDIR = $(INSTALLPREFIX)/sbin
++ETCINSTALLDIR = $(DESTDIR)/etc
++
++BASEOBJS = minidlna.o upnphttp.o upnpdescgen.o upnpsoap.o \
++	   upnpreplyparse.o minixml.o clients.o \
++	   getifaddr.o process.o upnpglobalvars.o \
++	   options.o minissdp.o uuid.o upnpevents.o \
++	   sql.o utils.o metadata.o scanner.o monitor.o \
++	   tivo_utils.o tivo_beacon.o tivo_commands.o \
++	   playlist.o image_utils.o albumart.o log.o \
++	   containers.o avahi.o tagutils/tagutils.o select.o \
++
++ALLOBJS = $(BASEOBJS) $(LNXOBJS)
++
++#LIBS = -lpthread -lexif -ljpeg -lsqlite3 -lavformat -lavutil -lavcodec -lid3tag -lFLAC -logg -lvorbis
++#STATIC_LINKING: LIBS = -lvorbis -logg -lm -lsqlite3 -lpthread -lexif -ljpeg -lFLAC -lm -lid3tag -lz -lavformat -lavutil -lavcodec -lm
++
++LIBS = -lpthread -lm \
++	$(TOP)/libvorbis/lib/.libs/libvorbis.a \
++	$(TOP)/libogg/src/.libs/libogg.a \
++	$(TOP)/sqlite/.libs/libsqlite3.a \
++	$(TOP)/libexif/libexif/.libs/libexif.a \
++	$(TOP)/jpeg/libjpeg.a \
++	$(TOP)/flac/src/libFLAC/.libs/libFLAC.a \
++	$(TOP)/libid3tag/.libs/libid3tag.a \
++	$(TOP)/zlib/libz.a \
++	$(TOP)/ffmpeg/libavformat/libavformat.a \
++	$(TOP)/ffmpeg/libavcodec/libavcodec.a \
++	$(TOP)/ffmpeg/libavutil/libavutil.a
++
++TESTUPNPDESCGENOBJS = testupnpdescgen.o upnpdescgen.o
++
++EXECUTABLES = minidlna testupnpdescgen
++
++.PHONY:	all clean distclean install depend
++
++all:	$(EXECUTABLES)
++
++clean:
++	$(RM) $(ALLOBJS)
++	$(RM) $(EXECUTABLES)
++	$(RM) testupnpdescgen.o
++
++distclean: clean
++#	$(RM) config.h
++
++install-conf:
++	$(INSTALL) -d $(ETCINSTALLDIR)
++	$(INSTALL) --mode=0644 minidlna.conf $(ETCINSTALLDIR)
++
++install:	minidlna
++	$(INSTALL) -D minidlna $(INSTALLDIR)/usr/sbin/minidlna
++	$(STRIP) $(INSTALLDIR)/usr/sbin/minidlna
++
++minidlna:	$(BASEOBJS) $(LNXOBJS)
++	@echo Linking $@
++	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(BASEOBJS) $(LNXOBJS) -Wl,--rpath -Wl,$(TOP)/minidlna/lib/ $(LIBS)
++
++
++testupnpdescgen:	$(TESTUPNPDESCGENOBJS)
++	@echo Linking $@
++	@$(CC) $(CFLAGS) -o $@ $(TESTUPNPDESCGENOBJS)
++
++depend:	#config.h
++	makedepend -f$(MAKEFILE_LIST) -Y \
++	$(ALLOBJS:.o=.c) $(TESTUPNPDESCGENOBJS:.o=.c) 2>/dev/null
++
++# DO NOT DELETE
++
++minidlna.o: config.h upnpglobalvars.h minidlnatypes.h
++minidlna.o: upnphttp.h upnpdescgen.h minidlnapath.h getifaddr.h upnpsoap.h
++minidlna.o: options.h minissdp.h process.h upnpevents.h log.h
++upnphttp.o: config.h upnphttp.h upnpdescgen.h minidlnapath.h upnpsoap.h
++upnphttp.o: upnpevents.h image_utils.h sql.h log.h sendfile.h icons.c
++upnpdescgen.o: config.h upnpdescgen.h minidlnapath.h upnpglobalvars.h upnpdescstrings.h
++upnpdescgen.o: minidlnatypes.h upnpdescstrings.h log.h
++containers.o: containers.h
++upnpsoap.o: containers.h config.h upnpglobalvars.h minidlnatypes.h log.h utils.h sql.h
++upnpsoap.o: upnphttp.h upnpsoap.h upnpreplyparse.h getifaddr.h log.h
++upnpreplyparse.o: upnpreplyparse.h minixml.h log.h
++minixml.o: minixml.h
++clients.o: clients.h
++getifaddr.o: getifaddr.h log.h
++process.o: process.h config.h log.h
++upnpglobalvars.o: config.h upnpglobalvars.h upnpdescstrings.h
++upnpglobalvars.o: minidlnatypes.h
++options.o: options.h config.h upnpglobalvars.h
++options.o: minidlnatypes.h
++minissdp.o: config.h upnpdescstrings.h minidlnapath.h upnphttp.h
++minissdp.o: upnpglobalvars.h minidlnatypes.h minissdp.h log.h
++upnpevents.o: config.h upnpevents.h minidlnapath.h upnpglobalvars.h
++upnpevents.o: minidlnatypes.h upnpdescgen.h log.h uuid.h
++uuid.o: uuid.h
++testupnpdescgen.o: config.h upnpdescgen.h
++scanner.o: upnpglobalvars.h metadata.h utils.h sql.h scanner.h log.h playlist.h scanner_sqlite.h
++metadata.o: upnpglobalvars.h metadata.h albumart.h utils.h sql.h log.h
++albumart.o: upnpglobalvars.h albumart.h utils.h image_utils.h sql.h log.h
++tagutils/tagutils.o: tagutils/tagutils-asf.c tagutils/tagutils-flc.c tagutils/tagutils-plist.c tagutils/tagutils-misc.c
++tagutils/tagutils.o: tagutils/tagutils-aac.c tagutils/tagutils-asf.h tagutils/tagutils-flc.h tagutils/tagutils-mp3.c tagutils/tagutils-wav.c
++tagutils/tagutils.o: tagutils/tagutils-ogg.c tagutils/tagutils-aac.h tagutils/tagutils.h tagutils/tagutils-mp3.h tagutils/tagutils-ogg.h log.h
++tagutils/tagutils.o: tagutils/tagutils-dff.c tagutils/tagutils-dff.h tagutils/tagutils-dsf.c tagutils/tagutils-dsf.h 
++playlist.o: playlist.h
++monitor.o: monitor.h playlist.h
++image_utils.o: image_utils.h
++tivo_utils.o: config.h tivo_utils.h
++tivo_beacon.o: config.h tivo_beacon.h tivo_utils.h
++tivo_commands.o: config.h tivo_commands.h tivo_utils.h utils.h
++utils.o: utils.h
++sql.o: sql.h
++log.o: log.h
++
++.SUFFIXES: .c .o
++
++.c.o:
++	@echo Compiling $*.c
++	@$(CC) $(CFLAGS) -o $@ -c $< && exit 0;\
++		echo "The following command failed:" 1>&2;\
++		echo "$(CC) $(CFLAGS) -o $@ -c $<";\
+--- minidlna/minidlna.c
++++ minidlna/minidlna.c
+@@ -336,7 +336,7 @@ open_db(sqlite3 **sq3)
+ 	sql_exec(db, "pragma page_size = 4096");
+ 	sql_exec(db, "pragma journal_mode = OFF");
+ 	sql_exec(db, "pragma synchronous = OFF;");
+-	sql_exec(db, "pragma default_cache_size = 8192;");
++	sql_exec(db, "pragma default_cache_size = 1024;");
+ 
+ 	return new_db;
+ }
+@@ -966,7 +966,7 @@ init(int argc, char **argv)
+ 		}
+ 	}
+ 
+-	if (runtime_vars.port <= 0)
++	if (runtime_vars.port < 0)
+ 	{
+ 		printf("Usage:\n\t"
+ 			"%s [-d] [-v] [-f config_file] [-p port]\n"
+@@ -1021,6 +1021,7 @@
+ 		pid = process_daemonize();
+ 		if (access(db_path, F_OK) != 0)
+ 			make_dir(db_path, S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO);
++		unlink("/var/notice/dlna");
+ 	}
+ 	if (log_init(log_level) < 0)
+ 		DPRINTF(E_FATAL, L_GENERAL, "Failed to open log file '%s/" LOGFILE_NAME "': %s\n",
+@@ -1159,7 +1160,7 @@
+ 	smonitor = OpenAndConfMonitorSocket();
+ 	if (smonitor > 0)
+ 	{
+-		monev = (struct event ){ .fd = smonitor, .rdwr = EVENT_READ, .process = ProcessMonitorEvent };
++		monev = (struct event ){ .fd = smonitor, .rdwr = EVENT_READ, {beaconev.process = ProcessMonitorEvent} };
+ 		event_module.add(&monev);
+ 	}
+ 
+@@ -1173,7 +1174,7 @@
+ 	}
+ 	else
+ 	{
+-		ssdpev = (struct event ){ .fd = sssdp, .rdwr = EVENT_READ, .process = ProcessSSDPRequest };
++		ssdpev = (struct event ){ .fd = sssdp, .rdwr = EVENT_READ, {beaconev.process = ProcessSSDPRequest} };
+ 		event_module.add(&ssdpev);
+ 	}
+ 
+@@ -1178,11 +1179,21 @@
+ 	}
+ 
+ 	/* open socket for HTTP connections. */
+-	shttpl = OpenAndConfHTTPSocket(runtime_vars.port);
++	shttpl = OpenAndConfHTTPSocket((runtime_vars.port > 0) ? runtime_vars.port : 0);
+ 	if (shttpl < 0)
+ 		DPRINTF(E_FATAL, L_GENERAL, "Failed to open socket for HTTP. EXITING\n");
++
++	if (runtime_vars.port <= 0) {
++		struct sockaddr_in sockinfo;
++		socklen_t len = sizeof(struct sockaddr_in);
++		if (getsockname(shttpl, (struct sockaddr *)&sockinfo, &len) < 0) {
++			DPRINTF(E_FATAL, L_GENERAL, "getsockname(): %s. EXITING\n", strerror(errno));
++		}
++		runtime_vars.port = ntohs(sockinfo.sin_port);
++	}
++
+ 	DPRINTF(E_WARN, L_GENERAL, "HTTP listening on port %d\n", runtime_vars.port);
+-	httpev = (struct event ){ .fd = shttpl, .rdwr = EVENT_READ, .process = ProcessListen };
++	httpev = (struct event ){ .fd = shttpl, .rdwr = EVENT_READ, {beaconev.process = ProcessListen} };
+ 	event_module.add(&httpev);
+ 
+ #ifdef TIVO_SUPPORT
+@@ -1204,7 +1215,7 @@
+ 			if(sbeacon < 0)
+ 				DPRINTF(E_FATAL, L_GENERAL, "Failed to open sockets for sending Tivo beacon notify "
+ 					"messages. EXITING\n");
+-			beaconev = (struct event ){ .fd = sbeacon, .rdwr = EVENT_READ, .process = ProcessTiVoBeacon };
++			beaconev = (struct event ){ .fd = sbeacon, .rdwr = EVENT_READ, {beaconev.process = ProcessTiVoBeacon} };
+ 			event_module.add(&beaconev);
+ 			tivo_bcast.sin_family = AF_INET;
+ 			tivo_bcast.sin_addr.s_addr = htonl(getBcastAddress());
+--- minidlna/monitor.c
++++ minidlna/monitor.c
+@@ -700,7 +700,13 @@
+ 				{
+ 					DPRINTF(E_DEBUG, L_INOTIFY,  "The directory %s was %s.\n",
+ 						path_buf, (event->mask & IN_MOVED_TO ? "moved here" : "created"));
+-					monitor_insert_directory(pollfds[0].fd, esc_name, path_buf);
++					/* Tomato */
++					begin_scan();
++					sleep(5);
++					if (wait_for_mount(path_buf) >= 0)
++						monitor_insert_directory(pollfds[0].fd, esc_name, path_buf);
++					end_scan();
++					/* Tomato end */
+ 				}
+ 				else if ( (event->mask & (IN_CLOSE_WRITE|IN_MOVED_TO|IN_CREATE)) &&
+ 				          (lstat(path_buf, &st) == 0) )
+--- minidlna/scanner.c
++++ minidlna/scanner.c
+@@ -27,6 +27,7 @@
+ #include <sys/stat.h>
+ #include <sys/time.h>
+ #include <sys/resource.h>
++#include <sys/statfs.h>
+ 
+ #include "config.h"
+ 
+@@ -66,6 +67,36 @@
+ 	char name[256];
+ };
+ 
++/* Tomato */
++static int
++is_external_path(const char * path)
++{
++	struct statfs sf;
++
++	if (statfs(path, &sf) == 0) {
++		/* if it returns squashfs or tmpfs type, assume it's not mounted */
++		return (sf.f_type != 0x73717368 && sf.f_type != 0x1021994);
++	}
++	else
++		return -1;
++}
++
++/* This could be a directory in tmpfs.
++ * Mounting a USB drive on this directory can take some time,
++ * so let's wait up to 5 seconds and hope that mount will complete.
++ * If not, just proceed with scanning - after all we may not mount
++ * anything on this directory.
++ */
++int
++wait_for_mount(const char * path)
++{
++	int r, n = 50;
++	while (((r = is_external_path(path)) == 0) && (n-- > 0)) {
++		usleep(100 * 1000);
++	}
++	return r;
++}
++
+ int64_t
+ get_next_available_id(const char *table, const char *parentID)
+ {
+@@ -728,6 +759,9 @@
+ 	static long long unsigned int fileno = 0;
+ 	enum file_types type;
+ 
++	if (wait_for_mount(dir) < 0)
++		return;
++
+ 	DPRINTF(parent?E_INFO:E_WARN, L_SCANNER, _("Scanning %s\n"), dir);
+ 	switch( dir_types )
+ 	{
+@@ -907,6 +941,7 @@
+ 	if( GETFLAG(RESCAN_MASK) )
+ 		return start_rescan();
+ 
++	begin_scan(); /* Tomato */
+ 	for( media_path = media_dirs; media_path != NULL; media_path = media_path->next )
+ 	{
+ 		int64_t id;
+@@ -929,6 +964,8 @@
+ 		ScanDirectory(media_path->path, parent, media_path->types);
+ 		sql_exec(db, "INSERT into SETTINGS values (%Q, %Q)", "media_dir", media_path->path);
+ 	}
++	end_scan(); /* Tomato */
++
+ 	/* Create this index after scanning, so it doesn't slow down the scanning process.
+ 	 * This index is very useful for large libraries used with an XBox360 (or any
+ 	 * client that uses UPnPSearch on large containers). */
+--- minidlna/scanner.h
++++ minidlna/scanner.h
+@@ -83,4 +83,7 @@
+ void
+ start_scanner();
+ 
++int
++wait_for_mount(const char * path); /* Tomato */
++
+ #endif
+--- minidlna/testupnpdescgen.c
++++ minidlna/testupnpdescgen.c
+@@ -31,7 +31,11 @@
+ #include <string.h>
+ 
+ #include "config.h"
++#include "getifaddr.h"
+ #include "upnpdescgen.h"
++#include "minidlnapath.h"
++#include "upnpglobalvars.h"
++#include "upnpdescstrings.h"
+ 
+ char uuidvalue[] = "uuid:12345678-0000-0000-0000-00000000abcd";
+ char friendly_name[] = "localhost: system_type";
+--- minidlna/upnpdescgen.c
++++ minidlna/upnpdescgen.c
+@@ -36,6 +36,7 @@
+ #include "upnpdescgen.h"
+ #include "minidlnapath.h"
+ #include "upnpglobalvars.h"
++#include "upnpdescstrings.h"
+ 
+ #undef DESC_DEBUG
+ 
+--- minidlna/upnpdescstrings.h
++++ minidlna/upnpdescstrings.h
+@@ -0,0 +1,41 @@
++/* miniupnp project
++ * http://miniupnp.free.fr/ or http://miniupnp.tuxfamily.org/
++ *
++ * Copyright (c) 2006, Thomas Bernard
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *     * Redistributions of source code must retain the above copyright
++ *       notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above copyright
++ *       notice, this list of conditions and the following disclaimer in the
++ *       documentation and/or other materials provided with the distribution.
++ *     * The name of the author may not be used to endorse or promote products
++ *       derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++#ifndef __UPNPDESCSTRINGS_H__
++#define __UPNPDESCSTRINGS_H__
++
++#include "config.h"
++
++/* strings used in the root device xml description */
++#define ROOTDEV_MANUFACTURERURL		"https://freshtomato.org/"
++#define ROOTDEV_MANUFACTURER		"FreshTomato"
++#define ROOTDEV_MODELNAME		"Windows Media Connect compatible"
++#define ROOTDEV_MODELDESCRIPTION	OS_NAME
++#define ROOTDEV_MODELURL		"https://freshtomato.org/"
++
++#endif
+--- minidlna/upnpevents.c
++++ minidlna/upnpevents.c
+@@ -230,6 +230,7 @@
+ upnp_event_create_notify(struct subscriber *sub)
+ {
+ 	struct upnp_event_notify * obj;
++	struct event evt;
+ 	int flags, s, i;
+ 	const char *p;
+ 	unsigned short port;
+@@ -300,7 +301,7 @@
+ 		}
+ 	} else {
+ 		obj->ev = (struct event ){ .fd = s, .rdwr = EVENT_WRITE,
+-		    .process = upnp_event_process_notify, .data = obj };
++		    {evt.process = upnp_event_process_notify}, .data = obj };
+ 		event_module.add(&obj->ev);
+ 	}
+ 
+--- minidlna/upnpglobalvars.c
++++ minidlna/upnpglobalvars.c
+@@ -53,6 +53,7 @@
+ 
+ #include "config.h"
+ #include "upnpglobalvars.h"
++#include "upnpdescstrings.h"
+ 
+ /* startup time */
+ time_t startup_time = 0;
+--- minidlna/upnphttp.c
++++ minidlna/upnphttp.c
+@@ -108,13 +108,14 @@
+ New_upnphttp(int s)
+ {
+ 	struct upnphttp * ret;
++	struct event evt;
+ 	if(s<0)
+ 		return NULL;
+ 	ret = (struct upnphttp *)malloc(sizeof(struct upnphttp));
+ 	if(ret == NULL)
+ 		return NULL;
+ 	memset(ret, 0, sizeof(struct upnphttp));
+-	ret->ev = (struct event ){ .fd = s, .rdwr = EVENT_READ, .process = Process_upnphttp, .data = ret };
++	ret->ev = (struct event ){ .fd = s, .rdwr = EVENT_READ, {evt.process = Process_upnphttp}, .data = ret };
+ 	event_module.add(&ret->ev);
+ 	return ret;
+ }
+--- minidlna/utils.c
++++ minidlna/utils.c
+@@ -574,3 +574,35 @@
+ 		t1->tv_usec -= 1000000;
+ 	}
+ }
++
++void
++begin_scan()
++{
++	FILE *flag;
++
++#ifdef READYNAS
++	flag = fopen("/ramfs/.upnp-av_scan", "w");
++	if (flag)
++		fclose(flag);
++#else
++	mkdir("/var/notice", 0755);
++	flag = fopen("/var/notice/dlna", "w");
++	if (flag) {
++		fprintf(flag, "Scan in progress");
++		fclose(flag);
++	}
++#endif
++}
++
++void
++end_scan()
++{
++#ifdef READYNAS
++	if (access("/ramfs/.rescan_done", F_OK) == 0)
++		system("/bin/sh /ramfs/.rescan_done");
++
++	unlink("/ramfs/.upnp-av_scan");
++#else
++	unlink("/var/notice/dlna");
++#endif
++}
+--- minidlna/utils.h
++++ minidlna/utils.h
+@@ -109,4 +109,8 @@
+ 	    ((tvp)->tv_usec cmp (uvp)->tv_usec) :			\
+ 	    ((tvp)->tv_sec cmp (uvp)->tv_sec))
+ 
++/* Tomato */
++void begin_scan();
++void end_scan();
++
+ #endif
+--- minidlna/tagutils/tagutils.c
++++ minidlna/tagutils/tagutils.c
+@@ -33,6 +33,7 @@
+ #include <time.h>
+ #include <sys/time.h>
+ #include <netinet/in.h>
++#define HAVE_VORBISFILE
+ #ifdef HAVE_VORBISFILE
+ #include <ogg/ogg.h>
+ #include <vorbis/codec.h>

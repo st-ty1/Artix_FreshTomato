@@ -4,7 +4,7 @@
 FT_REPO_DIR=$HOME/freshtomato-arm
 
 ## path to the local libfoo repo
-LIBFOO_DIR=$HOME/Artix_Freshtomato/arm_Samba4/libfoo
+LIBFOO_DIR=$HOME/Artix_FreshTomato/libfoo
 
 cd $FT_REPO_DIR 
 git clean -dxf 
