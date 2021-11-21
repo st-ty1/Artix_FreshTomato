@@ -1,0 +1,32 @@
+--- Makefile_orig	2021-11-21 15:55:09.365212500 +0100
++++ Makefile	2021-11-20 13:43:05.000000000 +0100
+@@ -3316,6 +3318,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/libffi/staged install
++	@rm -f libffi/staged/usr/lib/libffi.la
+ 
+ libffi-install:
+ 	install -D $(TOP)/libffi/.libs/libffi.so.6.0.4 $(INSTALLDIR)/libffi/usr/lib/libffi.so.6.0.4
+@@ -3331,9 +3334,9 @@
+ glib2/stamp-h1:
+ 	$(call patch_files,glib2)
+ 	cd glib2 && ./autogen.sh && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/glib2" \
+-		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/glib2" \
+-		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libffi/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
++		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
++		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/zlib -I$(TOP)/gettext-tiny/include" \
++		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib" \
+ 		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+ 		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/lib/.libs/libiconv.so" \
+@@ -3346,7 +3349,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/glib2/staged install
+-	@sed 's|\(\W\)/usr/lib|\1$(TOP)/glib2/staged/usr/lib|g' -i $(TOP)/glib2/staged/usr/lib/libglib-2.0.la
++	@rm -f glib2/staged/usr/lib/libglib-2.0.la
+ 
+ glib2-install: glib2
+ 	install -D glib2/glib/.libs/libglib-2.0.so.0.3707.0 $(INSTALLDIR)/glib2/usr/lib/libglib-2.0.so.0.3707.0
