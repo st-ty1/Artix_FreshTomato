@@ -11,7 +11,7 @@ The precompiled 32-bit host-tools of FT need also following packages: lib32-glib
 For generating/editing Artix-specific patches installing of package diffutils should be helpful. If you are working with Artix or Arch Linux 
 on wsl2/Windows then you should also install the nano package.
 
-(Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead with an amended LIB-path. This is done by using Makefile_arm_alternate.patch on Makefile)
+(Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead with an amended LIB path. This is done by using Makefile_arm_alternate.patch on Makefile)
 
 BR
 
