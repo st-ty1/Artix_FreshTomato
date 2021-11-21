@@ -13,6 +13,8 @@ on wsl2/Windows then you should also install the nano package.
 
 (Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead with an amended LIB path. This is done by using Makefile_arm_alternate.patch on Makefile)
 
+With introduction of irq-balance in source code of FT-arm, Makefile_arm.patch is now needed for compiling both arm versions of FT sources on Artix/Arch Linux. (Btw, it is not neeeded for building FT on Debian 11! (tested)).
+You can apply patch to directly to /release/src-rt-6.x.4708/router/Makefile before starting building process or use one of the supplied patches build_ft-arm7.sh/build_ft-arm.sh of this repo.
 BR
 
 st-ty1/\_st_ty/st_ty_
