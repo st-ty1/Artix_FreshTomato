@@ -1,8 +1,8 @@
 DB-version     	with cmake		with import_executables		with autotools		last subversion using autotools
 					in CMakeLists.txt					
-mariadb 5.5 	all subversions		from 5.5.42,4x			no			5.5.68
 mariadb 10.0	all subversions		from 10.0.13, 6x		no			10.0.38
 mariadb 10.1	all subversions		from 10.1.1, 6x			no			10.1.48
+mariadb 5.5 	all subversions		from 5.5.42,4x			no			5.5.68
 mariadb 5.3	all subversions		no				all subversions		5.3.12
 mariadb 5.2	all subversions		no				all subversions		5.2.14
 mariadb 5.1	all subversions		no				all subversions		5.1.67
