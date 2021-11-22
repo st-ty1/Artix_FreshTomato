@@ -4,7 +4,7 @@ How to use:
  2.) Start build script (build_ft-arm_mysql_cmake.sh, build_ft-arm_mysql.sh or build_ft-mips_mysql.sh available). 
 
 rem.: 
-- Autotools version of Makefile patch is created for mysql-5.1.37. 
+- Autotools version of Makefile patch is created for mysql-5.1.73. 
 - version with mariadb/CMake will follow (up to those mariadb-versions, where support of libatomic in gcc-compiler is mandantory. The compilers of both arm- and mipsel-toolchain don't supply this support).
 
 BR
