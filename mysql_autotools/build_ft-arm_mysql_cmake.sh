@@ -16,7 +16,7 @@ patch -i $FT_PATCHES_DIR/mysql_autotools/Makefile_cmake.patch $FT_REPO_DIR/relea
 
 rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql && \
 mkdir -p $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql && \
-cp -rf $HOME/mysql-5.5.62/* $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql
+cp -rf $HOME/mysql/* $FT_REPO_DIR/release/src-rt-6.x.4708/router/mysql
 
 cd $FT_REPO_DIR/release/src-rt-6.x.4708
 
