@@ -16,23 +16,23 @@ Follow these steps:
 2. Build an add-on image, based on init-image of step 1., with updating Archlinux packages and cloning Artix_Freshtomato repo.
    Choose one of the dockerfiles according to the CPU architecture and the supported SDK version of your router
    
-    - for MIPS-routers and SDK4:
+    - for MIPS-routers and RT-N-image:
 	
 	      docker build -r artixlinux/ft-mips-rt-n -f artix_ft-mips-rt-n .
    
-    - for MIPS-routers and SDK5:
+    - for MIPS-routers and RT-AC-image:
 	
 	      docker build -r artixlinux/ft-mips-rt-ac -f artix_ft-mips-rt-ac .
    
-    - for MIPS-routers and SDK6:
+    - for MIPS-routers and RT-image:
 	
 	      docker build -r artixlinux/ft-mips-rt -f artix_ft-mips-rt .
    
-    - for ARM-routers and SDK6:
+    - for ARM-routers and SDK6-image:
 	
 	      docker build -r artixlinux/ft-arm -f artix_ft-mips-arm .
    
-    - for ARM-routers and SDK7:
+    - for ARM-routers and SDK7-image:
 	
 	      docker build -r artixlinux/ft-arm7 -f artix_ft-mips-arm7 .
    
