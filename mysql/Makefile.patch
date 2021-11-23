@@ -1,0 +1,109 @@
+--- Makefile.orig	2021-11-23 22:25:28.000000000 +0000
++++ Makefile	2021-11-23 22:28:43.000000000 +0000
+@@ -2187,43 +2187,45 @@
+ 		ln -sf libmenu.so.6 libmenu.so
+ 
+ mysql/stamp-h1: $(OPENSSLDIR) zlib libncurses
+-	@cp -f $(TOP)/patches/mysql/.host.tgz $(TOP)/mysql/ || true
+-	$(call patch_files,mysql)
+-	cd mysql && \
+-	CFLAGS="-O2 -Wall $(EXTRACFLAGS) -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 \
+-		--param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib \
+-		-I$(TOP)/$(OPENSSLDIR)/include -I$(TOP)/libncurses/include" \
+-	CPPFLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 \
+-		--param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC -I$(TOP)/zlib \
+-		-I$(TOP)/$(OPENSSLDIR)/include -I$(TOP)/libncurses/include" \
+-	LDFLAGS="-L$(TOP)/$(OPENSSLDIR) -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/libncurses/lib -fPIC -EL" \
+-	LIBS="-lcrypt -lz -lstdc++ -lssl -lcrypto -lncurses" \
+-	$(CONFIGURE) --prefix=/usr \
+-		--without-debug --without-docs --without-man --with-charset=utf8 --with-extra-charsets=ascii,latin1,gb2312,gbk \
+-		--enable-shared --disable-static \
+-		--without-mysqlmanager \
+-		--with-pthread \
+-		--with-ssl \
+-		--without-docs \
+-		--with-geometry \
+-		--with-low-memory \
+-		--enable-assembler \
+-		--with-zlib-dir="$(TOP)/zlib/staged/usr" \
+-		ac_cv_c_stack_direction=-1
+-	cd mysql && tar xvfz .host.tgz
+-	@touch $@
++	mkdir -p mysql/host
++	cd mysql/host && \
++	cmake -DWITH_SSL=system \
++		-DCMAKE_C_FLAGS="" \
++		-DCMAKE_CPP_FLAGS="" \
++		-DCMAKE_C_COMPILER=gcc \
++		-DCMAKE_CXX_COMPILER=c++ \
++		..
++
++	@$(MAKE) -C mysql/host comp_sql comp_err gen_lex_hash
++
++	@cp -vf mysql/host/extra/comp_err mysql/host/sql/gen_lex_hash $(TOOLCHAIN)/bin
++	mkdir -p mysql/target/scripts
++	@cp -vf mysql/host/scripts/comp_sql mysql/target/scripts
++	
++	cd mysql/target && \
++	$(call CMAKE_CrossOptions, crosscompiled.cmake) && \
++	cmake -DCMAKE_TOOLCHAIN_FILE=crosscompiled.cmake \
++		-DCMAKE_INSTALL_PREFIX:PATH=/usr \
++		-DCMAKE_BUILD_TYPE=MinSizeRel \
++		-DCMAKE_SKIP_RPATH=TRUE \
++		-DCMAKE_C_FLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 --param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC" \
++		-DCMAKE_EXE_LINKER_FLAGS="-fPIC" \
++		-DCURSES_INCLUDE_PATH="$(TOP)/libncurses/include" \
++		-DCURSES_LIBRARY="$(TOP)/libncurses/lib/libncurses.so.6.2" \
++		-DWITH_DEBUG=FALSE \
++		-DHAVE_LIBPTHREAD=TRUE \
++		-DSTACK_DIRECTION=1 \
++		-DDISABLE_SHARED=FALSE \
++		..
+ 
+ mysql: mysql/stamp-h1
+ 	@$(SEP)
+-	@$(MAKE) -C mysql
+-	@$(MAKE) -C mysql DESTDIR=$(TOP)/mysql/staged install
++	@$(MAKE) -C mysql/target
++	@$(MAKE) -C mysql/target DESTDIR=$(TOP)/mysql/staged install
+ 
+ mysql-clean:
+ 	-@$(MAKE) -C mysql clean
+-	-@rm -f mysql/stamp-h1
+-	-@rm -rf mysql/staged mysql/host
+-	-@rm -f mysql/.host.tgz
+-	$(call unpatch_files,mysql)
++	-@rm -rf mysql/host mysql/target mysql/build
+ 
+ mysql-install:
+ 	install -d $(INSTALLDIR)/mysql/usr/bin
+@@ -2244,20 +2246,20 @@
+ 	$(STRIP) $(INSTALLDIR)/mysql/usr/bin/mysqladmin
+ 	install -D -m 755 mysql/staged/usr/bin/mysqldump $(INSTALLDIR)/mysql/usr/bin
+ 	$(STRIP) $(INSTALLDIR)/mysql/usr/bin/mysqldump
+-	install -D -m 755 mysql/staged/usr/libexec/mysqld $(INSTALLDIR)/mysql/usr/libexec
++	install -D -m 755 mysql/staged/usr/bin/mysqld $(INSTALLDIR)/mysql/usr/libexec
+ 	$(STRIP) $(INSTALLDIR)/mysql/usr/libexec/mysqld
+ 	cd $(INSTALLDIR)/mysql/usr/bin && ln -sf ../libexec/mysqld mysqld
+ #	install -D -m 755 mysql/staged/usr/bin/mysqld_safe $(INSTALLDIR)/mysql/usr/bin
+-	install -D -m 755 mysql/staged/usr/lib/mysql/libmysqlclient.so.16.0.0 $(INSTALLDIR)/mysql/usr/lib/mysql
+-	$(STRIP) $(INSTALLDIR)/mysql/usr/lib/mysql/libmysqlclient.so.16.0.0
++	install -D -m 755 mysql/staged/usr/lib/mysql/libmysqlclient.so.18.0.0 $(INSTALLDIR)/mysql/usr/lib/mysql
++	$(STRIP) $(INSTALLDIR)/mysql/usr/lib/mysql/libmysqlclient.so.18.0.0
+ 	-@cd $(INSTALLDIR)/mysql/usr/lib/mysql && \
+-		ln -sf libmysqlclient.so.16.0.0 libmysqlclient.so.16 && \
+-		ln -sf libmysqlclient.so.16.0.0 libmysqlclient.so
+-	install -D -m 755 mysql/staged/usr/lib/mysql/libmysqlclient_r.so.16.0.0 $(INSTALLDIR)/mysql/usr/lib/mysql
+-	$(STRIP) $(INSTALLDIR)/mysql/usr/lib/mysql/libmysqlclient_r.so.16.0.0
++		ln -sf libmysqlclient.so.18.0.0 libmysqlclient.so.18 && \
++		ln -sf libmysqlclient.so.18.0.0 libmysqlclient.so
++	install -D -m 755 mysql/staged/usr/lib/mysql/libmysqlclient_r.so.18.0.0 $(INSTALLDIR)/mysql/usr/lib/mysql
++	$(STRIP) $(INSTALLDIR)/mysql/usr/lib/mysql/libmysqlclient_r.so.18.0.0
+ 	-@cd $(INSTALLDIR)/mysql/usr/lib/mysql && \
+-		ln -sf libmysqlclient_r.so.16.0.0 libmysqlclient_r.so.16 && \
+-		ln -sf libmysqlclient_r.so.16.0.0 libmysqlclient_r.so
++		ln -sf libmysqlclient_r.so.18.0.0 libmysqlclient_r.so.18 && \
++		ln -sf libmysqlclient_r.so.18.0.0 libmysqlclient_r.so
+ #	-@cd $(INSTALLDIR)/mysql/usr/lib/mysql/plugin && cp -arfpu $(TOP)/mysql/staged/usr/lib/mysql/plugin/* . && \
+ #	rm -f *.la *.a && \
+ #	$(STRIP) *.so.*
