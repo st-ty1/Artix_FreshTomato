@@ -53,7 +53,7 @@
 +		-DCMAKE_C_FLAGS="-O2 -Wall -fno-delete-null-pointer-checks -funit-at-a-time --param large-function-growth=800 --param max-inline-insns-single=3000 -ffunction-sections -fdata-sections -fPIC" \
 +		-DCMAKE_EXE_LINKER_FLAGS="-fPIC" \
 +		-DCURSES_INCLUDE_PATH="$(TOP)/libncurses/include" \
-+		-DCURSES_LIBRARY="$(TOP)/libncurses/lib/libncurses.so.6.2" \
++		-DCURSES_LIBRARY="$(TOP)/libncurses/lib/libncurses.so" \
 +		-DWITH_DEBUG=FALSE \
 +		-DHAVE_LIBPTHREAD=TRUE \
 +		-DSTACK_DIRECTION=1 \
