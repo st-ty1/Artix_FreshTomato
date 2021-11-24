@@ -2,7 +2,7 @@
 
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato/mysql
 FT_REPO_DIR=$HOME/freshtomato-arm
-FT_MYSQL_DIR=$$HOME/mysql-5.5.62
+FT_MYSQL_DIR=$HOME/mysql-5.5.62
 
 cd $FT_REPO_DIR
 
