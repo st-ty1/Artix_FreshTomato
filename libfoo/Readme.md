@@ -7,4 +7,5 @@ To get the perl script "libfoo.pl" included in FT-arm repo working, the followin
 	- Some new libs for shrinkage (i.e. the shared libraries of samba, gnutls and libtirpc and some new shared libs from Freshtomato source code) have to be added with "genSO" commands in the main part of the perl script. 
 	- The exit command in subroutine "fillGaps" has to be uncommented. Only this ensures a stop of the script with an error code in case of a symbol can't be resolved. 
 	- In the command "fixDynDep("minidlna", "libstdc.so.6")" in the subroutine "fixDyn" libstdc.so.6 has to be changed into libstdc++.so.6.
+
 A build script taking care of step 1.-3. is included in this repo.
