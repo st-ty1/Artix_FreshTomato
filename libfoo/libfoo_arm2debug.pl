@@ -61,7 +61,7 @@ sub load
 	print LOG2 "\nreadelf $base:";
 	print LOG2 "\tfound $fname with basename $base   ... analysing: \n";
 
-	open($f, "/home/stephan/freshtomato-arm/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/arm-brcm-linux-uclibcgnueabi-readelf -WhsdD ${fname} 2>&1 |") || error("readelf - $!\n");
+	open($f, "${uclibc}/bin/arm-brcm-linux-uclibcgnueabi-readelf -WhsdD ${fname} 2>&1 |") || error("readelf - $!\n");
 	
 	while (<$f>) {
 #		print LOG2;
