@@ -15,6 +15,15 @@ on wsl2/Windows then you should also install the nano package.
 
 With introduction of irq-balance in source code of FT-arm, Makefile_arm.patch is now needed for compiling both arm versions of FT sources on Artix/Arch Linux.
 You can apply patch to directly to /release/src-rt-6.x.4708/router/Makefile before starting building process or use one of the supplied patches build_ft-arm7.sh/build_ft-arm.sh of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
+
+In source code of FT-mips, file desdata.stamp in relase/src/router/nettle has to be deleted. arm. You can delete this file just before starting building process or use one of the supplied patches build_ft-mips-RT.sh/build_ft-mips-RT-N/build_ft-mips-RT-AC.sh of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
+
+Best practice:
+   - Copy or clone this repo into a subfolder of your home directory. 
+   - Make the shell script executable you need for your router model (depending on architecture of CPU of router) .
+   - Please have a look into the shell script, as the path to your local FT-repo is defined in FT_REPO_DIR and the path to your local copy/repo of Artix_FreshTomato is defined in FT_PATCHES_DIR. You should change them to your own needs.
+   - Start the shell script. Applying of the shell script is only needed, if you are working with "git clean -dxf" (e.g. 1st build after cloning repo, after updating repo, ...) for cleaning sources. If cleaning of sources is done only by "make clean", the start script and patches are not needed anymore. 
+
 BR
 
 st-ty1/\_st_ty/st_ty_
