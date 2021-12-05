@@ -1,6 +1,6 @@
 #! /bin/sh
 
-FT_PATCHES_DIR=$HOME/Dokumente/freshtomato-mips
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato
 FT_REPO_DIR=$HOME/freshtomato-mips
 
 clear
