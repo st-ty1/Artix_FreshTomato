@@ -14,9 +14,8 @@ git checkout arm-master
 clear
 
 #libfoo_arm
-cp -v $LIBFOO_DIR/libfoo_arm2.pl $FT_REPO_DIR/release/src-rt-6.x.4708/btools/libfoo.pl
+cp -v $LIBFOO_DIR/libfoo_arm.pl $FT_REPO_DIR/release/src-rt-6.x.4708/btools/libfoo.pl
 patch -i $LIBFOO_DIR/Makefile_libfoo.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
-patch -i $LIBFOO_DIR/Makefile_lib_so.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 
 cd $FT_REPO_DIR/release/src-rt-6.x.4708
 
