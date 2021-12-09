@@ -1,7 +1,5 @@
 include ../common.mak
 
-srcdir=bin/default/source3/utils/
-
 export PARALLEL_BUILD := -j`grep -c '^processor' /proc/cpuinfo`
 
 SMBCFLAGS = $(EXTRACFLAGS) $(CFLAG_OPTIMIZE) -ffunction-sections -fdata-sections -I$(TOP)/libiconv/include $(OPTSIZE_FLAG)
@@ -10,7 +8,7 @@ SMBLDFLAGS = -ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libi
 all: .conf_target
 
 .conf_host:
-	python_LDFLAGS="" python_LIBDIR="" CC=gcc LD=ld AR=ar RANLIB=ranlib CFLAGS="-O2" ./configure --hostcc=gcc \
+	python_LDFLAGS="" python_LIBDIR="" CC=gcc LD=ld AR=ar RANLIB=ranlib CFLAGS="-O2" ./buildtools/bin/waf configure --hostcc=gcc \
 		--disable-cups \
 		--disable-iprint \
 		--disable-cephfs \
@@ -37,7 +35,7 @@ all: .conf_target
 		--disable-avahi \
 		--without-quotas --without-acl-support --without-winbind \
 		--without-ad-dc --without-libarchive \
-		--without-json-audit --disable-gnutls  
+		--without-json-audit --disable-gnutls \
 		--disable-python --nopyc --nopyo \
 		--without-dnsupdate --without-ads --without-ldap 
 
@@ -51,7 +49,7 @@ all: .conf_target
 	python_LDFLAGS="" python_LIBDIR="" CFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC -I/usr/include/tirpc" \
 		CPPFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC" \
 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L/home/stephan/Dokumente/freshtomato-samba4/libtirpc_1.1.4/src/.libs -ltirpc" \
-		CC=mipsel-linux-gcc AR=mipsel-linux-ar CPP=mipsel-linux-cpp LD=mipsel-linux-ld RANLIB=mipsel-linux-ranlib ./configure \
+		CC=mipsel-linux-gcc AR=mipsel-linux-ar CPP=mipsel-linux-cpp LD=mipsel-linux-ld RANLIB=mipsel-linux-ranlib ./buildtools/bin/waf configure \
 		--cross-compile \
 		--cross-answers=answer.txt \
 		--disable-cups \
