@@ -7,7 +7,7 @@ FT_REPO_DIR=$HOME/freshtomato-arm
 FT_TOOLCHAIN_DIR=$HOME/toolchain-arm_new
 
 ## path to your local repo of Artix_Freshtomato-arm_Samba4
-FT_SAMBA_DIR=$FT_PATCHES_DIR/arm-Samba4
+FT_SAMBA_DIR=$HOME/Artix_FreshTomato/arm-Samba4
 
 ## path to extracted libtirpc-sources
 LIBTIRPC_DIR=$HOME/libtirpc-1.2.5
