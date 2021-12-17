@@ -13,7 +13,7 @@ HowTo: Rebuild arm-toolchain (gcc 4.5.3 + uClibc 0.9.3X.X) for FreshTomato with 
     buildroot-2012.02/support/scripts/setlocalversion
     buildroot-2012.02/support/scripts/apply-patches.sh
 
-3.) Rename buildroot-2012.02/defconfig-arm-uclibc to .config.
+3.) Copy buildroot-2012.02/dl/defconfig-arm-uclibc to buildroot-2012.02 an rename it to .config.
     Additionally in this .config file, change directory of BR2_STAGING_DIR= to a directory you have write permission to (default: "$(HOST_DIR)/usr").
     
 4.) In buildroot-2012.02/toolchain/uClibc/uClibc-0.9.32.config change "#UCLIBC_SUPPORT_AI_ADDRCONFIG is not set" 
