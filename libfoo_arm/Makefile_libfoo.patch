@@ -10,5 +10,5 @@
 -endif
 +#endif
  else
- 	@$(SRCBASE)/btools/libfoo.pl
+ 	@$(SRCBASE)/btools/libfoo.pl --noopt
  endif
