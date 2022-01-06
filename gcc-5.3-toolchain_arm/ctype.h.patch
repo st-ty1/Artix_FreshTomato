@@ -1,0 +1,18 @@
+--- ctype.h.orig	2021-12-30 19:54:43.893929000 +0100
++++ ctype.h	2021-12-24 14:28:29.401947300 +0100
+@@ -68,12 +68,12 @@
+ 
+ /* ISO C99 introduced one new function.  */
+ #ifdef	__USE_ISOC99
+-__BEGIN_NAMESPACE_C99
++ __BEGIN_NAMESPACE_C99 
+ 
+-//extern int isblank(int __c) __THROW;
++/*extern int isblank(int __c) __THROW;*/
+ 
+ __END_NAMESPACE_C99
+-#endif
++#endif 
+ __END_DECLS
+ 
+ #ifndef __UCLIBC_HAS_CTYPE_TABLES__

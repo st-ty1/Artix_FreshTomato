@@ -1,0 +1,21 @@
+--- configure.ac_dnscrypt.orig	2021-12-30 19:54:43.443929000 +0100
++++ configure.ac_dnscrypt	2021-12-30 12:26:38.895932900 +0100
+@@ -246,12 +246,12 @@
+ 
+ AC_SUBST([PROBES_SOURCE])
+ 
+-AS_IF([test -d /usr/local/include], [
+-  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+-])
+-AS_IF([test -d /usr/local/lib], [
+-  LDFLAGS="$LDFLAGS -L/usr/local/lib"
+-])
++dnl AS_IF([test -d /usr/local/include], [
++dnl  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
++dnl ])
++dnl AS_IF([test -d /usr/local/lib], [
++dnl   LDFLAGS="$LDFLAGS -L/usr/local/lib"
++dnl ])
+ 
+ AS_IF([test -d /usr/local/opt/libressl/include], [
+   CPPFLAGS="$CPPFLAGS -I/usr/local/opt/libressl/include"

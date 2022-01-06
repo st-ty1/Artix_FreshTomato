@@ -6,7 +6,7 @@ FT_REPO_DIR=$HOME/freshtomato-arm
 cd $FT_REPO_DIR 
 git clean -dxf 
 git reset --hard
-#git pull
+git pull
 
 git checkout arm-master
 

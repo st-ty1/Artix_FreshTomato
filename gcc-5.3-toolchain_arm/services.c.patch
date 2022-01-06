@@ -1,0 +1,25 @@
+--- services.c.orig	2021-12-30 19:54:43.443929000 +0100
++++ services.c	2021-12-23 17:26:47.581022500 +0100
+@@ -2995,7 +2995,7 @@
+ 	unsigned char ea[ETHER_ADDR_LEN];
+ 	char serial[18], uuid[37];
+ 	char *buf, *p, *q;
+-	char *path, *restrict;
++	char *path, *restrct;
+ 
+ 	if (!nvram_get_int("ms_enable"))
+ 		return;
+@@ -3064,11 +3064,11 @@
+ 				/* path<restrict[A|V|P|] */
+ 				p = buf;
+ 				while ((q = strsep(&p, ">")) != NULL) {
+-					if ((vstrsep(q, "<", &path, &restrict) < 1) || (!path) || (!*path))
++					if ((vstrsep(q, "<", &path, &restrct) < 1) || (!path) || (!*path))
+ 						continue;
+ 
+ 					fprintf(f, "media_dir=%s%s%s\n",
+-						restrict ? : "", (restrict && *restrict) ? "," : "", path);
++						restrct ? : "", (restrct && *restrct) ? "," : "", path);
+ 				}
+ 				free(buf);
+ 			}

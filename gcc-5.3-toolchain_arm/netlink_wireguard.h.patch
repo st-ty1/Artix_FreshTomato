@@ -1,0 +1,10 @@
+--- netlink_wireguard.h.orig	2021-12-30 19:54:43.453929000 +0100
++++ netlink_wireguard.h	2021-12-28 11:43:51.958594900 +0100
+@@ -24,6 +24,7 @@
+ #define MNL_ALIGN(len) (((len)+MNL_ALIGNTO-1) & ~(MNL_ALIGNTO-1))
+ #define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
+ #define MNL_ATTR_HDRLEN MNL_ALIGN(sizeof(struct nlattr))
++#define NLM_F_DUMP_INTR		16	/* Dump was inconsistent due to sequence change */
+ 
+ enum mnl_attr_data_type {
+ 	MNL_TYPE_UNSPEC,

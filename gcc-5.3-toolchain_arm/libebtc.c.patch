@@ -1,0 +1,14 @@
+--- libebtc.c.orig	2021-12-30 19:54:43.443929000 +0100
++++ libebtc.c	2021-12-24 14:12:15.381947300 +0100
+@@ -38,6 +38,11 @@
+ #include <errno.h>
+ #include <libgen.h>
+ 
++#ifndef O_CLOEXEC
++#define O_CLOEXEC	02000000	/* set close_on_exec */
++#endif
++
++
+ static void decrease_chain_jumps(struct ebt_u_replace *replace);
+ static int iterate_entries(struct ebt_u_replace *replace, int type);
+ 
