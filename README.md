@@ -16,8 +16,8 @@ It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches 
 With introduction of irq-balance in source code of FT-arm, Makefile_arm.patch is now needed for compiling both arm versions of FT sources on Artix/Arch Linux.
 You can apply patch to directly to /release/src-rt-6.x.4708/router/Makefile before starting building process or use one of the supplied patches build_ft-arm7.sh/build_ft-arm.sh of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
 
-(Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead with an amended LIB path. This is done by using Makefile_arm_alternate.patch on Makefile.
-Currently this patch needs to be updated, due to some new additional la-files in source code)
+(Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead of an amended LIB path. This is done by applying Makefile_arm_alternate.patch on Makefile.
+Currently, this patch needs to be updated, due to some new additional *.la-files in FT source code.)
 
 Best practice:
    - Copy or clone this repo into a subfolder of your home directory. 
