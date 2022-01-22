@@ -11,7 +11,7 @@ The precompiled 32-bit host-tools of FT need also following packages: lib32-glib
 For generating/editing Artix-specific patches installing of package diffutils should be helpful. If you are working with Artix or Arch Linux 
 on wsl2/Windows then you should also install the nano package or you can use a smart editor on Windows (like Notepad++).
 
-It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches there is a manual in this repo) without (!) any desktop environment or unneeded packages, to keep the needed patches as low as possible. Any additional package, like graphical environments, can make build process more complicate, as execectables on Artix/Arch Linux are build with shared libs, which can mislead the building tools within the FT sources, at worst.
+It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches there is a manual in this repo) without (!) any desktop environment or unneeded packages, to keep the needed patches as low as possible. Any additional package, like graphical environments, can make build process more complicate, as executables on Artix/Arch Linux are build with shared libs, which can mislead the building tools within the FT sources, at worst.
 
 With introduction of irq-balance in source code of FT-arm, Makefile_arm.patch is now needed for compiling both arm versions of FT sources on Artix/Arch Linux.
 You can apply patch to directly to /release/src-rt-6.x.4708/router/Makefile before starting building process or use one of the supplied patches build_ft-arm7.sh/build_ft-arm.sh of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
