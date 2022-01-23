@@ -90,7 +90,7 @@ cp -vf $FT_PATCHES_DIR/FT/libfoo_mips2.pl $FT_REPO_DIR/release/src/btools/libfoo
 cp -vf $FT_PATCHES_DIR/FT/Makefile_linux $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/Makefile
 ##         known patch to use gcc5
 patch -p1 -d$FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6 < $FT_PATCHES_DIR/FT/linux-2.6.32.60-gcc5.patch
-##          "alias"-functions not allowed anymore in binutils 2.23
+##          "alias"-functions not allowed anymore in binutils 2.23.2
 ##          backport of arch-specific memeory management parts of linux 2.6.26 and patch similar to  https://patchwork.linux-mips.org/patch/3866
 cp -vf $FT_PATCHES_DIR/FT/page.c $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/mm
 cp -vf $FT_PATCHES_DIR/FT/uasm.c $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/mm
@@ -101,6 +101,17 @@ cp -vf $FT_PATCHES_DIR/FT/bugs.h $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/i
 cp -vf $FT_PATCHES_DIR/FT/cpu-features.h $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips
 cp -vf $FT_PATCHES_DIR/FT/page-funcs.S $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/mm
 cp -vf $FT_PATCHES_DIR/FT/mips_ksyms.c $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel
+##          binutils >=2.24 differentiate much more between soft-float and hard-float code; 
+##          !!!up to now not checked, if it works together with "alias"-patch -> as precaution, temporarily fallback to binutils 2.23.2 
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/r4k_fpu.S $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/r4k_switch.S $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/genex.S $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/branch.c $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/mipsregs.h $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/fpregdef.h $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/asmmacro-32.h $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips
+#cp -vf $FT_PATCHES_DIR/FT/binutils_2.25.2/Makefile_arch_mips $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/Makefile
+
 
 ## 3.2 kernel-modules: et-driver
 cp -vf $FT_PATCHES_DIR/FT/etc.c $FT_REPO_DIR/release/$RT_VERS/et/sys
