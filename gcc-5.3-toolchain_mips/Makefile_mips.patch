@@ -59,27 +59,6 @@
  	$(STRIP) $(TARGETDIR)/lib/*.so.0
  endif
  
-@@ -751,13 +754,13 @@
- 
- 	@echo ---
- 
--ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
--ifneq ($(TCONFIG_BCMARM),y)
--	@$(SRCBASE)/btools/libfoo.pl
--endif
--else
--	@$(SRCBASE)/btools/libfoo.pl --noopt
--endif
-+#ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
-+#ifneq ($(TCONFIG_BCMARM),y)
-+#	@$(SRCBASE)/btools/libfoo.pl
-+#endif
-+#else
-+#	@$(SRCBASE)/btools/libfoo.pl --noopt
-+#endif
- 	@chmod 0555 $(TARGETDIR)/lib/*.so*
- 	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
- 
 @@ -2101,7 +2104,7 @@
  			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
  		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
@@ -117,51 +96,6 @@
  			-DWITH_ZLIB=system \
  			-DZLIB_INCLUDE_DIR="$(TOP)/zlib/staged/usr/include" \
  			-DZLIB_LIBRARY="$(TOP)/zlib/staged/usr/lib/libz.so" \
-@@ -2709,7 +2711,7 @@
- 		OPENSSL_CFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
- 		OPENSSL_LIBS="-L$(TOP)/$(OPENSSLDIR) -lcrypto -lssl" \
- 		CFLAGS="$(if $(TCONFIG_BCMARM),-O3,$(CFLAG_OPTIMIZE)) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
--		LDFLAGS="-L$(TOP)/$(OPENSSLDIR) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
-+		LDFLAGS="-L$(TOP)/$(OPENSSLDIR) $(if $(INSTALL_ZLIB),-L$(TOP)/zlib -lz,) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		CPPFLAGS="-I$(TOP)/lzo/include -I$(TOP)/$(OPENSSLDIR)/include" \
- 		PLUGINDIR="/lib" IPROUTE="/usr/sbin/ip" \
- 		$(CONFIGURE) --prefix=/usr --bindir=/usr/sbin --libdir=/usr/lib \
-@@ -2737,7 +2739,7 @@
- 		OPENSSL_CFLAGS="-I$(TOP)/$(OPENSSLDIR)/staged/usr/include" \
- 		OPENSSL_LIBS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -lcrypto -lssl" \
- 		CFLAGS="$(if $(TCONFIG_BCMARM),-O3,$(CFLAG_OPTIMIZE)) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
--		LDFLAGS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
-+		LDFLAGS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(INSTALL_ZLIB),-L$(TOP)/zlib/staged/usr/lib -lz,) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		CPPFLAGS="-I$(TOP)/lzo/include -I$(TOP)/$(OPENSSLDIR)/staged/usr/include" \
- 		PLUGINDIR="/lib" IPROUTE="/usr/sbin/ip" \
- 		$(CONFIGURE) --prefix=/usr --bindir=/usr/sbin --libdir=/usr/lib \
-@@ -2960,7 +2962,7 @@
- 
- e2fsprogs: e2fsprogs/stamp-h1
- 	@$(SEP)
--	$(MAKE) -C $@ $(PARALLEL_BUILD)
-+	$(MAKE) -C e2fsprogs $(PARALLEL_BUILD)
- 
- e2fsprogs-install:
- 	install -D e2fsprogs/e2fsck/e2fsck $(INSTALLDIR)/e2fsprogs/usr/sbin/e2fsck
-@@ -3155,7 +3157,7 @@
- 	@true
- 
- libsodium-clean:
--	-@$(MAKE) -C libsodium clean
-+	-$(MAKE) -C libsodium clean
- 	@rm -f libsodium/stamp-h1
- 
- dnscrypt/stamp-h1:
-@@ -3196,7 +3198,7 @@
- 	@true
- 
- libyaml-clean:
--	-@$(MAKE) -C libyaml clean
-+	-$(MAKE) -C libyaml clean
- 	@rm -f libyaml/stamp-h1
- 	@rm -rf libyaml/src/.deps libyaml/src/tests/.deps
- 
 @@ -3483,7 +3485,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
  		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
@@ -171,15 +105,6 @@
  		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc localstatedir=/var --with-distro=none \
  			--enable-introspection=no \
  			--disable-nls --disable-glib --disable-gobject \
-@@ -3526,7 +3528,7 @@
- 	chmod 0500 $(INSTALLDIR)/wireguard-tools/usr/sbin/wg
- 
- wireguard-tools-clean:
--	-@$(MAKE) -C wireguard-tools/src clean
-+	$(MAKE) -C wireguard-tools/src clean
- 	@rm -f $(TOP)/wireguard-tools/staged/bin/wg
- 
- gettext-tiny/stamp-h1:
 @@ -3674,7 +3676,7 @@
  libnetfilter_log/stamp-h1:
  	cd libnetfilter_log && \
@@ -198,20 +123,6 @@
  
  libnetfilter_log-install:
  	install -d $(INSTALLDIR)/libnetfilter_log/usr/lib/
-@@ -3777,9 +3779,10 @@
- 		ln -s fsck.hfsplus fsck.hfs
- 
- diskdev_cmds-332.25-clean:
--	-@cd diskdev_cmds-332.25 && make -f Makefile.lnx clean
--	@rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/mkfs.hfs
--	@rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
-+	cd diskdev_cmds-332.25 && \
-+		make -f Makefile.lnx clean
-+	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/mkfs.hfs
-+	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
- 	$(call unpatch_files,diskdev_cmds-332.25)
- 
- libffi/stamp-h1:
 @@ -3810,7 +3813,7 @@
  	cd glib2 && ./autogen.sh && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
