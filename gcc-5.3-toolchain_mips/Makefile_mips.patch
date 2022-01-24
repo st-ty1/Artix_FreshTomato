@@ -80,32 +80,6 @@
  	@chmod 0555 $(TARGETDIR)/lib/*.so*
  	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
  
-@@ -1541,7 +1544,7 @@
- vsftpd-clean:
- 	$(call unpatch_files,vsftpd)
- 
--ufsd: kernel_header kernel
-+ufsd: kernel_header
- 	@$(MAKE) -C $@ all
- 
- ufsd-install: ufsd
-@@ -1637,14 +1640,14 @@
- wsdd2:
- 	$(call patch_files,wsdd2)
- 	@$(SEP)
--	@$(MAKE) -C $@ CFLAGS="-Os -Wall -std=gnu99 $(EXTRACFLAGS) -ffunction-sections -fdata-sections -DTOMATO -I$(TOP)/shared" LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections"
-+	@$(MAKE) CFLAGS="-Os -Wall -std=gnu99 $(EXTRACFLAGS) -ffunction-sections -fdata-sections -DTOMATO -I$(TOP)/shared" LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" -C $@
- 
- wsdd2-install:
- 	install -D wsdd2/wsdd2 $(INSTALLDIR)/wsdd2/usr/sbin/wsdd2
- 	$(STRIP) $(INSTALLDIR)/wsdd2/usr/sbin/wsdd2
- 
- wsdd2-clean:
--	-@$(MAKE) -C wsdd2 clean
-+	@$(MAKE) -C wsdd2 clean
- 	$(call unpatch_files,wsdd2)
- 
- accel-pptp/Makefile: accel-pptp/Makefile.in $(LINUXDIR)/include/linux/version.h
 @@ -2101,7 +2104,7 @@
  			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
  		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
