@@ -1,23 +1,5 @@
 --- a/release/src/btools/libfoo.pl	2022-01-24 14:05:37.466249900 +0100
 +++ b/gcc-5.3-toolchain_mips/libfoo_mips2.pl	2022-01-08 16:48:12.906611200 +0100
-@@ -29,7 +29,7 @@
- 
- sub load
- {
--	my $fname = shift;
-+    my $fname = shift;
- 
- 	if ((-l $fname) ||
- 		($fname =~ /\/lib\/modules\/\d+\.\d+\.\d+/) ||
-@@ -60,7 +60,7 @@
- 	print LOG "\n\nreadelf $base:\n";
- 	
- 	open($f, "mipsel-linux-readelf -WhsdD ${fname} 2>&1 |") || error("readelf - $!\n");
--	
-+
- 	while (<$f>) {
- 		print LOG;
- 
 @@ -140,9 +140,15 @@
  	foreach (@elfs) {
  		if (/^libipt_.+\.so$/) {
