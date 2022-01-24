@@ -1,0 +1,22 @@
+--- a/release/src/router/iptables/iptables-multi.c	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/iptables-multi.c	2022-01-04 17:04:57.000000000 +0100
+@@ -6,7 +6,7 @@
+ int iptables_main(int argc, char **argv);
+ int iptables_save_main(int argc, char **argv);
+ int iptables_restore_main(int argc, char **argv);
+-int iptables_xml_main(int argc, char **argv);
++//int iptables_xml_main(int argc, char **argv);
+ 
+ int main(int argc, char **argv) {
+   char *progname;
+@@ -26,8 +26,8 @@
+     if (!strcmp(progname, "iptables-restore"))
+       return iptables_restore_main(argc, argv);
+     
+-    if (!strcmp(progname, "iptables-xml"))
+-      return iptables_xml_main(argc, argv);
++/*    if (!strcmp(progname, "iptables-xml"))
++      return iptables_xml_main(argc, argv); */
+     
+     fprintf(stderr, "iptables multi-purpose version: unknown applet name %s\n", progname);
+     exit(1);

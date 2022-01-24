@@ -1,0 +1,18 @@
+--- a/tools/brcm/K26/hndtools-mipsel-uclibc-5.3/usr/mipsel-brcm-linux-uclibc/sysroot/usr/include/ctype.h	2022-01-24 14:05:40.736249900 +0100
++++ b/gcc-5.3-toolchain_mips/ctype.h	2021-12-31 12:30:09.000000000 +0100
+@@ -68,12 +68,12 @@
+ 
+ /* ISO C99 introduced one new function.  */
+ #ifdef	__USE_ISOC99
+-__BEGIN_NAMESPACE_C99
++ __BEGIN_NAMESPACE_C99 
+ 
+-extern int isblank(int __c) __THROW;
++/*extern int isblank(int __c) __THROW;*/
+ 
+ __END_NAMESPACE_C99
+-#endif
++#endif 
+ __END_DECLS
+ 
+ #ifndef __UCLIBC_HAS_CTYPE_TABLES__

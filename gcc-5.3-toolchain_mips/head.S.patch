@@ -1,5 +1,5 @@
---- head.S_orig	2022-01-08 16:46:11.976611200 +0100
-+++ head.S	2022-01-01 12:56:03.000000000 +0100
+--- a/release/src/lzma-loader/head.S	2022-01-24 14:05:37.466249900 +0100
++++ b/gcc-5.3-toolchain_mips/head.S	2022-01-01 12:56:03.000000000 +0100
 @@ -4,8 +4,8 @@
  /* Copyright 2004 Manuel Novoa III (mjn3@codepoet.org)	*/
  /* Licensed under the linux kernel's version of the GPL.*/

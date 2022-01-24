@@ -1,0 +1,20 @@
+--- a/release/src-rt-6.x/et/sys/etc_adm.c	2022-01-24 14:05:37.466249900 +0100
++++ b/gcc-5.3-toolchain_mips/etc_adm.c	2022-01-02 17:11:37.000000000 +0100
+@@ -108,14 +108,14 @@
+ static void
+ adm_enable(adm_info_t *adm)
+ {
+-	void *regs;
++/*	void *regs;*/
+ 
+ 	/* Save current core index */
+ 	adm->coreidx = si_coreidx(adm->sih);
+ 
+ 	/* Switch to GPIO core for faster access */
+-	regs = si_gpiosetcore(adm->sih);
+-	ASSERT(regs);
++/*	regs = si_gpiosetcore(adm->sih); */
++	ASSERT(si_gpiosetcore(adm->sih));
+ }
+ 
+ /* Disable register access to the chip */

@@ -1,0 +1,329 @@
+--- a/release/src/router/Makefile	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/Makefile_mips	2022-01-16 15:18:56.132276900 +0100
+@@ -62,13 +62,14 @@
+ SEP=`$(eval progress=$(shell echo $$(($(progress)+1))))` \
+ printf "\n\033[41;1m   $@ ${progress}$\/${totalSteps} \033[0m\033]2;Building $@ ${progress}$\/${totalSteps}\007\n"
+ 
+-export PARALLEL_BUILD := -j$(shell grep -c '^processor' /proc/cpuinfo)
++#export PARALLEL_BUILD := -j$(shell grep -c '^processor' /proc/cpuinfo)
++export PARALLEL_BUILD :=
+ export HAVE_TOMATO := y
+ comma := ,
+ 
+-MEDIA_SERVER_STATIC =
+-export INSTALL_ZLIB := $(if $(or $(TCONFIG_BBT)$(TCONFIG_TOR)$(TCONFIG_NGINX)$(TCONFIG_TINC)$(TCONFIG_ZFS)$(TCONFIG_IRQBALANCE),$(if $(TCONFIG_MEDIA_SERVER),$(if $(MEDIA_SERVER_STATIC),,y),)),y,)
+-export INSTALL_SQLITE := $(if $(or $(TCONFIG_NGINX),$(if $(TCONFIG_MEDIA_SERVER),$(if $(MEDIA_SERVER_STATIC),,y),)),y,)
++MEDIA_SERVER_STATIC=
++INSTALL_ZLIB := $(if $(or $(TCONFIG_BBT)$(TCONFIG_TOR)$(TCONFIG_NGINX),$(if $(MEDIA_SERVER_STATIC),,y)),y,)
++INSTALL_SQLITE := $(if $(or $(TCONFIG_NGINX),$(if $(MEDIA_SERVER_STATIC),,y)),y,)
+ 
+ ifeq ($(TCONFIG_BCMWL6),y)
+  export CFLAGS += -DTRAFFIC_MGMT
+@@ -219,13 +220,13 @@
+ # packages
+ #
+ 
+-
++obj-y += kernel
+ ifeq ($(TCONFIG_BCMARM),y)
+  obj-y += libbcm
+ else
+  obj-y += lzma-loader
+ endif
+-
++obj-y += $(IPTABLES_TARGET)
+ obj-y += busybox
+ obj-y += shared
+ obj-y += nvram$(BCMEX)
+@@ -316,9 +317,8 @@
+ obj-$(TCONFIG_USB) += pdureader
+ obj-$(TCONFIG_USB) += sd-idle
+ obj-$(TCONFIG_UPS) += apcupsd
+-ifneq ($(TCONFIG_BCMARM)$(TCONFIG_NGINX),)
+- obj-$(TCONFIG_SAMBASRV) += libiconv
+-endif
++obj-$(TCONFIG_SAMBASRV) += libiconv
++obj-$(TCONFIG_SAMBASRV) += zlib
+ obj-$(TCONFIG_SAMBASRV) += samba3
+ obj-$(TCONFIG_SAMBASRV) += wsdd2
+ 
+@@ -378,6 +378,7 @@
+ obj-$(TCONFIG_ZEBRA) += zebra
+ 
+ ifeq ($(TCONFIG_OPENVPN),y)
++ obj-$(INSTALL_ZLIB) += zlib
+  obj-y += lzo
+  obj-y += $(OPENSSLDIR)
+  ifeq ($(TCONFIG_OPTIMIZE_SIZE_MORE),y)
+@@ -409,7 +410,7 @@
+ obj-$(TCONFIG_NGINX) += pcre
+ obj-$(TCONFIG_NGINX) += libncurses
+ ifneq ($(TCONFIG_BCMARM),y)
+- obj-$(TCONFIG_NGINX) += libatomic_ops
++# obj-$(TCONFIG_NGINX) += libatomic_ops
+ endif
+ obj-$(TCONFIG_NGINX) += libiconv
+ obj-$(TCONFIG_NGINX) += libxml2
+@@ -708,26 +709,28 @@
+ endif
+ 
+ # uClibc
+-	install $(LIBDIR)/ld-uClibc.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libcrypt.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libpthread.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libgcc_s.so.1 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/ld-uClibc.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libcrypt.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libpthread.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libgcc_s.so.1 $(TARGETDIR)/lib/
+ 	$(STRIP) $(TARGETDIR)/lib/libgcc_s.so.1
+-	install $(LIBDIR)/libc.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libdl.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libc.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libdl.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libm.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libnsl.so.0 $(TARGETDIR)/lib/
++ifneq ($(TCONFIG_BCMARM)$(TCONFIG_SSH),)
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libutil.so.0 $(TARGETDIR)/lib/
++endif
+ ifeq ($(TCONFIG_USB),y)
+ ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ else
+-	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ endif
+ endif # TCONFIG_USB
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
+ ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ else
+ 	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_BCMARM
+@@ -735,7 +738,7 @@
+ 	$(STRIP) $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_NGINX TCONFIG_NANO
+ ifneq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-	install $(LIBDIR)/libresolv.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libresolv.so.0 $(TARGETDIR)/lib/
+ 	$(STRIP) $(TARGETDIR)/lib/*.so.0
+ endif
+ 
+@@ -751,13 +754,13 @@
+ 
+ 	@echo ---
+ 
+-ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	@$(SRCBASE)/btools/libfoo.pl
+-endif
+-else
+-	@$(SRCBASE)/btools/libfoo.pl --noopt
+-endif
++#ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
++#ifneq ($(TCONFIG_BCMARM),y)
++#	@$(SRCBASE)/btools/libfoo.pl
++#endif
++#else
++#	@$(SRCBASE)/btools/libfoo.pl --noopt
++#endif
+ 	@chmod 0555 $(TARGETDIR)/lib/*.so*
+ 	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
+ 
+@@ -1541,7 +1544,7 @@
+ vsftpd-clean:
+ 	$(call unpatch_files,vsftpd)
+ 
+-ufsd: kernel_header kernel
++ufsd: kernel_header
+ 	@$(MAKE) -C $@ all
+ 
+ ufsd-install: ufsd
+@@ -1637,14 +1640,14 @@
+ wsdd2:
+ 	$(call patch_files,wsdd2)
+ 	@$(SEP)
+-	@$(MAKE) -C $@ CFLAGS="-Os -Wall -std=gnu99 $(EXTRACFLAGS) -ffunction-sections -fdata-sections -DTOMATO -I$(TOP)/shared" LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections"
++	@$(MAKE) CFLAGS="-Os -Wall -std=gnu99 $(EXTRACFLAGS) -ffunction-sections -fdata-sections -DTOMATO -I$(TOP)/shared" LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" -C $@
+ 
+ wsdd2-install:
+ 	install -D wsdd2/wsdd2 $(INSTALLDIR)/wsdd2/usr/sbin/wsdd2
+ 	$(STRIP) $(INSTALLDIR)/wsdd2/usr/sbin/wsdd2
+ 
+ wsdd2-clean:
+-	-@$(MAKE) -C wsdd2 clean
++	@$(MAKE) -C wsdd2 clean
+ 	$(call unpatch_files,wsdd2)
+ 
+ accel-pptp/Makefile: accel-pptp/Makefile.in $(LINUXDIR)/include/linux/version.h
+@@ -2101,7 +2104,7 @@
+ 			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
+ 		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
+ 			-L$(TOP)/jpeg -L$(TOP)/flac/src/libFLAC/.libs -L$(TOP)/libid3tag/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/ffmpeg/libavformat -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavutil" \
+-		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm" \
++		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm -lgcc_s" \
+ 		ac_cv_lib_id3tag__lz___id3_file_open=yes \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
+@@ -2499,8 +2502,8 @@
+ 	cd nginx && \
+ 		./configure --crossbuild=Linux::$(ARCH) \
+ 			--with-cc="$(CC)" \
+-			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include $(if $(TCONFIG_BCMARM),,-I$(TOP)/libatomic_ops/src/$(comma)libs)" \
+-			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(TCONFIG_BCMARM),,-L$(TOP)/libatomic_ops/src)" \
++			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include" \
++			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib" \
+ 			--prefix=/usr \
+ 			--sbin-path=/usr/sbin \
+ 			--conf-path=/etc/nginx/nginx.conf \
+@@ -2518,7 +2521,6 @@
+ 			--with-http_gzip_static_module \
+ 			--with-http_v2_module \
+ 			--with-http_realip_module \
+-			$(if $(TCONFIG_BCMARM),,--with-libatomic=$(TOP)/libatomic_ops) \
+ 			$(if $(TCONFIG_IPV6),--with-ipv6,)
+ 	@touch $@
+ 
+@@ -2618,7 +2620,7 @@
+ 			-DWITH_FEDERATED_STORAGE_ENGINE=FALSE \
+ 			-DWITH_NDBCLUSTER_STORAGE_ENGINE=FALSE \
+ 			-DCURSES_INCLUDE_PATH="$(TOP)/libncurses/staged/usr/include" \
+-			-DCURSES_NCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
++			-DCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
+ 			-DWITH_ZLIB=system \
+ 			-DZLIB_INCLUDE_DIR="$(TOP)/zlib/staged/usr/include" \
+ 			-DZLIB_LIBRARY="$(TOP)/zlib/staged/usr/lib/libz.so" \
+@@ -2709,7 +2711,7 @@
+ 		OPENSSL_CFLAGS="-I$(TOP)/$(OPENSSLDIR)/include" \
+ 		OPENSSL_LIBS="-L$(TOP)/$(OPENSSLDIR) -lcrypto -lssl" \
+ 		CFLAGS="$(if $(TCONFIG_BCMARM),-O3,$(CFLAG_OPTIMIZE)) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+-		LDFLAGS="-L$(TOP)/$(OPENSSLDIR) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
++		LDFLAGS="-L$(TOP)/$(OPENSSLDIR) $(if $(INSTALL_ZLIB),-L$(TOP)/zlib -lz,) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		CPPFLAGS="-I$(TOP)/lzo/include -I$(TOP)/$(OPENSSLDIR)/include" \
+ 		PLUGINDIR="/lib" IPROUTE="/usr/sbin/ip" \
+ 		$(CONFIGURE) --prefix=/usr --bindir=/usr/sbin --libdir=/usr/lib \
+@@ -2737,7 +2739,7 @@
+ 		OPENSSL_CFLAGS="-I$(TOP)/$(OPENSSLDIR)/staged/usr/include" \
+ 		OPENSSL_LIBS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -lcrypto -lssl" \
+ 		CFLAGS="$(if $(TCONFIG_BCMARM),-O3,$(CFLAG_OPTIMIZE)) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+-		LDFLAGS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
++		LDFLAGS="-L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(INSTALL_ZLIB),-L$(TOP)/zlib/staged/usr/lib -lz,) -lpthread -ldl -L$(TOP)/lzo/src/.libs -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		CPPFLAGS="-I$(TOP)/lzo/include -I$(TOP)/$(OPENSSLDIR)/staged/usr/include" \
+ 		PLUGINDIR="/lib" IPROUTE="/usr/sbin/ip" \
+ 		$(CONFIGURE) --prefix=/usr --bindir=/usr/sbin --libdir=/usr/lib \
+@@ -2960,7 +2962,7 @@
+ 
+ e2fsprogs: e2fsprogs/stamp-h1
+ 	@$(SEP)
+-	$(MAKE) -C $@ $(PARALLEL_BUILD)
++	$(MAKE) -C e2fsprogs $(PARALLEL_BUILD)
+ 
+ e2fsprogs-install:
+ 	install -D e2fsprogs/e2fsck/e2fsck $(INSTALLDIR)/e2fsprogs/usr/sbin/e2fsck
+@@ -3155,7 +3157,7 @@
+ 	@true
+ 
+ libsodium-clean:
+-	-@$(MAKE) -C libsodium clean
++	-$(MAKE) -C libsodium clean
+ 	@rm -f libsodium/stamp-h1
+ 
+ dnscrypt/stamp-h1:
+@@ -3196,7 +3198,7 @@
+ 	@true
+ 
+ libyaml-clean:
+-	-@$(MAKE) -C libyaml clean
++	-$(MAKE) -C libyaml clean
+ 	@rm -f libyaml/stamp-h1
+ 	@rm -rf libyaml/src/.deps libyaml/src/tests/.deps
+ 
+@@ -3483,7 +3485,7 @@
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
+ 		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		LIBDAEMON_CFLAGS="-I$(TOP)/libdaemon" \
+-		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS2)" \
++		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS)" \
+ 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc localstatedir=/var --with-distro=none \
+ 			--enable-introspection=no \
+ 			--disable-nls --disable-glib --disable-gobject \
+@@ -3526,7 +3528,7 @@
+ 	chmod 0500 $(INSTALLDIR)/wireguard-tools/usr/sbin/wg
+ 
+ wireguard-tools-clean:
+-	-@$(MAKE) -C wireguard-tools/src clean
++	$(MAKE) -C wireguard-tools/src clean
+ 	@rm -f $(TOP)/wireguard-tools/staged/bin/wg
+ 
+ gettext-tiny/stamp-h1:
+@@ -3674,7 +3676,7 @@
+ libnetfilter_log/stamp-h1:
+ 	cd libnetfilter_log && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include" \
+-		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOP)/libnfnetlink/src/.libs" \
++		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOP)/libnfnetlink/src/.libs" \
+ 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
+ 		$(CONFIGURE) --prefix=/usr
+ 	@touch $@
+@@ -3682,7 +3684,7 @@
+ libnetfilter_log: libnetfilter_log/stamp-h1
+ 	@$(SEP)
+ 	$(MAKE) -C $@ $(PARALLEL_BUILD)
+-	$(MAKE) -C $@ DESTDIR=$(TOP)/libnetfilter_log/staged install
++#	$(MAKE) -C $@ DESTDIR=$(TOP)/libnetfilter_log/staged install
+ 
+ libnetfilter_log-install:
+ 	install -d $(INSTALLDIR)/libnetfilter_log/usr/lib/
+@@ -3777,9 +3779,10 @@
+ 		ln -s fsck.hfsplus fsck.hfs
+ 
+ diskdev_cmds-332.25-clean:
+-	-@cd diskdev_cmds-332.25 && make -f Makefile.lnx clean
+-	@rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/mkfs.hfs
+-	@rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
++	cd diskdev_cmds-332.25 && \
++		make -f Makefile.lnx clean
++	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/mkfs.hfs
++	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
+ 	$(call unpatch_files,diskdev_cmds-332.25)
+ 
+ libffi/stamp-h1:
+@@ -3810,7 +3813,7 @@
+ 	cd glib2 && ./autogen.sh && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
+ 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/glib2" \
+-		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
++		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/arm-buildroot-linux-uclibcgnueabi/sysroot/lib" \
+ 		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+ 		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+@@ -3821,8 +3824,7 @@
+ glib2: glib2/stamp-h1
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ $(PARALLEL_BUILD)
+-	@$(MAKE) -C $@ DESTDIR=$(TOP)/glib2/staged install
+-	@rm -f glib2/staged/usr/lib/libglib-2.0.la
++#	@$(MAKE) -C $@ DESTDIR=$(TOP)/glib2/staged install
+ 
+ glib2-install: glib2
+ 	install -D glib2/glib/.libs/libglib-2.0.so.0.3707.0 $(INSTALLDIR)/glib2/usr/lib/libglib-2.0.so.0.3707.0
+@@ -3841,11 +3843,11 @@
+ 	$(call patch_files,irqbalance)
+ 	cd irqbalance && ./autogen.sh && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+-		CPPFLAGS="-I$(TOP)/glib2/staged/usr/include/glib-2.0 -I$(TOP)/glib2/staged/usr/lib/glib-2.0/include -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+-		LDFLAGS="-Wl,--gc-sections -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib" \
++		CPPFLAGS="-I$(TOP)/glib2/glib -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
++		LDFLAGS="-Wl,--gc-sections -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/glib2/glib/.libs -lglib-2.0" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+ 		GLIB2_CFLAGS="-I$(TOP)/glib2/staged/usr/include/glib-2.0 -I$(TOP)/glib2" \
+-		GLIB2_LIBS="-L$(TOP)/glib2/staged/usr/lib -lglib-2.0" \
++		GLIB2_LIBS="-L$(TOP)/glib2/glib/.libs -lglib-2.0" \
+ 		$(CONFIGURE) --prefix=/usr --enable-static=glib2 --with-libcap_ng=no \
+ 			--with-systemd=no --without-irqbalance-ui --disable-numa --disable-dependency-tracking
+ 	@touch $@

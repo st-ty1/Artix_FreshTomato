@@ -1,0 +1,12 @@
+--- a/release/src/router/iptables/ip6tables-save.c	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/ip6tables-save.c	2022-01-04 13:22:43.000000000 +0100
+@@ -314,7 +314,8 @@
+  * :Chain name POLICY packets bytes
+  * rule
+  */
+-int main(int argc, char *argv[])
++
++int ip6tables_save_main(int argc, char *argv[])
+ {
+ 	const char *tablename = NULL;
+ 	int c;

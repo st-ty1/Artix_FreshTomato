@@ -1,0 +1,15 @@
+--- a/release/src/router/zebra/lib/zebra.h	2022-01-24 14:05:37.496249900 +0100
++++ b/gcc-5.3-toolchain_mips/zebra.h	2022-01-04 18:11:43.000000000 +0100
+@@ -101,6 +101,12 @@
+ #include <sys/sockio.h>
+ #endif /* HAVE_SYS_SOCKIO_H */
+ 
++/** Added ***/  
++#ifdef GNU_LINUX  
++#define  __USE_GNU  
++#endif  
++/**   end added **/  
++
+ #ifdef HAVE_NETINET_IN_H
+ #include <netinet/in.h>
+ #endif /* HAVE_NETINET_IN_H */

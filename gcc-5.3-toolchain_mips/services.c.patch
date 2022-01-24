@@ -1,0 +1,120 @@
+--- a/release/src/router/rc/services.c	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/services.c	2021-12-31 12:30:09.000000000 +0100
+@@ -156,7 +156,7 @@
+ 		logmsg(LOG_WARNING, "Starting dnsmasq is skipped due to the WEB mode enabled");
+ 		return;
+ 	}
+-	
++
+ #ifdef TCONFIG_BCMWL6
+ 	/* check media bridge (psta) after stop_dnsmasq() */
+ 	if (foreach_wif(1, NULL, is_psta)) {
+@@ -982,6 +982,36 @@
+ }
+ #endif /* TCONFIG_MDNS */
+ 
++#ifdef TCONFIG_IRQBALANCE
++void stop_irqbalance(void)
++{
++	if (pidof("irqbalance") > 0) {
++		killall_tk_period_wait("irqbalance", 50);
++		logmsg(LOG_INFO, "irqbalance is stopped");
++	}
++}
++
++void start_irqbalance(void)
++{
++	int ret;
++
++	if (getpid() != 1) {
++		start_service("irqbalance");
++		return;
++	}
++
++	stop_irqbalance();
++
++	mkdir_if_none("/var/run/irqbalance");
++	ret = eval("irqbalance", "-t", "10");
++
++	if (ret)
++		logmsg(LOG_ERR, "starting irqbalance failed ...");
++	else
++		logmsg(LOG_INFO, "irqbalance is started");
++}
++#endif /* TCONFIG_IRQBALANCE */
++
+ #ifdef TCONFIG_FANCTRL
+ void start_phy_tempsense()
+ {
+@@ -2965,7 +2995,7 @@
+ 	unsigned char ea[ETHER_ADDR_LEN];
+ 	char serial[18], uuid[37];
+ 	char *buf, *p, *q;
+-	char *path, *restrict;
++	char *path, *restrct;
+ 
+ 	if (!nvram_get_int("ms_enable"))
+ 		return;
+@@ -3034,11 +3064,11 @@
+ 				/* path<restrict[A|V|P|] */
+ 				p = buf;
+ 				while ((q = strsep(&p, ">")) != NULL) {
+-					if ((vstrsep(q, "<", &path, &restrict) < 1) || (!path) || (!*path))
++					if ((vstrsep(q, "<", &path, &restrct) < 1) || (!path) || (!*path))
+ 						continue;
+ 
+ 					fprintf(f, "media_dir=%s%s%s\n",
+-						restrict ? : "", (restrict && *restrict) ? "," : "", path);
++						restrct ? : "", (restrct && *restrct) ? "," : "", path);
+ 				}
+ 				free(buf);
+ 			}
+@@ -3247,7 +3277,10 @@
+ #endif
+ #ifdef TCONFIG_BCMBSD
+ 	start_bsd();
+-#endif /* TCONFIG_BCMBSD */
++#endif
++#ifdef TCONFIG_IRQBALANCE
++	start_irqbalance();
++#endif
+ }
+ 
+ void stop_services(void)
+@@ -3302,7 +3335,10 @@
+ 	stop_nas();
+ #ifdef TCONFIG_BCMBSD
+ 	stop_bsd();
+-#endif /* TCONFIG_BCMBSD */
++#endif
++#ifdef TCONFIG_IRQBALANCE
++	stop_irqbalance();
++#endif
+ }
+ 
+ /* nvram "action_service" is: "service-action[-modifier]"
+@@ -3413,6 +3449,14 @@
+ 	}
+ #endif
+ 
++#ifdef TCONFIG_IRQBALANCE
++	if (strcmp(service, "irqbalance") == 0) {
++		if (act_stop) stop_irqbalance();
++		if (act_start) start_irqbalance();
++		goto CLEAR;
++	}
++#endif
++
+ 	if (strcmp(service, "adblock") == 0) {
+ 		if (act_stop) stop_adblock();
+ 		if (act_start) start_adblock(1); /* update lists immediately */
+@@ -3618,6 +3662,9 @@
+ 			stop_tor();
+ #endif
+ 			stop_tomatoanon();
++#ifdef TCONFIG_IRQBALANCE
++			stop_irqbalance();
++#endif
+ 			killall("rstats", SIGTERM);
+ 			killall("cstats", SIGTERM);
+ 			killall("buttons", SIGTERM);

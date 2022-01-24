@@ -1,0 +1,11 @@
+--- a/release/src/router/samba3/source3/configure	2022-01-24 14:05:37.496249900 +0100
++++ b/gcc-5.3-toolchain_mips/configure_samba	2022-01-15 19:17:48.436754700 +0100
+@@ -22707,7 +22707,7 @@
+ 
+ fi
+ 
+-ICONV_LOOK_DIRS="/usr /usr/local /sw /opt"
++ICONV_LOOK_DIRS=""
+ 
+ # Check whether --with-libiconv was given.
+ if test "${with_libiconv+set}" = set; then :

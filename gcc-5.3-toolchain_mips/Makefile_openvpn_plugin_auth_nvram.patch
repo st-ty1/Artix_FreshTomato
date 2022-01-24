@@ -1,0 +1,17 @@
+--- a/release/src/router/openvpn_plugin_auth_nvram/Makefile	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/Makefile_openvpn_plugin_auth_nvram	2022-01-04 19:20:15.933038700 +0100
+@@ -1,12 +1,12 @@
+ include ../common.mak
+ 
+-CFLAGS = -Os -Wall $(EXTRACFLAGS)
++CFLAGS = -Os -Wall $(EXTRACFLAGS) -fPIC
+ CFLAGS += -I$(SRCBASE)/include -I$(TOP)/$(OPENSSLDIR)/include $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-I$(TOP)/openvpn-2.4/include,-I$(TOP)/openvpn/include)
+ 
+ ifeq ($(TCONFIG_BCMARM),y)
+ LDFLAGS = -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/$(OPENSSLDIR) -L$(TOP)/openvpn
+ else
+-LDFLAGS = -L$(TOP)/nvram -lnvram -L$(TOP)/$(OPENSSLDIR) $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-L$(TOP)/openvpn-2.4,-L$(TOP)/openvpn)
++LDFLAGS = -L$(TOP)/nvram -lnvram -L$(TOP)/$(OPENSSLDIR) $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-L$(TOP)/openvpn-2.4,-L$(TOP)/openvpn) 
+ endif
+ 
+ ifeq ($(TCONFIG_BCMARM),y)

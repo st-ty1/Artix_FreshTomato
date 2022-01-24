@@ -1,0 +1,11 @@
+--- a/release/src/router/libbcmcrypto/Makefile	2022-01-24 14:05:37.476249900 +0100
++++ b/gcc-5.3-toolchain_mips/Makefile_libbcmcrypto	2022-01-01 13:00:46.000000000 +0100
+@@ -14,7 +14,7 @@
+ 
+ include ../common.mak
+ 
+-CFLAGS	+= -Wsign-compare -I. -I../httpd -I$(SRCBASE)/include -Wall
++CFLAGS	+= -Wsign-compare -I. -I../httpd -I$(SRCBASE)/include -Wall -fPIC
+ #CFLAGS	+= -g -DDEBUG
+ CFLAGS	+= -s -O2 $(EXTRACFLAGS)
+ LDFLAGS += -L.
