@@ -30,8 +30,7 @@ cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclib
 
 #### 2. userland
 ## 2.1 router/Makefiles
-#patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
-cp -vf $FT_PATCHES_DIR/Makefile_mips $FT_REPO_DIR/release/src/router/Makefile
+patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
 
 ## 2.2 router/libbcmcrypto
@@ -57,10 +56,8 @@ patch -i $FT_PATCHES_DIR/hotplug2_utils.c.patch $FT_REPO_DIR/release/src/router/
 ## 2.8 router/dnscrypt - due to message "using unsafe headers"
 patch -i $FT_PATCHES_DIR/configure.ac_dnscrypt.patch $FT_REPO_DIR/release/src/router/dnscrypt/configure.ac
 
-## 2.9 router/glib; multiple definitions - 2 alternate patches, only use one of them
+## 2.9 router/glib; multiple definitions
 patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src/router/glib/glib.h
-#patch -i $FT_PATCHES_DIR/glib_mod1.h.patch $FT_REPO_DIR/release/src/router/glib/glib.h
-#patch -i $FT_PATCHES_DIR/gmessages.c.patch $FT_REPO_DIR/release/src/router/glib/gmessages.c
 
 ## 2.10 router/samba3
 patch -i $FT_PATCHES_DIR/Makefile_samba.patch $FT_REPO_DIR/release/src/router/samba3/Makefile
@@ -118,5 +115,3 @@ patch -i $FT_PATCHES_DIR/Makefile_lzma-loader.patch $FT_REPO_DIR/release/src/lzm
 cd $FT_REPO_DIR/release/$RT_VERS
 
 make r64e  #1> log_Kernel_old.txt 2>&1
-
-
