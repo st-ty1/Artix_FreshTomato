@@ -1,6 +1,6 @@
 !!!!!!!!!!!!!!!!!!!!!!!!
 
-The new toolchain is only tested with Asus RT-N6U. Asus routerare nearly unbricksble in cases this compiled firmware is not working, so that you can switch backto "standard" firmware again. But other routers do not have a CFE mini server to do so.
+The new toolchain is only tested with Asus RT-N6U (with VPN version). Asus routers are nearly unbricksble in cases this compiled firmware is not working, so that you can switch backto "standard" firmware again. But other routers do not have a CFE mini server to do so.
 So with other routers than Asus you are on your own to risk to test this special compiled firmware.
 
 !!!!!!!!!!!!!!!!!!!!!!!!
@@ -14,3 +14,7 @@ With gcc-5.3, there are opportunitues with go source code (currently, cross-tool
 BR
 
 st-ty1
+
+Next steps planned:
+- make AIO version workable
+- switch to binutils 2.25 (same as arm toolchain)
