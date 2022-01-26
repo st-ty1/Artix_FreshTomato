@@ -1,6 +1,6 @@
 #! /bin/sh
 
-##status FT sources: commit 3641ad6cfa7c4b99e40a0b59aa6b00385590cbdd; 23.12.2021
+##status FT sources: commit bcec436b91843d78516be04795baa7f334422e47; 17.12.2021
 
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-arm
