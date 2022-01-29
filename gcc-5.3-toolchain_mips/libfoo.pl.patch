@@ -1,5 +1,5 @@
 --- libfoo.pl_orig	2022-01-28 16:43:48.000000000 +0000
-+++ libfoo_mips1.pl	2022-01-28 15:32:19.000000000 +0000
++++ libfoo_mips3.pl	2022-01-29 12:30:27.000000000 +0000
 @@ -515,7 +515,8 @@
  	print LOG "\n\n${base}\n";
  	
@@ -26,7 +26,7 @@
 +genSO("${root}/lib/libresolv.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libresolv.a", "${stripshared}");
 +genSO("${root}/lib/libcrypt.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libcrypt.a", "${stripshared}");
 +genSO("${root}/lib/libm.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libm.a");
-+genSO("${root}/lib/libpthread.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libpthread.a", "${stripshared}", "-u pthread_mutexattr_init -Wl,-init=__pthread_initialize_minimal_internal");
++#genSO("${root}/lib/libpthread.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libpthread.a", "${stripshared}", "-u pthread_mutexattr_init -Wl,-init=__pthread_initialize_minimal_internal");
 +genSO("${root}/lib/libutil.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libutil.a", "${stripshared}");
 +#genSO("${root}/lib/libdl.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libdl.a", "${stripshared}");
 +#genSO("${root}/lib/libnsl.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libnsl.a", "${stripshared}");
@@ -42,6 +42,23 @@
  genSO("${root}/usr/lib/libvorbis.so.0", "${router}/libvorbis/lib/.libs/libvorbis.a", "", "-L${router}/libogg/src/.libs");
  genSO("${root}/usr/lib/libid3tag.so.0", "${router}/libid3tag/.libs/libid3tag.a", "", "-L${router}/zlib");
  genSO("${root}/usr/lib/libexif.so.12", "${router}/libexif/libexif/.libs/libexif.a");
+@@ -616,11 +617,11 @@
+ genSO("${root}/usr/lib/libavformat.so.52", "${router}/ffmpeg/libavformat/libavformat.a", "", "-L${router}/ffmpeg/libavutil -L${router}/ffmpeg/libavcodec -L${router}/zlib");
+ 
+ genSO("${root}/usr/lib/liblzo2.so.2.0.0", "${router}/lzo/src/.libs/liblzo2.a");
+-#genSO("${root}/usr/lib/libiptc.so", "${router}/iptables/libiptc/libiptc.a");
+-#genSO("${root}/usr/lib/libshared.so", "${router}/shared/libshared.a");
+-#genSO("${root}/usr/lib/libnvram.so", "${router}/nvram/libnvram.a");
+-#genSO("${root}/usr/lib/libusb-1.0.so.0", "${router}/libusb10/libusb/.libs/libusb-1.0.a");
+-#genSO("${root}/usr/lib/libusb-0.1.so.4", "${router}/libusb/libusb/.libs/libusb.a", "", "-L${router}/libusb10/libusb/.libs");
++genSO("${root}/usr/lib/libiptc.so", "${router}/iptables/libiptc/libiptc.a");
++genSO("${root}/usr/lib/libshared.so", "${router}/shared/libshared.a");
++genSO("${root}/usr/lib/libnvram.so", "${router}/nvram/libnvram.a");
++genSO("${root}/usr/lib/libusb-1.0.so.0", "${router}/libusb10/libusb/.libs/libusb-1.0.a");
++genSO("${root}/usr/lib/libusb-0.1.so.4", "${router}/libusb/libusb/.libs/libusb.a", "", "-L${router}/libusb10/libusb/.libs");
+ 
+ genSO("${root}/usr/lib/libbcmcrypto.so", "${router}/libbcmcrypto/libbcmcrypto.a");
+ 
 @@ -642,11 +643,11 @@
  genSO("${root}/usr/lib/libiperf.so.0.0.0", "${router}/iperf/src/.libs/libiperf.a");
  
