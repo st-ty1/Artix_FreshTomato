@@ -71,7 +71,7 @@ patch -i $FT_PATCHES_DIR/ip6tables-save.c.patch $FT_REPO_DIR/release/src/router/
 patch -i $FT_PATCHES_DIR/ip6tables-restore.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-restore.c
 patch -i $FT_PATCHES_DIR/ip6tables-standalone.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-standalone.c
 
-## router/zebra
+## router/zebra (https://www.iteye.com/blog/siwind-1160830)
 patch -i $FT_PATCHES_DIR/zebra.h.patch $FT_REPO_DIR/release/src/router/zebra/lib/zebra.h
 
 ## router/openvpn_plugin_auth_nvram
