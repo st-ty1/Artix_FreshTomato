@@ -1,0 +1,11 @@
+--- ip6tables-restore.c_orig	2022-01-27 15:12:09.000000000 +0000
++++ ip6tables-restore.c	2022-01-04 12:23:22.000000000 +0000
+@@ -102,7 +102,7 @@
+ 		free(newargv[i]);
+ }
+ 
+-int main(int argc, char *argv[])
++int ip6tables_restore_main(int argc, char *argv[])
+ {
+ 	ip6tc_handle_t handle = NULL;
+ 	char buffer[10240];

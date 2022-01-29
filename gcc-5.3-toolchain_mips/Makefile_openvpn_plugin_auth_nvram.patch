@@ -1,0 +1,17 @@
+--- Makefile_openvpn_plugin_auth_nvram_orig	2022-01-27 15:12:10.000000000 +0000
++++ Makefile_openvpn_plugin_auth_nvram	2022-01-04 18:20:15.000000000 +0000
+@@ -1,12 +1,12 @@
+ include ../common.mak
+ 
+-CFLAGS = -Os -Wall $(EXTRACFLAGS)
++CFLAGS = -Os -Wall $(EXTRACFLAGS) -fPIC
+ CFLAGS += -I$(SRCBASE)/include -I$(TOP)/$(OPENSSLDIR)/include $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-I$(TOP)/openvpn-2.4/include,-I$(TOP)/openvpn/include)
+ 
+ ifeq ($(TCONFIG_BCMARM),y)
+ LDFLAGS = -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/$(OPENSSLDIR) -L$(TOP)/openvpn
+ else
+-LDFLAGS = -L$(TOP)/nvram -lnvram -L$(TOP)/$(OPENSSLDIR) $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-L$(TOP)/openvpn-2.4,-L$(TOP)/openvpn)
++LDFLAGS = -L$(TOP)/nvram -lnvram -L$(TOP)/$(OPENSSLDIR) $(if $(TCONFIG_OPTIMIZE_SIZE_MORE),-L$(TOP)/openvpn-2.4,-L$(TOP)/openvpn) 
+ endif
+ 
+ ifeq ($(TCONFIG_BCMARM),y)

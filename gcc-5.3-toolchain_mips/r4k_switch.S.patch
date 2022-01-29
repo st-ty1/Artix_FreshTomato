@@ -1,0 +1,19 @@
+--- r4k_switch.S_orig	2022-01-22 15:33:38.000000000 +0000
++++ r4k_switch.S	2022-01-15 15:38:54.000000000 +0000
+@@ -160,6 +160,9 @@
+ 
+ #define FPU_DEFAULT  0x00000000
+ 
++	.set push
++	SET_HARDFLOAT
++
+ LEAF(_init_fpu)
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	/* Rather than manipulate per-VPE Status, set per-TC bit in TCStatus */
+@@ -258,3 +261,5 @@
+ #endif
+ 	jr	ra
+ 	END(_init_fpu)
++
++	.set pop	/* SET_HARDFLOAT */
+\ No newline at end of file

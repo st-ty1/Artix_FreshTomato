@@ -1,0 +1,15 @@
+--- zebra.h_orig	2022-01-27 15:12:10.000000000 +0000
++++ zebra.h	2022-01-04 17:11:43.000000000 +0000
+@@ -101,6 +101,12 @@
+ #include <sys/sockio.h>
+ #endif /* HAVE_SYS_SOCKIO_H */
+ 
++/** Added ***/  
++#ifdef GNU_LINUX  
++#define  __USE_GNU  
++#endif  
++/**   end added **/  
++
+ #ifdef HAVE_NETINET_IN_H
+ #include <netinet/in.h>
+ #endif /* HAVE_NETINET_IN_H */

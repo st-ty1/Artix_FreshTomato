@@ -1,0 +1,27 @@
+--- libip6tc.c_orig	2022-01-27 15:12:09.000000000 +0000
++++ libip6tc.c	2022-01-04 10:43:13.000000000 +0000
+@@ -113,7 +113,7 @@
+ #include "libiptc.c"
+ 
+ #define BIT6(a, l) \
+- ((ntohl(a->in6_u.u6_addr32[(l) / 32]) >> (31 - ((l) & 31))) & 1)
++ ((ntohl(a->s6_addr32[(l) / 32]) >> (31 - ((l) & 31))) & 1)
+ 
+ int
+ ipv6_prefix_length(const struct in6_addr *a)
+@@ -130,6 +130,7 @@
+ 	return l;
+ }
+ 
++#if 0
+ static int
+ dump_entry(struct ip6t_entry *e, const ip6tc_handle_t handle)
+ {
+@@ -204,6 +205,7 @@
+ 	printf("\n");
+ 	return 0;
+ }
++#endif
+ 
+ static unsigned char *
+ is_same(const STRUCT_ENTRY *a, const STRUCT_ENTRY *b,

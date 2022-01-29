@@ -1,0 +1,29 @@
+--- mipsregs.h_orig	2022-01-22 15:33:38.000000000 +0000
++++ mipsregs.h	2022-01-15 15:01:25.000000000 +0000
+@@ -1005,16 +1005,25 @@
+ /*
+  * Macros to access the floating point coprocessor control registers
+  */
+-#define read_32bit_cp1_register(source)                         \
++#define read_32bit_cp1_register(source, gas_hardfloat)                         \
+ ({ int __res;                                                   \
+ 	__asm__ __volatile__(                                   \
+ 	".set\tpush\n\t"					\
+ 	".set\treorder\n\t"					\
++	"	"STR(gas_hardfloat)"				\n"	\
+         "cfc1\t%0,"STR(source)"\n\t"                            \
+ 	".set\tpop"						\
+         : "=r" (__res));                                        \
+         __res;})
+ 
++#ifdef GAS_HAS_SET_HARDFLOAT
++#define read_32bit_cp1_register(source)					\
++	_read_32bit_cp1_register(source, .set hardfloat)
++#else
++#define read_32bit_cp1_register(source)					\
++	_read_32bit_cp1_register(source, )
++#endif
++
+ #define rddsp(mask)							\
+ ({									\
+ 	unsigned int __res;						\
