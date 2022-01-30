@@ -16,7 +16,6 @@ Steps needed:
 
 6.) Start shell script build_ft-mips_samba.sh of local copy of this repo. (This script-file patches FT-sources for use on Artix/Arch Linux, inserts samba4 sources, the samba4-own Makefile, the answer-file (need for cross-compiling samba4 with waf) and libtirpc sources into FT-sources. It modifies also the Makefile of FT by inserting new targets for libtirpc and replaces two positions "samba3" by "samba4".)
  
-Remember that install-target of this Makefile is not optimized yet, i.e. also libfoo.pl has to be adapted because of newer and more libraries, which can be striped compared to samba-3.6.
 
 BR
 st-ty1/_st_ty/st_ty_
