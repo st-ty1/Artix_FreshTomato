@@ -19,5 +19,5 @@ BR
 st-ty1
 
 Next steps planned:
-- mtest AIO version
+- get rebuild and shrinked of libptread.so by libfoo.pl working
 - switch to binutils 2.25 (same as arm toolchain)
