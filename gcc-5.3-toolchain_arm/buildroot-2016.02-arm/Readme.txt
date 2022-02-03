@@ -4,7 +4,7 @@
 4.) Delete .config of your local buildroot-2016.02 directory, copy .config_buildroot-2016.02 of this repo into buildroot-2016.02 folder and rename it to .config. (This will replace "BR2_UCLIBC_CONFIG="toolchain/uClibc/uClibc-0.9.32.config" by "BR2_UCLIBC_CONFIG="package/uclibc/uClibc-0.9.32.config"; of course this can also be done manually.)
 5.) Change mirror of isl in package/isl/isl.mk to "https://mirror.sobukus.de/files/src/isl/" .
 6.) Change in file package/Makefile.in "HOST_CFLAGS   += $(HOST_CPPFLAGS)" to "HOST_CFLAGS   += $(HOST_CPPFLAGS) -std=c++11" (or "HOST_CFLAGS += $(HOST_CPPFLAGS) -std=c++03")
-7.) Replace uclibc.mk in /package/uclibc subfolder of your local buildroot-2016.02 directory by uclibc.mk of this package (due to inactivate automazically generation of "XLOCALE" flag in uclibc config file).
+7.) Replace uclibc.mk and uClibc-0.9.32.config in /package/uclibc subfolder of your local buildroot-2016.02 directory by uclibc.mk and uclibc-0.9.32.config of this repo subfolder (uclibc.mk due to inactivate automatically generation of "XLOCALE" flag in uclibc config file by buildroot; uClibc-0.9.32.config copied 1:1 from Asus GPL source code).
 8.) Generate a package of the linux sources in FT repos (file name has to be "linux-2.6.tar.xz") and place package into dl_save folder of your local buildroot-2016.02 directory:
 		cd $HOME/freshtomato-mips/release/src-rt-6.x/linux/linux-2.6
 		tar -cJfv linux-2.6.tar.xz ../linux-2.6
