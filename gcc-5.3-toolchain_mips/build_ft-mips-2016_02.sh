@@ -85,15 +85,15 @@ patch -i $FT_PATCHES_DIR/libfoo.pl.patch $FT_REPO_DIR/release/src/btools/libfoo.
 patch -i $FT_PATCHES_DIR/Makefile_linux.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/Makefile
 patch -p1 -d$FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
 
-## binutils >=2.24 differentiate much more between soft-float and hard-float; 
-#patch -i $FT_PATCHES_DIR/alternate_2/r4k_fpu.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/r4k_fpu.S
-#patch -i $FT_PATCHES_DIR/alternate_2/r4k_switch.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/r4k_switch.S
-#patch -i $FT_PATCHES_DIR/alternate_2/genex.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/genex.S
-#patch -i $FT_PATCHES_DIR/alternate_2/branch.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/branch.c
-#patch -i $FT_PATCHES_DIR/alternate_2/mipsregs.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/mipsregs.h
-#patch -i $FT_PATCHES_DIR/alternate_2/fpregdef.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/fpregdef.h
-#patch -i $FT_PATCHES_DIR/alternate_2/asmmacro-32.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/asmmacro-32.h
-#patch -i $FT_PATCHES_DIR/alternate_2/Makefile_arch_mips.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/Makefile
+## binutils >=2.24 differentiate much more between soft-float and hard-float; adapted from https://marc.info/?l=linux-mips&m=141302219906796&w=2
+#patch -i $FT_PATCHES_DIR/r4k_fpu.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/r4k_fpu.S
+#patch -i $FT_PATCHES_DIR/r4k_switch.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/r4k_switch.S
+#patch -i $FT_PATCHES_DIR/genex.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/genex.S
+#patch -i $FT_PATCHES_DIR/branch.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/branch.c
+#patch -i $FT_PATCHES_DIR/mipsregs.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/mipsregs.h
+#patch -i $FT_PATCHES_DIR/fpregdef.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/fpregdef.h
+#patch -i $FT_PATCHES_DIR/asmmacro-32.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/asmmacro-32.h
+#patch -i $FT_PATCHES_DIR/Makefile_arch_mips.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/Makefile
 
 ## "alias"-functions not allowed anymore in binutils 2.23 - both patch versions similar to  https://patchwork.linux-mips.org/patch/3866
 patch -i $FT_PATCHES_DIR/page.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/mm/page.c
