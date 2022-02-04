@@ -1,30 +1,30 @@
 #! /bin/sh
 
-##status FT sources: commit bcec436b91843d78516be04795baa7f334422e47; 17.12.2021
+##status FT sources: commit faa666f78e45174250405c6586ce3ec1c42b1480; 03/02/2022
 
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-arm
 
 ## path to the FreshTomato patches for new arm-toolchain
-FT_PATCHES_DIR=$HOME/freshtomato-arm/gcc-5.3-toolchain_arm
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-5.3-toolchain_arm
 
 ## path to arm-toolchain with gcc 5.3 and binutils 2.25.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_arm/output/host
 
-export PATH=$HOME/freshtomato-arm/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/usr/bin:$PATH
+export PATH=$HOME/freshtomato-arm/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr/bin:$PATH
 
 cd $FT_REPO_DIR 
 git clean -dxf 
 git reset --hard
-git checkout master
-#git pull
+git checkout arm-master
+##git pull
 
 clear
 
 ## insert new toolchain
-rm -rf  $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/*
-mkdir $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/usr
-cp -rvf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/usr
+rm -rf  $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3
+mkdir -p $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr
+cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr
 
 ## router/Makefile
 patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
@@ -37,7 +37,7 @@ patch -i $FT_PATCHES_DIR/shutils.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/ro
 ## router/ebtables
 patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/ebtables/libebtc.c
 ## router/httpd
-patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h
+patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h
 patch -i $FT_PATCHES_DIR/Makefile_httpd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/httpd/Makefile
 ## router/hotplug2
 patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/hotplug2/mem_utils.c
