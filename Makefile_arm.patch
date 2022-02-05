@@ -1,15 +1,22 @@
---- Makefile_orig	2021-11-21 15:55:09.365212500 +0100
-+++ Makefile	2021-11-20 13:43:05.000000000 +0100
-@@ -3331,9 +3334,9 @@
- glib2/stamp-h1:
+--- a/release/src-rt-6.x.4708/router/Makefile	2022-02-05 15:47:54.034626500 +0100
++++ b/release/src-rt-6.x.4708/router/Makefile	2022-02-05 13:16:32.204626500 +0100
+@@ -3809,8 +3809,8 @@
  	$(call patch_files,glib2)
  	cd glib2 && ./autogen.sh && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/glib2" \
--		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/glib2" \
--		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libffi/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
-+		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
-+		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/include -I$(TOP)/zlib -I$(TOP)/gettext-tiny/include" \
-+		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/lib/.libs -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib" \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
+-		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/glib2" \
+-		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
++		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/gettext-tiny/include" \
++		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib" \
  		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
  		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
- 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/lib/.libs/libiconv.so" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+@@ -3855,7 +3855,7 @@
+ 	$(MAKE) -C $@
+ 
+ irqbalance-install: 
+-	install -D irqbalance/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
++	install -D irqbalance/.libs/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	$(STRIP) $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	@rm -rf $(INSTALLDIR)/irqbalance/usr/share
+ 
