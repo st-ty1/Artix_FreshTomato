@@ -1,5 +1,5 @@
---- Makefile_orig	2022-02-04 11:35:47.000000000 +0000
-+++ Makefile	2022-02-04 11:37:54.000000000 +0000
+--- Makefile.orig	2022-02-05 19:31:57.124626500 +0100
++++ Makefile_arm_mod	2022-02-05 19:39:10.364626500 +0100
 @@ -492,7 +492,7 @@
   export BASEDIR := $(WLAN_TreeBaseA)
   export EXTRALDFLAGS = -lgcc_s
@@ -34,10 +34,10 @@
 +	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/lib/libutil.so.0 $(TARGETDIR)/lib/
  ifeq ($(TCONFIG_USB),y)
  ifneq ($(TCONFIG_BCMARM),y)
--	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
-+	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ 	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
  else
- 	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+-	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
++	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
  endif
  endif # TCONFIG_USB
  ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
@@ -126,3 +126,12 @@
  		$(CONFIGURE) --prefix=/usr --enable-static=glib2 --with-libcap_ng=no \
  			--with-systemd=no --without-irqbalance-ui --disable-numa --disable-dependency-tracking
  	@touch $@
+@@ -3855,7 +3854,7 @@
+ 	$(MAKE) -C $@
+ 
+ irqbalance-install: 
+-	install -D irqbalance/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
++	install -D irqbalance/.libs/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	$(STRIP) $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	@rm -rf $(INSTALLDIR)/irqbalance/usr/share
+ 
