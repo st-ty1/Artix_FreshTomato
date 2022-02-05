@@ -1,5 +1,5 @@
 --- Makefile.orig	2022-02-05 19:31:57.124626500 +0100
-+++ Makefile_arm_mod	2022-02-05 19:39:10.364626500 +0100
++++ Makefile	2022-02-05 20:08:25.593163700 +0100
 @@ -492,7 +492,7 @@
   export BASEDIR := $(WLAN_TreeBaseA)
   export EXTRALDFLAGS = -lgcc_s
@@ -9,7 +9,7 @@
  
   ifeq (2_6_36,$(LINUX_VERSION))
    ifeq ($(TCONFIG_BCM7),y)
-@@ -708,26 +708,26 @@
+@@ -708,34 +708,34 @@
  endif
  
  # uClibc
@@ -42,17 +42,17 @@
  endif # TCONFIG_USB
  ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
  ifneq ($(TCONFIG_BCMARM),y)
--	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
-+	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ 	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
  else
- 	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
++	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
  endif # TCONFIG_BCMARM
-@@ -735,7 +735,7 @@
+ 	cd $(TARGETDIR)/lib && ln -sf libstdc++.so.6 libstdc++.so
  	$(STRIP) $(TARGETDIR)/lib/libstdc++.so.6
  endif # TCONFIG_NGINX TCONFIG_NANO
  ifneq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
 -	install $(LIBDIR)/libresolv.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/lib/libresolv.so.0 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/lib/libresolv.so.0 $(TARGETDIR)/lib/
  	$(STRIP) $(TARGETDIR)/lib/*.so.0
  endif
  
