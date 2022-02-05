@@ -49,7 +49,7 @@
 +	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
  else
 -	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
++	install $(TOOLCHAIN)/arm-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
  endif
  endif # TCONFIG_USB
  ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
