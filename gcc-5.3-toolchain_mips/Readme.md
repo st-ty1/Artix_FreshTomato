@@ -1,6 +1,6 @@
 !!!!!!!!!!!!!!!!!!!!!!!!
 
-The new toolchain is only tested with Asus RT-N6U (with VPN version). Asus routers are nearly unbrickable in cases this compiled firmware is not working, so that you can switch backto "standard" firmware again. But other routers do not have a CFE mini server to do so.
+The new toolchain is only tested with Asus RT-N66U (with VPN version). Asus routers are nearly unbrickable in cases this compiled firmware is not working, so that you can switch backto "standard" firmware again. But other routers do not have a CFE mini server to do so.
 So with other routers than Asus, you are on your own to risk testing this modified compiled firmware.
 
 !!!!!!!!!!!!!!!!!!!!!!!!
@@ -18,7 +18,10 @@ BR
 
 st-ty1
 
-Next steps planned:
-- Test with router with NAND flash 8WNDR4500)
-- Test RT-N with ASus RT-N66U
-- Build of RT (mipsr1) branch (without testing due to missing router)
+Next steps:
+- Test with router with NAND flash (WNDR4500)		tbd.
+- Build of RT-N (mipsr2) branch				Ok
+   - Test with Asus RT-N66U				tbd.
+- Build of RT (mipsr1) branch (without testing due to missing router)		Ok
+- shrinking of libc by libfoo.pl
+- only one single patch for Makefile and one single patch for common.mak (both in /release/src/router) for arm and all mips-branches
