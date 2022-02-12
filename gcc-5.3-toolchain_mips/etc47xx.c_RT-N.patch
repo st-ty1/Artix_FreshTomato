@@ -1,0 +1,20 @@
+--- etc47xx.c.orig	2022-02-10 19:02:23.748696800 +0100
++++ etc47xx.c	2022-02-10 19:02:28.998696800 +0100
+@@ -157,7 +157,7 @@
+ 	bcmenetregs_t *regs;
+ 	char name[16];
+ 	char *var;
+-	uint boardflags, boardtype;
++	uint boardflags;
+ 
+ 	ET_TRACE(("et%d: chipattach: regsva 0x%lx\n", etc->unit, (ulong)regsva));
+ 
+@@ -206,7 +206,7 @@
+ 	etc->boardflags = getintvar(ch->vars, "boardflags");
+ 
+ 	boardflags = etc->boardflags;
+-	boardtype = ch->sih->boardtype;
++
+ 
+ 	/* get our local ether addr */
+ 	sprintf(name, "et%dmacaddr", etc->coreunit);

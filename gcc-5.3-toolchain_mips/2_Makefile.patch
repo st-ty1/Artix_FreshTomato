@@ -1,0 +1,60 @@
+--- Makefile.orig	2022-02-11 16:40:59.078827400 +0100
++++ Makefile	2022-02-11 17:20:38.208827400 +0100
+@@ -492,7 +492,7 @@
+  export BASEDIR := $(WLAN_TreeBaseA)
+  export EXTRALDFLAGS = -lgcc_s
+  export EXTRALDFLAGS2 = -L$(TOP)/nvram$(BCMEX) -lnvram -L$(TOP)/shared -lshared
+- export LD_LIBRARY_PATH := $(SRCBASE)/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib
++ export LD_LIBRARY_PATH := $(shell cd $(dir $(shell which libcc1.so.0.0.0)) && pwd -P)
+ 
+  ifeq (2_6_36,$(LINUX_VERSION))
+   ifeq ($(TCONFIG_BCM7),y)
+@@ -708,36 +708,28 @@
+ endif
+ 
+ # uClibc
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/ld-uClibc.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libcrypt.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libpthread.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libgcc_s.so.1 $(TARGETDIR)/lib/
++	install $(LIBDIR)/ld-uClibc.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libcrypt.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libpthread.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libgcc_s.so.1 $(TARGETDIR)/lib/
+ 	$(STRIP) $(TARGETDIR)/lib/libgcc_s.so.1
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libc.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libdl.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libm.so.0 $(TARGETDIR)/lib/
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libnsl.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libc.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libdl.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
+ ifneq ($(TCONFIG_BCMARM)$(TCONFIG_SSH),)
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libutil.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
+ endif
+ ifeq ($(TCONFIG_USB),y)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+-else
+-	install $(TOOLCHAIN)/arm-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+-endif
++	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ endif # TCONFIG_USB
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-else
+-	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-endif # TCONFIG_BCMARM
++	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ 	cd $(TARGETDIR)/lib && ln -sf libstdc++.so.6 libstdc++.so
+ 	$(STRIP) $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_NGINX TCONFIG_NANO
+ ifneq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libresolv.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libresolv.so.0 $(TARGETDIR)/lib/
+ 	$(STRIP) $(TARGETDIR)/lib/*.so.0
+ endif
+ 

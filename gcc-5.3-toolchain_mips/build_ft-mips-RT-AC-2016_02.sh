@@ -8,7 +8,7 @@ FT_REPO_DIR=$HOME/freshtomato-mips
 ## path to the FreshTomato patches for new mips-toolchain
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-5.3-toolchain_mips
 
-## path to mips-toolchain with gcc 5.3 and binutils 2.25.1
+## path to mips-toolchain with gcc 5.3 and binutils 2.23.2
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_mips/output/host
 
 export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-5.3/usr/bin:$PATH
@@ -82,7 +82,7 @@ patch -i $FT_PATCHES_DIR/libfoo.pl.patch $FT_REPO_DIR/release/src/btools/libfoo.
 
 ### kernel built-in
 ## turn off warnings "... not used"
-patch -i $FT_PATCHES_DIR/Makefile_linux.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/Makefile
+patch -i $FT_PATCHES_DIR/Makefile_linux_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/Makefile
 patch -p1 -d$FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
 
 ## binutils >=2.24 differentiate much more between soft-float and hard-float; adapted from https://marc.info/?l=linux-mips&m=141302219906796&w=2
@@ -93,7 +93,7 @@ patch -i $FT_PATCHES_DIR/branch.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/linu
 patch -i $FT_PATCHES_DIR/mipsregs.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/mipsregs.h
 patch -i $FT_PATCHES_DIR/fpregdef.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/fpregdef.h
 patch -i $FT_PATCHES_DIR/asmmacro-32.h.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/include/asm-mips/asmmacro-32.h
-patch -i $FT_PATCHES_DIR/Makefile_arch_mips.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/Makefile
+patch -i $FT_PATCHES_DIR/Makefile_arch-mips.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/Makefile
 
 ## "alias"-functions not allowed anymore in binutils 2.23 - both patch versions similar to  https://patchwork.linux-mips.org/patch/3866
 patch -i $FT_PATCHES_DIR/page.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/mm/page.c
@@ -109,13 +109,13 @@ patch -i $FT_PATCHES_DIR/mips_ksyms.c.patch $FT_REPO_DIR/release/$RT_VERS/linux/
 
 
 ## kernel-modules: et-driver
-patch -i $FT_PATCHES_DIR/etc.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc.c
-patch -i $FT_PATCHES_DIR/etc_adm.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc_adm.c
-patch -i $FT_PATCHES_DIR/etc47xx.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc47xx.c
-patch -i $FT_PATCHES_DIR/etcgmac.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etcgmac.c
+patch -i $FT_PATCHES_DIR/etc.c_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc.c
+patch -i $FT_PATCHES_DIR/etc_adm.c_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc_adm.c
+patch -i $FT_PATCHES_DIR/etc47xx.c_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etc47xx.c
+patch -i $FT_PATCHES_DIR/etcgmac.c_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/etcgmac.c
 
 ## compressed kernel -  variant not needed by Asus RT-N66U
-patch -i $FT_PATCHES_DIR/bzip2_inflate.c.patch $FT_REPO_DIR/release/$RT_VERS/shared/bzip2_inflate.c
+patch -i $FT_PATCHES_DIR/bzip2_inflate.c_RT-AC.patch $FT_REPO_DIR/release/$RT_VERS/shared/bzip2_inflate.c
 ## lzma-loader
 patch -i $FT_PATCHES_DIR/head.S.patch $FT_REPO_DIR/release/src/lzma-loader/head.S
 patch -i $FT_PATCHES_DIR/Makefile_lzma-loader.patch $FT_REPO_DIR/release/src/lzma-loader/Makefile

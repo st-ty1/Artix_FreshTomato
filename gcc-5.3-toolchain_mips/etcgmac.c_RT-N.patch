@@ -1,0 +1,33 @@
+--- etcgmac.c.orig	2022-02-10 19:02:23.748696800 +0100
++++ etcgmac.c	2022-02-10 20:56:16.908696800 +0100
+@@ -170,7 +170,7 @@
+ 	uint i;
+ 	char name[16];
+ 	char *var;
+-	uint boardflags, boardtype, reset;
++	uint boardflags, reset;
+ 
+ 	ET_TRACE(("et%d: chipattach: regsva 0x%lx\n", etc->unit, (ulong)regsva));
+ 
+@@ -216,7 +216,7 @@
+ 	etc->boardflags = getintvar(ch->vars, "boardflags");
+ 
+ 	boardflags = etc->boardflags;
+-	boardtype = ch->sih->boardtype;
++
+ 
+ 	/* get our local ether addr */
+ 	sprintf(name, "et%dmacaddr", etc->coreunit);
+@@ -1105,12 +1105,10 @@
+ {
+ 	etc_info_t *etc;
+ 	gmacregs_t *regs;
+-	uint idx;
+ 	uint i;
+ 
+ 	regs = ch->regs;
+ 	etc = ch->etc;
+-	idx = 0;
+ 
+ 	ET_TRACE(("et%d: chipinit\n", etc->unit));
+ 

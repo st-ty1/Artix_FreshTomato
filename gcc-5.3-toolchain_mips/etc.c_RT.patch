@@ -1,0 +1,58 @@
+--- etc.c.orig	2022-02-12 14:21:00.188042600 +0100
++++ etc.c	2022-02-12 14:24:58.918042600 +0100
+@@ -348,13 +348,13 @@
+ 
+ 	case ETCPHYRD2:
+ 		if (vec) {
+-			uint phyaddr, reg;
++			uint phyaddr;
+ 			phyaddr = vec[0] >> 16;
+ 			if (phyaddr < MAXEPHY) {
+-				reg = vec[0] & 0xffff;
+-				vec[1] = (*etc->chops->phyrd)(etc->ch, phyaddr, reg);
++/*				reg = vec[0] & 0xffff; */
++				vec[1] = (*etc->chops->phyrd)(etc->ch, phyaddr, vec[0] & 0xffff);
+ 				ET_TRACE(("etc_ioctl: ETCPHYRD2 of phy 0x%x, reg 0x%x => 0x%x\n",
+-				          phyaddr, reg, vec[1]));
++				          phyaddr, vec[0] & 0xffff, vec[1]));
+ 			}
+ 		}
+ 		break;
+@@ -368,13 +368,13 @@
+ 
+ 	case ETCPHYWR2:
+ 		if (vec) {
+-			uint phyaddr, reg;
++			uint phyaddr;
+ 			phyaddr = vec[0] >> 16;
+ 			if (phyaddr < MAXEPHY) {
+-				reg = vec[0] & 0xffff;
+-				(*etc->chops->phywr)(etc->ch, phyaddr, reg, (uint16)vec[1]);
++/*				reg = vec[0] & 0xffff; */
++				(*etc->chops->phywr)(etc->ch, phyaddr, vec[0] & 0xffff, (uint16)vec[1]);
+ 				ET_TRACE(("etc_ioctl: ETCPHYWR2 to phy 0x%x, reg 0x%x <= 0x%x\n",
+-				          phyaddr, reg, vec[1]));
++				          phyaddr, vec[0] & 0xffff, vec[1]));
+ 			}
+ 		}
+ 		break;
+@@ -398,16 +398,16 @@
+ 
+ 	case ETCROBOWR:
+ 		if (etc->robo && vec) {
+-			uint page, reg;
++			uint page;
+ 			uint16 val;
+ 			robo_info_t *robo = (robo_info_t *)etc->robo;
+ 
+ 			page = vec[0] >> 16;
+-			reg = vec[0] & 0xffff;
++/*			reg = vec[0] & 0xffff; */
+ 			val = vec[1];
+ 			robo->ops->write_reg(etc->robo, page, vec[0], &val, 2);
+ 			ET_TRACE(("etc_ioctl: ETCROBOWR to page 0x%x, reg 0x%x <= 0x%x\n",
+-			          page, reg, val));
++			          page,  vec[0] & 0xffff, val));
+ 		}
+ 		break;
+ #endif /* ETROBO */
