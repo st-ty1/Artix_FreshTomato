@@ -9,10 +9,10 @@
 9.) Copy 910-cfns-fix-mismatch-in-gnu_inline-attributes.patch of this repo in packages/gcc/5.3.0 of your local buildroot-2016.02 directory.
 10.) Copy uClibc-0.9.32.1-gen_wctype.patch (and for versions with NPTL also 0071-Fix-libgcc_s_resume-issue.patch) of this repo in packages/uclibc/0.9.32.1 of your local buildroot-2016.02 directory.
 11.) Generate a package of the linux sources in FT repos (file name has to be "linux-2.6.tar.xz"), create subfolder dl_save in your local buildroot-2016.02 directory and place package into dl_save folder.
-		mkdir $HOME/buildroot-2016.02_mips/dl_save		
+		mkdir $HOME/buildroot-2016.02_/dl_save		
 		cd $HOME/freshtomato-mips/release/src-rt-6.x/linux
 		tar cJvf linux-2.6.tar.xz linux-2.6
-		mv linux-2.6.tar.xz $HOME/buildroot-2016.02_mips/dl_save
+		mv linux-2.6.tar.xz $HOME/buildroot-2016.02/dl_save
 12.) Copy linux-2.6.28.10-unifdef-getline.patch of this repo into package/linux-headers subfolder of your local buildroot-2016.02 directory.
 13.) Start the building process with "make".
 14.) After build process is finished, copy interp.os from subfolder output/build/uclibc-0.9.32.1/lib to subfolder output/host/usr/mipsel-brcm-linux-uclibc/sysroot/usr/lib/
