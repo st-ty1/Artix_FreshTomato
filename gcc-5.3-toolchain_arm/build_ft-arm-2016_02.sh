@@ -1,6 +1,6 @@
 #! /bin/sh
 
-##status FT sources: commit faa666f78e45174250405c6586ce3ec1c42b1480; 03/02/2022
+##status FT sources: commit cb0e7b09dab56cd3e9b2d59265ebf2357d3f955b; 26.02.2022
 
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-arm
@@ -17,7 +17,7 @@ cd $FT_REPO_DIR
 git clean -dxf 
 git reset --hard
 git checkout arm-master
-##git pull
+git pull
 
 clear
 

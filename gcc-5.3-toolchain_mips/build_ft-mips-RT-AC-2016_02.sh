@@ -1,6 +1,6 @@
 #! /bin/sh
 
-##status FT sources: commit f1591a3578704a181b6a990763677aef3c3aadc4 ; 27.1.2022
+##status FT sources: commit c11fc108f27373aaa3c9ef670e18f82466eceafd; 24.2.2022
 
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-mips
@@ -8,7 +8,7 @@ FT_REPO_DIR=$HOME/freshtomato-mips
 ## path to the FreshTomato patches for new mips-toolchain
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-5.3-toolchain_mips
 
-## path to mips-toolchain with gcc 5.3 and binutils 2.23.2
+## path to mips-toolchain with gcc 5.3 and binutils 2.25.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_mips/output/host
 
 export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-5.3/usr/bin:$PATH
@@ -18,6 +18,7 @@ cd $FT_REPO_DIR
 git clean -dxf 
 git reset --hard
 git checkout mips-RT-AC
+git pull
 
 clear
 

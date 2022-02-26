@@ -49,12 +49,3 @@
  
  genSO("${root}/usr/lib/libbcmcrypto.so", "${router}/libbcmcrypto/libbcmcrypto.a");
  
-@@ -633,7 +633,7 @@
- genSO("${root}/usr/lib/libsodium.so.23.3.0", "${router}/libsodium/src/libsodium/.libs/libsodium.a");
- genSO("${root}/usr/lib/libpng16.so.16.37.0", "${router}/libpng/.libs/libpng16.a", "", "-L${router}/zlib");
- genSO("${root}/usr/lib/libxml2.so.2.9.12", "${router}/libxml2/.libs/libxml2.a", "", "-L${router}/zlib");
--genSO("${root}/usr/lib/libpcre.so.1.2.12", "${router}/pcre/.libs/libpcre.a");
-+genSO("${root}/usr/lib/libpcre.so.1.2.13", "${router}/pcre/.libs/libpcre.a");
- genSO("${root}/usr/lib/libpcreposix.so.0.0.7", "${router}/pcre/.libs/libpcreposix.a");
- genSO("${root}/usr/lib/libatomic_ops.so.1.0.3", "${router}/libatomic_ops/src/.libs/libatomic_ops.a");
- genSO("${root}/usr/lib/libncurses.so.6", "${router}/libncurses/lib/libncurses.a");

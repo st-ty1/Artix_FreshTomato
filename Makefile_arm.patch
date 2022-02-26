@@ -1,5 +1,14 @@
 --- a/release/src-rt-6.x.4708/router/Makefile	2022-02-05 15:47:54.034626500 +0100
 +++ b/release/src-rt-6.x.4708/router/Makefile	2022-02-05 13:16:32.204626500 +0100
+@@ -2618,7 +2618,7 @@
+ 			-DWITH_FEDERATED_STORAGE_ENGINE=FALSE \
+ 			-DWITH_NDBCLUSTER_STORAGE_ENGINE=FALSE \
+ 			-DCURSES_INCLUDE_PATH="$(TOP)/libncurses/staged/usr/include" \
+-			-DCURSES_NCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
++			-DCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
+ 			-DWITH_ZLIB=system \
+ 			-DZLIB_INCLUDE_DIR="$(TOP)/zlib/staged/usr/include" \
+ 			-DZLIB_LIBRARY="$(TOP)/zlib/staged/usr/lib/libz.so" \
 @@ -3809,8 +3809,8 @@
  	$(call patch_files,glib2)
  	cd glib2 && ./autogen.sh && \
@@ -11,12 +20,4 @@
  		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
  		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
  		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
-@@ -3855,7 +3855,7 @@
- 	$(MAKE) -C $@
- 
- irqbalance-install: 
--	install -D irqbalance/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
-+	install -D irqbalance/.libs/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
- 	$(STRIP) $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
- 	@rm -rf $(INSTALLDIR)/irqbalance/usr/share
- 
+

@@ -1,6 +1,6 @@
 #! /bin/sh
 
-##status FT sources: commit 15ae1d23054a2531d6ad82d4e65e36aaacfffec2 ; 11.2.2022
+##status FT sources: commitb91a1ea576809c4a7a271357116357888a81db2d ; 26.2.2022
 
 ## path to the local FreshTomato repo
 FT_REPO_DIR=$HOME/freshtomato-mips
@@ -8,7 +8,7 @@ FT_REPO_DIR=$HOME/freshtomato-mips
 ## path to the FreshTomato patches for new mips-toolchain
 FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-5.3-toolchain_mips
 
-## path to mips-toolchain with gcc 5.3 and binutils 2.23.2
+## path to mips-toolchain with gcc 5.3 and binutils 2.25.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_mips/output/host
 
 export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-5.3/usr/bin:$PATH
@@ -18,6 +18,7 @@ cd $FT_REPO_DIR
 git clean -dxf 
 git reset --hard
 git checkout mips-master
+git pull
 
 clear
 
@@ -29,8 +30,7 @@ cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclib
 
 #### userland
 ## router/Makefiles
-#patch -i  $FT_PATCHES_DIR/Makefile_mips4.patch $FT_REPO_DIR/release/src/router/Makefile
-cp -vf $FT_PATCHES_DIR/Makefile_RT $FT_REPO_DIR/release/src/router/Makefile
+patch -i  $FT_PATCHES_DIR/Makefile_mips4.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
 
 ## router/libbcmcrypto
