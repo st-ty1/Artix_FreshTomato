@@ -13,8 +13,8 @@ on wsl2/Windows then you should also install the nano package or you can use a s
 
 It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches there is a manual in this repo) without (!) any desktop environment or unneeded packages, to keep the needed patches as low as possible. Any additional package, like graphical environments, can make build process more complicate, as executables on Artix/Arch Linux are build with shared libs, which can mislead the building tools within the FT sources, at worst.
 
-With introduction of irq-balance in source code of FT-arm, Makefile_arm.patch is now needed for compiling both arm versions of FT sources on Artix/Arch Linux.
-You can apply patch to directly to /release/src-rt-6.x.4708/router/Makefile before starting building process or use one of the supplied patches build_ft-arm7.sh/build_ft-arm.sh of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
+Makefile.patch is needed for compiling FT sources on Artix/Arch Linux.
+You can apply patch to directly to .../router/Makefile before starting building process or use one of the supplied scripts of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
 
 (Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead of an amended LIB path. This is done by applying Makefile_arm_alternate.patch on Makefile.
 Currently, this patch needs to be updated, due to some new additional *.la-files in FT source code.)
