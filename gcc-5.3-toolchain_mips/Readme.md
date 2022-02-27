@@ -19,9 +19,9 @@ BR
 st-ty1
 
 Next steps:
-- Test with router with NAND flash (WNDR4500)		tbd.
-- Build of RT-N (mipsr2) branch				Ok
-   - Test with Asus RT-N66U				tbd.
-- Build of RT (mipsr1) branch (without testing due to missing router)		Ok
-- shrinking of libc by libfoo.pl
-- only one single patch for Makefile and one single patch for common.mak (both in /release/src/router) for arm and all mips-branches
+- Test with router with NAND flash (WNDR4500)		      tbd.
+- shrinking of uclibc.so by libfoo.pl                      tbd.
+- ~~Build of RT-N (mipsr2) branch				      Ok
+   - ~~Test with Asus RT-N66U				      OK
+- ~~Build of RT (mipsr1) branch (without testing due to missing router)		      Ok
+- ~~only one single patch for Makefile and one single patch for common.mak (both in /release/src/router) for arm and all mips-branches      OK
