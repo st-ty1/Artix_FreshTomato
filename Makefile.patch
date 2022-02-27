@@ -20,4 +20,12 @@
  		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
  		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
  		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+@@ -3855,7 +3855,7 @@
+ 	$(MAKE) -C $@
+ 
+ irqbalance-install: 
+-	install -D irqbalance/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
++	install -D irqbalance/.libs/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	$(STRIP) $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	@rm -rf $(INSTALLDIR)/irqbalance/usr/share
 

@@ -217,5 +217,12 @@
  		$(CONFIGURE) --prefix=/usr --enable-static=glib2 --with-libcap_ng=no \
  			--with-systemd=no --without-irqbalance-ui --disable-numa --disable-dependency-tracking
  	@touch $@
-
+@@ -3855,7 +3855,7 @@
+ 	$(MAKE) -C $@
+ 
+ irqbalance-install: 
+-	install -D irqbalance/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
++	install -D irqbalance/.libs/irqbalance $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	$(STRIP) $(INSTALLDIR)/irqbalance/usr/sbin/irqbalance
+ 	@rm -rf $(INSTALLDIR)/irqbalance/usr/share
 
