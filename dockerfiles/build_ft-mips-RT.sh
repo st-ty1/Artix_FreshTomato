@@ -12,6 +12,8 @@ git checkout mips-master
 
 clear
 
+patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src/router/Makefile
+
 cd release/src-rt
 
 make $@

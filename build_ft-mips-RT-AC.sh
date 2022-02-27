@@ -16,7 +16,5 @@ patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src/router/Makefile
 
 cd release/src-rt-6.x
 
-make $@
-
-mkdir /image
-cp $FT_REPO_DIR/release/src-rt-6.x/image/* /image
+time make z #1> log.txt 2>&1
+## Insert you router model in line above; AIO:z; VPN:e

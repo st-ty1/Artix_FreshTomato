@@ -30,7 +30,7 @@ cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclib
 
 #### userland
 ## router/Makefiles
-patch -i  $FT_PATCHES_DIR/Makefile_mips4.patch $FT_REPO_DIR/release/src/router/Makefile
+patch -i  $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
 
 ## router/libbcmcrypto

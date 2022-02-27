@@ -1,0 +1,221 @@
+--- Makefile.orig	2022-02-27 12:42:21.220056500 +0100
++++ Makefile	2022-02-27 12:48:30.980056500 +0100
+@@ -411,7 +411,7 @@
+ obj-$(TCONFIG_NGINX) += pcre
+ obj-$(TCONFIG_NGINX) += libncurses
+ ifneq ($(TCONFIG_BCMARM),y)
+- obj-$(TCONFIG_NGINX) += libatomic_ops
++# obj-$(TCONFIG_NGINX) += libatomic_ops
+ endif
+ obj-$(TCONFIG_NGINX) += libiconv
+ obj-$(TCONFIG_NGINX) += libxml2
+@@ -453,10 +453,12 @@
+ obj-clean := $(foreach obj, $(obj-y) $(obj-n) $(obj-), $(obj)-clean)
+ obj-install := $(foreach obj,$(obj-y),$(obj)-install)
+ 
++export PLATFORM LIBDIR USRLIBDIR 
++
+ ifeq ($(TCONFIG_BCMARM),y)
+  LINUX_VERSION=2_6_36
+  LINUX_KERNEL=2.6.36
+- export PLATFORM LIBDIR USRLIBDIR LINUX_VERSION
++ export LINUX_VERSION
+ 
+  ifeq ($(TCONFIG_BCM7),y)
+   export BCMSRC=src-rt-7.x.main/src
+@@ -494,7 +496,7 @@
+  export BASEDIR := $(WLAN_TreeBaseA)
+  export EXTRALDFLAGS = -lgcc_s
+  export EXTRALDFLAGS2 = -L$(TOP)/nvram$(BCMEX) -lnvram -L$(TOP)/shared -lshared
+- export LD_LIBRARY_PATH := $(SRCBASE)/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib
++ export LD_LIBRARY_PATH := $(TOOLCHAIN)/lib
+ 
+  ifeq (2_6_36,$(LINUX_VERSION))
+   ifeq ($(TCONFIG_BCM7),y)
+@@ -630,7 +632,7 @@
+ endif # !TCONFIG_BCMARM
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv et/* . && rm -rf et || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv wl/* . && rm -rf wl || true
+-	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv cifs/* . && rm -rf cifs
++	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv cifs/* . && rm -rf cifs || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs2/* . && rm -rf jffs2 || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs/* . && rm -rf jffs || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/lib && mv zlib_inflate/* . && rm -rf zlib_inflate || true
+@@ -719,20 +721,14 @@
+ 	install $(LIBDIR)/libdl.so.0 $(TARGETDIR)/lib/
+ 	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
+ 	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
++ifneq ($(TCONFIG_BCMARM)$(TCONFIG_SSH),)
+ 	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
++endif
+ ifeq ($(TCONFIG_USB),y)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
+-else
+ 	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+-endif
+ endif # TCONFIG_USB
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-else
+-	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-endif # TCONFIG_BCMARM
++	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ 	cd $(TARGETDIR)/lib && ln -sf libstdc++.so.6 libstdc++.so
+ 	$(STRIP) $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_NGINX TCONFIG_NANO
+@@ -1842,7 +1838,7 @@
+ 
+ sqlite/stamp-h1:
+ 	cd sqlite && autoreconf -fsi && \
+-		CC=$(CC) CFLAGS="-Os $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CC=$(CC) CFLAGS="-Os -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --enable-shared --enable-static \
+ 			--disable-readline --disable-dynamic-extensions --enable-threadsafe
+@@ -2103,7 +2099,7 @@
+ 			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
+ 		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
+ 			-L$(TOP)/jpeg -L$(TOP)/flac/src/libFLAC/.libs -L$(TOP)/libid3tag/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/ffmpeg/libavformat -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavutil" \
+-		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm" \
++		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm -lgcc_s" \
+ 		ac_cv_lib_id3tag__lz___id3_file_open=yes \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
+@@ -2312,7 +2308,7 @@
+ pcre/stamp-h1:
+ 	$(call patch_files,pcre)
+ 	cd pcre && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking --enable-utf8 --enable-unicode-properties --disable-cpp
+ 	[ -d pcre/m4 ] || mkdir pcre/m4
+ 	@touch $@
+@@ -2364,7 +2360,7 @@
+ 
+ libpng/stamp-h1:
+ 	cd libpng && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include" \
+ 		LDFLAGS="-L$(TOP)/zlib/staged/usr/lib" \
+ 		$(CONFIGURE) --prefix=/usr --enable-static --enable-shared
+@@ -2501,8 +2497,8 @@
+ 	cd nginx && \
+ 		./configure --crossbuild=Linux::$(ARCH) \
+ 			--with-cc="$(CC)" \
+-			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include $(if $(TCONFIG_BCMARM),,-I$(TOP)/libatomic_ops/src/$(comma)libs)" \
+-			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(TCONFIG_BCMARM),,-L$(TOP)/libatomic_ops/src)" \
++			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include" \
++			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib" \
+ 			--prefix=/usr \
+ 			--sbin-path=/usr/sbin \
+ 			--conf-path=/etc/nginx/nginx.conf \
+@@ -2520,7 +2516,6 @@
+ 			--with-http_gzip_static_module \
+ 			--with-http_v2_module \
+ 			--with-http_realip_module \
+-			$(if $(TCONFIG_BCMARM),,--with-libatomic=$(TOP)/libatomic_ops) \
+ 			$(if $(TCONFIG_IPV6),--with-ipv6,)
+ 	@touch $@
+ 
+@@ -2620,7 +2615,7 @@
+ 			-DWITH_FEDERATED_STORAGE_ENGINE=FALSE \
+ 			-DWITH_NDBCLUSTER_STORAGE_ENGINE=FALSE \
+ 			-DCURSES_INCLUDE_PATH="$(TOP)/libncurses/staged/usr/include" \
+-			-DCURSES_NCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
++			-DCURSES_LIBRARY="$(TOP)/libncurses/staged/usr/lib/libncurses.so" \
+ 			-DWITH_ZLIB=system \
+ 			-DZLIB_INCLUDE_DIR="$(TOP)/zlib/staged/usr/include" \
+ 			-DZLIB_LIBRARY="$(TOP)/zlib/staged/usr/lib/libz.so" \
+@@ -2953,7 +2948,7 @@
+ e2fsprogs/stamp-h1:
+ 	$(call patch_files,e2fsprogs)
+ 	cd e2fsprogs && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CFLAGS="-Os -Wall -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc --enable-elf-shlibs --disable-tls --disable-defrag $(if $(TCONFIG_BCMARM),ac_cv_lib_pthread_sem_init=no,) \
+ 			--disable-jbd-debug --disable-blkid-debug --disable-testio-debug --disable-backtrace --disable-e2initrd-helper \
+@@ -3454,7 +3449,7 @@
+ iperf/stamp-h1:
+ 	$(call patch_files,iperf)
+ 	cd iperf && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		ac_cv_func_clock_gettime="no" \
+ 		ac_cv_func_daemon="no" \
+ 		$(CONFIGURE) --prefix=/usr --disable-profiling --without-openssl
+@@ -3481,7 +3476,7 @@
+ 
+ libdaemon/stamp-h1:
+ 	cd libdaemon && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking ac_cv_func_setpgrp_void=yes
+ 	touch $@
+@@ -3528,7 +3523,7 @@
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
+ 		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		LIBDAEMON_CFLAGS="-I$(TOP)/libdaemon" \
+-		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS2)" \
++		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS)" \
+ 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc localstatedir=/var --with-distro=none \
+ 			--enable-introspection=no \
+ 			--disable-nls --disable-glib --disable-libevent --disable-gobject \
+@@ -3674,7 +3674,7 @@
+ libnetfilter_log/stamp-h1:
+ 	cd libnetfilter_log && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/libnfnetlink/include" \
+-		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib -L$(TOP)/libnfnetlink/src/.libs" \
++		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOOLCHAIN)/lib -L$(TOP)/libnfnetlink/src/.libs" \
+ 		PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libnfnetlink" \
+ 		$(CONFIGURE) --prefix=/usr
+ 	@touch $@
+@@ -3682,7 +3682,7 @@
+ libnetfilter_log: libnetfilter_log/stamp-h1
+ 	@$(SEP)
+ 	$(MAKE) -C $@ $(PARALLEL_BUILD)
+-	$(MAKE) -C $@ DESTDIR=$(TOP)/libnetfilter_log/staged install
++#	$(MAKE) -C $@ DESTDIR=$(TOP)/libnetfilter_log/staged install
+ 
+ libnetfilter_log-install:
+ 	install -d $(INSTALLDIR)/libnetfilter_log/usr/lib/
+@@ -3810,7 +3810,7 @@
+ 	cd glib2 && ./autogen.sh && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
+ 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/glib2" \
+-		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
++		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/arm-buildroot-linux-uclibcgnueabi/sysroot/lib" \
+ 		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+ 		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+@@ -3821,8 +3821,7 @@
+ glib2: glib2/stamp-h1
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ $(PARALLEL_BUILD)
+-	@$(MAKE) -C $@ DESTDIR=$(TOP)/glib2/staged install
+-	@rm -f glib2/staged/usr/lib/libglib-2.0.la
++#	@$(MAKE) -C $@ DESTDIR=$(TOP)/glib2/staged install
+ 
+ glib2-install: glib2
+ 	install -D glib2/glib/.libs/libglib-2.0.so.0.3707.0 $(INSTALLDIR)/glib2/usr/lib/libglib-2.0.so.0.3707.0
+@@ -3841,11 +3840,11 @@
+ 	$(call patch_files,irqbalance)
+ 	cd irqbalance && ./autogen.sh && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+-		CPPFLAGS="-I$(TOP)/glib2/staged/usr/include/glib-2.0 -I$(TOP)/glib2/staged/usr/lib/glib-2.0/include -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+-		LDFLAGS="-Wl,--gc-sections -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib" \
++		CPPFLAGS="-I$(TOP)/glib2/glib -I$(TOP)/libiconv/include -I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
++		LDFLAGS="-Wl,--gc-sections -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/glib2/glib/.libs -lglib-2.0" \
+ 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+ 		GLIB2_CFLAGS="-I$(TOP)/glib2/staged/usr/include/glib-2.0 -I$(TOP)/glib2" \
+-		GLIB2_LIBS="-L$(TOP)/glib2/staged/usr/lib -lglib-2.0" \
++		GLIB2_LIBS="-L$(TOP)/glib2/glib/.libs -lglib-2.0" \
+ 		$(CONFIGURE) --prefix=/usr --enable-static=glib2 --with-libcap_ng=no \
+ 			--with-systemd=no --without-irqbalance-ui --disable-numa --disable-dependency-tracking
+ 	@touch $@
+
+
