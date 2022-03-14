@@ -3,8 +3,8 @@
 ## path to the FT-repo folder
 FT_REPO_DIR=$HOME/freshtomato-mips
 
-## path to your local repo of FT-samba4
-FT_SAMBA_DIR=$FT_PATCHES_DIR/mips-Samba4
+## path to your local repo of samba4 files for FreshTomato on Artix
+FT_SAMBA_DIR=$HOME/Artix_FreshTomato/mips_Samba4
 
 ## path to extracted libtirpc-sources
 LIBTIRPC_DIR=$HOME/libtirpc_1.1.4
