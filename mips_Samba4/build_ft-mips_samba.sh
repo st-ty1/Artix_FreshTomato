@@ -7,7 +7,7 @@ FT_REPO_DIR=$HOME/freshtomato-mips
 FT_SAMBA_DIR=$FT_PATCHES_DIR/mips-Samba4
 
 ## path to extracted libtirpc-sources
-LIBTIRPC_DIR=$FT_SAMBA_DIR/libtirpc_1.1.4
+LIBTIRPC_DIR=$HOME/libtirpc_1.1.4
 
 
 cd $FT_REPO_DIR 
