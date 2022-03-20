@@ -70,8 +70,9 @@ patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/route
 
 ## kernel
 patch -p1 -d$FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
+cp -rf  $ASUSWRT_PATCHES_DIR/Makefile_linux_arm $ASUSWRT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/Makefile
 
-## module: et-driver
+## module: et-driver  +++++ trotz Fehler beim patchen kein crash!!
 patch -i $FT_PATCHES_DIR/et_linux.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/et_linux.c
 patch -i $FT_PATCHES_DIR/etc.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etc.c
 patch -i $FT_PATCHES_DIR/etc_adm.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etc_adm.c
