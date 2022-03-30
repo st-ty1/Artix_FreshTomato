@@ -1,28 +1,20 @@
---- Makefile	2020-08-01 19:30:59.290070647 +0200
-+++ Makefile_mod	2020-08-01 19:33:13.966743055 +0200
-@@ -240,7 +240,9 @@
+--- Makefile.orig	2022-03-30 13:17:43.000000000 +0000
++++ Makefile	2022-03-30 12:49:42.000000000 +0000
+@@ -319,7 +322,10 @@
+ ifneq ($(TCONFIG_BCMARM)$(TCONFIG_NGINX),)
+  obj-$(TCONFIG_SAMBASRV) += libiconv
  endif
+-obj-$(TCONFIG_SAMBASRV) += samba3
++obj-$(TCONFIG_SAMBASRV) += zlib
++obj-$(TCONFIG_SAMBASRV) += libtirpc
++obj-$(TCONFIG_SAMBASRV) += gnutls
++obj-$(TCONFIG_SAMBASRV) += samba4
+ obj-$(TCONFIG_SAMBASRV) += wsdd2
  
- obj-y += taskset
--obj-$(NEED_SAMBA3) += samba3
-+obj-$(NEED_SAMBA3) += libtirpc
-+obj-$(NEED_SAMBA3) += gnutls
-+obj-$(NEED_SAMBA3) += samba4
- obj-$(NEED_SAMBA3) += wsdd2
+ ifeq ($(TCONFIG_BCMARM),y)
+@@ -3865,6 +3864,72 @@
+ 	$(call unpatch_files,irqbalance)
  
- ifeq ($(CONFIG_BCMWL6),y)
-@@ -1296,7 +1300,7 @@
- 
- p910nd:
- 
--samba3: $(if $(TCONFIG_MEDIA_SERVER)$(TCONFIG_NGINX),libiconv,)
-+samba4: $(if $(TCONFIG_MEDIA_SERVER)$(TCONFIG_NGINX),libiconv,) libtirpc gnutls
- 
- nvram_arm: shared
- 
-@@ -3082,6 +3089,72 @@
- 	rm -f $(INSTALLDIR)/diskdev_cmds-332.25/usr/sbin/fsck.hfs
- 	$(call unpatch_files,diskdev_cmds-332.25)
  
 +libtirpc/stamp-h1:
 +	cd $(TOP)/libtirpc && \
@@ -81,9 +73,9 @@
 +	install -d $(INSTALLDIR)/gnutls/usr/lib/
 +	install -D gnutls/lib/.libs/libgnutls.so.30.27.0 $(INSTALLDIR)/gnutls/usr/lib/libgnutls.so.30
 +	$(STRIP) $(INSTALLDIR)/gnutls/usr/lib/libgnutls.so.30
-+#	cd $(INSTALLDIR)/gnutls/usr/lib/ && \
-+#		ln -sf libgnutls.so.30.27.0 libgnutls.so.30 && \
-+#		ln -sf libgnutls.so.30.27.0 libgnutls.so
++	cd $(INSTALLDIR)/gnutls/usr/lib/ && \
++		ln -sf libgnutls.so.30.27.0 libgnutls.so.30 && \
++		ln -sf libgnutls.so.30.27.0 libgnutls.so
 +
 +gnutls-clean:
 +	-@$(MAKE) -C gnutls clean

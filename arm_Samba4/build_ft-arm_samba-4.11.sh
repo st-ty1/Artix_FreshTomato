@@ -10,13 +10,13 @@ FT_TOOLCHAIN_DIR=$HOME/toolchain-arm_new
 FT_SAMBA_DIR=$HOME/Artix_FreshTomato/arm_Samba4
 
 ## path to extracted libtirpc-sources
-LIBTIRPC_DIR=$HOME/libtirpc-1.2.5
+LIBTIRPC_DIR=$HOME/libtirpc-1.3.2
 
 ## path to extracted gnutls-sources
-GNUTLS_DIR=$HOME/gnutls-3.6.13
+GNUTLS_DIR=$HOME/gnutls-3.6.16
 
 ## path to extracted samba-sources
-SAMBA_DIR=$HOME/samba-4.11.9
+SAMBA_DIR=$HOME/samba-4.11.17
 
 
 cd $FT_REPO_DIR 
@@ -27,16 +27,17 @@ git checkout arm-master
 clear
 
 ## inserting modified arm-toolchain in FT-arm source code
-rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3
-cp -rvf $FT_TOOLCHAIN_DIR/hndtools-arm-linux-2.6.36-uclibc-4.5.3 $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains
-cp -rvf $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/lib/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib
+#rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3
+#cp -rvf $FT_TOOLCHAIN_DIR/hndtools-arm-linux-2.6.36-uclibc-4.5.3 $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains
+#cp -rvf $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/lib/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib
 
 ## stuff / patches needed for gnutls
 rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/router/gnutls
 mkdir $FT_REPO_DIR/release/src-rt-6.x.4708/router/gnutls
 cp -rf $GNUTLS_DIR/* $FT_REPO_DIR/release/src-rt-6.x.4708/router/gnutls
 rm -f $FT_REPO_DIR/release/src-rt-6.x.4708/router/gnutls/lib/Makefile.in
-patch -i $FT_SAMBA_DIR/Makefile_samba_libtirpc_gnutls.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
+#patch -i $FT_SAMBA_DIR/Makefile_samba_libtirpc_gnutls.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
+cp -vf $FT_SAMBA_DIR/Makefile $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 
 ## stuff needed for libtirpc
 rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/router/libtirpc
@@ -55,4 +56,4 @@ cd $FT_REPO_DIR/release/src-rt-6.x.4708
 
 time make ac68e 
 
-## change ac68e to your Arm-router model if needed
+## change ac68e to your model of arm-router  if needed

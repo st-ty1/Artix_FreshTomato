@@ -45,11 +45,13 @@ SMBLDFLAGS = -ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libi
 	@touch $@
 
 .conf_target: .conf_host
-	python_LDFLAGS="" python_LIBDIR="" CFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC" PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/gnutls/lib:$(TOP)/nettle/lib/pkgconfig" \
-	CPPFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC -I$(TOP)/gnutls/lib/includes" \
-	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/gnutls/lib/.libs -lgnutls -L$(TOP)/gmp/.libs -lgmp" \
-	CC=arm-brcm-linux-uclibcgnueabi-gcc AR=arm-uclibc-linux-2.6.36-ar CPP=arm-uclibc-linux-2.6.36-cpp \
-	RANLIB=arm-uclibc-linux-2.6.36-ranlib ./configure --cross-compile --cross-answers=answer.txt --bundled-libraries=talloc,tevent,texpect,tdb,ldb,tdr,cmocka,replace,popt,libtasn1,NONE \
+	python_LDFLAGS="" python_LIBDIR="" \
+	CFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC" \
+	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/gnutls/lib:$(TOP)/nettle/lib/pkgconfig" \
+	CPPFLAGS="-Wall -ffunction-sections -fdata-sections -fPIC -I$(TOP)/gnutls/lib/includes -I$(TOP)/zlib/staged/usr/include" \
+	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/gnutls/lib/.libs -lgnutls -L$(TOP)/gmp/.libs -lgmp -L$(TOP)/zlib/staged/usr/lib -lz -L$(TOP)/zlib/.libs" \
+	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) \
+	 ./configure --cross-compile --cross-answers=answer.txt --bundled-libraries=talloc,tevent,texpect,tdb,ldb,tdr,cmocka,replace,popt,libtasn1,NONE \
 		--disable-cups \
 		--disable-iprint \
 		--disable-cephfs \
@@ -94,7 +96,7 @@ SMBLDFLAGS = -ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libi
 	@touch $@
 
 all: .conf_target	
-	CC=arm-brcm-linux-uclibcgnueabi-gcc AR=arm-uclibc-linux-2.6.36-ar CPP=arm-uclibc-linux-2.6.36-cpp LD=arm-uclibc-linux-2.6.36-ld RANLIB=arm-uclibc-linux-2.6.36-ranlib ./buildtools/bin/waf build 
+	 ./buildtools/bin/waf build 
 	
 install:
 	install -D bin/smbpasswd $(INSTALLDIR)/usr/bin/smbpasswd
