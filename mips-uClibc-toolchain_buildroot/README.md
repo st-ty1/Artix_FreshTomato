@@ -6,11 +6,11 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
 - Extract sources into a new folder in your home directory (e.g. $HOME/buildroot-2011.02)
 - Copy all patches of gcc, uclibc und binutils of FT- or asuswrt-toolchain:
 
-   - <</your/path/to/your/local/FT- or asuswrt-repo>/toolchain/toolchain/gcc/patches to buildroot-2011.02/toolchain/gcc/4.2.4
+   - *</your/path/to/your/local/FT- or asuswrt-repo>*/toolchain/toolchain/gcc/patches to buildroot-2011.02/toolchain/gcc/4.2.4
 	
-   - <</your/path/to/your/local/FT- or asuswrt-repo>/toolchain/toolchain/uClibc/patches/0.9.30.1 to buildroot-2011.02/toolchain/uClibc
+   - *</your/path/to/your/local/FT- or asuswrt-repo>*/toolchain/toolchain/uClibc/patches/0.9.30.1 to buildroot-2011.02/toolchain/uClibc
 	
-   - <</your/path/to/your/local/FT- or asuswrt-repo>/toolchain/toolchain/binutils/patches/2.20.1 to buildroot-2011.02/package/binutils/binutils-2.20.1
+   - *</your/path/to/your/local/FT- or asuswrt-repo>*/toolchain/toolchain/binutils/patches/2.20.1 to buildroot-2011.02/package/binutils/binutils-2.20.1
    
    to appropriate subfolders in buildroot-2011.02 directory.
 - Then, modifications of some buildroot files are also needed: 
