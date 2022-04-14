@@ -27,15 +27,14 @@ git checkout mips-RT-AC
 clear
 
 ### insert new toolchain
-rm -rf  $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-4.2.4
+rm -rf  $FT_REPO_DIR/tools/brcm
 mkdir -p $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr
 cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr
 
 exit
 #### userland
 ## router/Makefiles
-#+patch -i  $FT_PATCHES_DIR/Makefile_mips4.patch $FT_REPO_DIR/release/src/router/Makefile
-cp -vf $FT_PATCHES_DIR/Makefile $FT_REPO_DIR/release/src/router/Makefile
+patch -i $FT_PATCHES_DIR/Makefile_mips.patch $FT_REPO_DIR/release/src/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common.mak
 
 ## lzma-loader
@@ -58,9 +57,10 @@ patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src/router/ebtable
 patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr/mipsel-brcm-linux-uclibc/sysroot/usr/include/ctype.h
 patch -i $FT_PATCHES_DIR/Makefile_httpd.patch $FT_REPO_DIR/release/src/router/httpd/Makefile
 
-## router/hotplug2
+## router/hotplug2; 3rd patch new with gcc 7.x
 patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src/router/hotplug2/mem_utils.c
 patch -i $FT_PATCHES_DIR/hotplug2_utils.c.patch $FT_REPO_DIR/release/src/router/hotplug2/hotplug2_utils.c
+patch -i $FT_PATCHES_DIR/hotplug2.c.patch $FT_REPO_DIR/release/src/router/hotplug2/hotplug2.c
 
 ## router/dnscrypt - due to message "using unsafe headers" - nur bei AIO
 patch -i $FT_PATCHES_DIR/configure.ac_dnscrypt.patch $FT_REPO_DIR/release/src/router/dnscrypt/configure.ac
@@ -73,12 +73,7 @@ patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src/router/glib/glib.
 patch -i $FT_PATCHES_DIR/configure_samba.patch $FT_REPO_DIR/release/src/router/samba3/source3/configure
 
 ## router/iptables; thanks to source code of github asuswrt-john
-patch -i $FT_PATCHES_DIR/ip6tables.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables.c
-patch -i $FT_PATCHES_DIR/libip6tc.c.patch $FT_REPO_DIR/release/src/router/iptables/libiptc/libip6tc.c
-patch -i $FT_PATCHES_DIR/iptables-multi.c.patch $FT_REPO_DIR/release/src/router/iptables/iptables-multi.c
-patch -i $FT_PATCHES_DIR/ip6tables-save.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-save.c
-patch -i $FT_PATCHES_DIR/ip6tables-restore.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-restore.c
-patch -i $FT_PATCHES_DIR/ip6tables-standalone.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-standalone.c
+cp -vf $FT_PATCHES_DIR/122_new-toolchain_small.patch $FT_REPO_DIR/release/src/router/patches/iptables
 
 ## router/zebra
 patch -i $FT_PATCHES_DIR/zebra.h.patch $FT_REPO_DIR/release/src/router/zebra/lib/zebra.h
@@ -125,11 +120,6 @@ patch -i $FT_PATCHES_DIR/etcgmac.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/et
 ## compressed kernel -  variant not needed by Asus RT-N66U
 patch -i $FT_PATCHES_DIR/bzip2_inflate.c.patch $FT_REPO_DIR/release/$RT_VERS/shared/bzip2_inflate.c
 
-## new with gcc 7.x
-patch -i $FT_PATCHES_DIR2/hotplug2.c.patch $FT_REPO_DIR/release/src/router/hotplug2/hotplug2.c
-patch -i $FT_PATCHES_DIR2/101-tomato-additional-files.patch.patch $FT_REPO_DIR/release/src/router/patches/iptables/101-tomato-additional-files.patch
-
-
 cd $FT_REPO_DIR/release/$RT_VERS
 
-time make r64z  #1> log.txt 2>&1
+make r64z  #1> log.txt 2>&1
