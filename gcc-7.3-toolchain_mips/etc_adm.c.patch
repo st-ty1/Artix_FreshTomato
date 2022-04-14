@@ -1,0 +1,20 @@
+--- etc_adm.c_orig	2022-01-27 15:12:09.000000000 +0000
++++ etc_adm.c	2022-01-02 16:11:37.000000000 +0000
+@@ -108,14 +108,14 @@
+ static void
+ adm_enable(adm_info_t *adm)
+ {
+-	void *regs;
++/*	void *regs;*/
+ 
+ 	/* Save current core index */
+ 	adm->coreidx = si_coreidx(adm->sih);
+ 
+ 	/* Switch to GPIO core for faster access */
+-	regs = si_gpiosetcore(adm->sih);
+-	ASSERT(regs);
++/*	regs = si_gpiosetcore(adm->sih); */
++	ASSERT(si_gpiosetcore(adm->sih));
+ }
+ 
+ /* Disable register access to the chip */
