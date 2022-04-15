@@ -1,0 +1,38 @@
+--- hotplug2.c.orig	2022-03-20 17:12:31.000000000 +0000
++++ hotplug2.c	2022-03-18 17:54:48.000000000 +0000
+@@ -62,7 +62,7 @@
+  *
+  * Returns: void
+  */
+-inline void free_hotplug2_event(struct hotplug2_event_t *event) {
++void free_hotplug2_event(struct hotplug2_event_t *event) {
+ 	int i;
+ 	
+ 	for (i = 0; i < event->env_vars_c; i++) {
+@@ -81,7 +81,7 @@
+  *
+  * Returns: Macro of the given action
+  */
+-inline int get_hotplug2_event_action(char *action) {
++int get_hotplug2_event_action(char *action) {
+ 	if (!strcmp(action, "add"))
+ 		return ACTION_ADD;
+ 	
+@@ -161,7 +161,7 @@
+  *
+  * Returns: A copy of the source event structure
+  */
+-inline struct hotplug2_event_t *dup_hotplug2_event(struct hotplug2_event_t *src) {
++struct hotplug2_event_t *dup_hotplug2_event(struct hotplug2_event_t *src) {
+ 	struct hotplug2_event_t *dest;
+ 	int i;
+ 	
+@@ -189,7 +189,7 @@
+  *
+  * Returns: A new event structure
+  */
+-inline struct hotplug2_event_t *get_hotplug2_event(char *event_str, int size) {
++struct hotplug2_event_t *get_hotplug2_event(char *event_str, int size) {
+ 	char *ptr;
+ 	struct hotplug2_event_t *event;
+ 	int skip;

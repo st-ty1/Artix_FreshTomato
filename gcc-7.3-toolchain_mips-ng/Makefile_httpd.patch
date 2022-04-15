@@ -1,0 +1,11 @@
+--- Makefile_httpd_orig	2022-01-27 15:12:09.000000000 +0000
++++ Makefile_httpd_neu	2022-01-27 07:46:15.000000000 +0000
+@@ -33,7 +33,7 @@
+ OBJS += openvpn.o
+ endif
+ 
+-LIBS = -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared
++LIBS += -L$(TOP)/nvram${BCMEX} -lnvram -L$(TOP)/shared -lshared
+ 
+ ifneq ($(TCONFIG_HTTPS),)
+ LIBS += -L$(TOP)/mssl -lmssl

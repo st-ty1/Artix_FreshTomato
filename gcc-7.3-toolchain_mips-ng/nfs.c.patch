@@ -1,0 +1,13 @@
+--- nfs.c.orig	2021-08-19 16:59:43.000000000 +0000
++++ nfs.c	2022-04-01 18:06:05.000000000 +0000
+@@ -85,8 +85,8 @@
+ 	threads = nvram_get_int("nfsd_threads");
+ 	snprintf(numthreads, sizeof(numthreads), "%d", (threads ? : 2)); /* default to 2 threads */
+ 
+-	if (pidof("portmap") < 0)
+-		eval("/usr/sbin/portmap");
++	if (pidof("rpcbind") < 0)
++		eval("/usr/sbin/rpcbind");
+ 
+ 	eval("/usr/sbin/statd");
+ 
