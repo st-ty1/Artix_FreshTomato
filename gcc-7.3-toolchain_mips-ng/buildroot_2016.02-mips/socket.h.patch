@@ -1,0 +1,11 @@
+--- a/include/linux/socket.h	2019-08-20 17:20:29.000000000 +0000
++++ b/include/linux/socket.h	2022-03-28 18:14:45.000000000 +0000
+@@ -16,7 +16,7 @@
+ 				/* _SS_MAXSIZE value minus size of ss_family */
+ } __attribute__ ((aligned(_K_SS_ALIGNSIZE)));	/* force desired alignment */
+ 
+-#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2)
++#if defined(__KERNEL__) 
+ 
+ #include <asm/socket.h>			/* arch-dependent defines	*/
+ #include <linux/sockios.h>		/* the SIOCxxx I/O controls	*/
