@@ -3,7 +3,7 @@ HowTo: Build FreshTomato-mips/-arm on Artix host system
 
 
 Instead of the packages needed for building FreshTomato on Debian (which are mentioned under step 8-11 in Readme.txt of FT-sources), following packages are needed for building FreshTomato on Artix:
-make, gcc, which, autoconf, automake, pkgconf, patch, bison, flex, cmake, rpcsvc-proto, gperf, python, intltool, re2c and gtk-doc
+make, gcc, which, autoconf, automake, pkgconf, patch, bison, flex, cmake, rpcsvc-proto, gperf, python, intltool, re2c and gtk-doc.
 
 The precompiled 32-bit host-tools of FT need also following packages: lib32-glibc, lib32-gcc-libs and lib32-zlib
 (Therefore, don't forget to uncomment the lines of the "Multilib" and the "lib32" section in /etc/pacman.conf).
