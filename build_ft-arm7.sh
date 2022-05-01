@@ -12,7 +12,7 @@ git checkout arm-sdk7
 
 clear
 
-patch -i $FT_PATCHES_DIR/Makefile_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
+patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 
 cd release/src-rt-7.x.main/src
 
