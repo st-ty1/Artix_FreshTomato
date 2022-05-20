@@ -1,0 +1,13 @@
+--- Makefile.orig	2022-05-19 15:23:04.000000000 +0000
++++ Makefile	2022-05-17 12:15:03.000000000 +0000
+@@ -34,8 +34,8 @@
+ 		  -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic \
+ 		  -ffunction-sections -pipe -Wa,--trap \
+ 		  -mabi=32 $(REVFLAGS)
+-CFLAGS		+= -DLOADADDR=$(TEXT_START) -D_LZMA_IN_CB
+-CFLAGS		+= -I$(SRCBASE)/include -I$(SRCBASE)/lzma/C/Compress/Lzma
++CFLAGS		+= -DLOADADDR=$(TEXT_START) -D_LZMA_IN_CB -fno-stack-protector
++CFLAGS		+= -I$(SRCBASE)/include -I$(SRCBASE)/lzma/C/Compress/Lzma -I$(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/usr/include/sys
+ 
+ ASFLAGS		= $(CFLAGS) -D__ASSEMBLY__ -DBZ_TEXT_START=$(BZ_TEXT_START)
+ 

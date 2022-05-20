@@ -1,0 +1,23 @@
+diff -ruN a/utils/statd/statd.c b/utils/statd/statd.c
+--- a/utils/statd/statd.c	2022-05-19 15:02:54.000000000 +0000
++++ b/utils/statd/statd.c	2022-05-19 15:05:49.000000000 +0000
+@@ -76,6 +76,7 @@
+ 
+ extern void sm_prog_1 (struct svc_req *, register SVCXPRT *);
+ static void load_state_number(void);
++stat_chge	SM_stat_chge;
+ 
+ #ifdef SIMULATIONS
+ extern void simulator (int, char **);
+diff -ruN a/utils/statd/statd.h b/utils/statd/statd.h
+--- a/utils/statd/statd.h	2022-05-19 15:02:54.000000000 +0000
++++ b/utils/statd/statd.h	2022-05-19 15:05:07.000000000 +0000
+@@ -59,7 +59,7 @@
+ /*
+  * Host status structure and macros.
+  */
+-stat_chge		SM_stat_chge;
++extern stat_chge		SM_stat_chge;
+ #define MY_NAME		SM_stat_chge.mon_name
+ #define MY_STATE	SM_stat_chge.state
+ 

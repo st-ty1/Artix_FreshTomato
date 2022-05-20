@@ -1,0 +1,11 @@
+--- common.mak_orig	2022-01-27 15:12:09.000000000 +0000
++++ common.mak_neu	2022-01-27 09:34:29.000000000 +0000
+@@ -48,7 +48,7 @@
+ export HOST := arm-linux
+ else
+ export PLATFORM := mipsel-uclibc
+-export CROSS_COMPILE := mipsel-uclibc-
++export CROSS_COMPILE := mipsel-brcm-linux-uclibc-
+ export CROSS_COMPILER := $(CROSS_COMPILE)
+ export CONFIGURE := ./configure --host=mipsel-linux --build=$(BUILD)
+ export HOSTCONFIG := linux-mipsel

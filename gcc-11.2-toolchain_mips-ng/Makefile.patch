@@ -1,0 +1,320 @@
+--- Makefile.orig	2022-05-19 15:27:13.000000000 +0000
++++ Makefile	2022-05-20 08:09:19.000000000 +0000
+@@ -304,7 +304,8 @@
+ obj-$(TCONFIG_RAID) += mdadm
+ obj-$(TCONFIG_NFS) += e2fsprogs
+ obj-$(TCONFIG_NFS) += libevent
+-obj-$(TCONFIG_NFS) += portmap
++obj-$(TCONFIG_NFS) += libtirpc
++obj-$(TCONFIG_NFS) += rpcbind
+ obj-$(TCONFIG_NFS) += libnfsidmap
+ obj-$(TCONFIG_NFS) += nfs-utils
+ obj-$(TCONFIG_NOCAT) += glib
+@@ -411,7 +412,7 @@
+ obj-$(TCONFIG_NGINX) += pcre
+ obj-$(TCONFIG_NGINX) += libncurses
+ ifneq ($(TCONFIG_BCMARM),y)
+- obj-$(TCONFIG_NGINX) += libatomic_ops
++# obj-$(TCONFIG_NGINX) += libatomic_ops
+ endif
+ obj-$(TCONFIG_NGINX) += libiconv
+ obj-$(TCONFIG_NGINX) += libxml2
+@@ -559,10 +561,10 @@
+ 
+ ifneq ($(TCONFIG_BCMARM),y)
+ 	@if ! grep -q "CONFIG_EMBEDDED_RAMDISK=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) zImage CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) zImage CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	if grep -q "CONFIG_MODULES=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) modules CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	$(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR) TCONFIG_MIPSR2=$(TCONFIG_MIPSR2) $(PARALLEL_BUILD)
+ else # TCONFIG_BCMARM
+@@ -630,7 +632,7 @@
+ endif # !TCONFIG_BCMARM
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv et/* . && rm -rf et || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv wl/* . && rm -rf wl || true
+-	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv cifs/* . && rm -rf cifs
++	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv cifs/* . && rm -rf cifs || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs2/* . && rm -rf jffs2 || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs/* . && rm -rf jffs || true
+ 	cd $(TARGETDIR)/lib/modules/*/kernel/lib && mv zlib_inflate/* . && rm -rf zlib_inflate || true
+@@ -710,36 +712,16 @@
+ endif
+ 
+ # uClibc
+-	install $(LIBDIR)/ld-uClibc.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libcrypt.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libpthread.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libgcc_s.so.1 $(TARGETDIR)/lib/
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/ld-uClibc.so.1 $(TARGETDIR)/lib/
++	cd $(TARGETDIR)/lib && ln -sf ld-uClibc.so.1 ld-uClibc.so.0
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libgcc_s.so.1 $(TARGETDIR)/lib/
+ 	$(STRIP) $(TARGETDIR)/lib/libgcc_s.so.1
+-	install $(LIBDIR)/libc.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libdl.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
+-	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
+-ifeq ($(TCONFIG_USB),y)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
+-else
+-	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+-endif
+-endif # TCONFIG_USB
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libc.so.0 $(TARGETDIR)/lib/
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-else
+-	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+-endif # TCONFIG_BCMARM
++	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ 	cd $(TARGETDIR)/lib && ln -sf libstdc++.so.6 libstdc++.so
+ 	$(STRIP) $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_NGINX TCONFIG_NANO
+-ifneq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-	install $(LIBDIR)/libresolv.so.0 $(TARGETDIR)/lib/
+-	$(STRIP) $(TARGETDIR)/lib/*.so.0
+-endif
+ 
+ 	@cd $(TARGETDIR) && $(TOP)/others/rootprep.sh
+ 
+@@ -753,13 +735,13 @@
+ 
+ 	@echo ---
+ 
+-ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
+-ifneq ($(TCONFIG_BCMARM),y)
+-	@$(SRCBASE)/btools/libfoo.pl
+-endif
+-else
+-	@$(SRCBASE)/btools/libfoo.pl --noopt
+-endif
++#ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
++#ifneq ($(TCONFIG_BCMARM),y)
++#	@$(SRCBASE)/btools/libfoo.pl
++#endif
++#else
++#	@$(SRCBASE)/btools/libfoo.pl --noopt
++#endif
+ 	@chmod 0555 $(TARGETDIR)/lib/*.so*
+ 	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
+ 
+@@ -1380,7 +1362,7 @@
+ 	@$(SEP)
+ 	$(call patch_files,iptables)
+ 	cp -f iptables/extensions/libipt_ipp2p_K26.c iptables/extensions/libipt_ipp2p.c
+-	$(MAKE) -C $@ BINDIR=/usr/sbin LIBDIR=/usr/lib KERNEL_DIR=$(LINUXDIR) COPT_FLAGS="-Os $(EXTRACFLAGS) -U CONFIG_NVRAM_SIZE $(OPTSIZE_FLAG)" $(PARALLEL_BUILD)
++	$(MAKE) -C $@ DO_MULTI=1 BINDIR=/usr/sbin LIBDIR=/usr/lib KERNEL_DIR=$(LINUXDIR) COPT_FLAGS="-Os -std=gnu89 $(EXTRACFLAGS) -U CONFIG_NVRAM_SIZE $(OPTSIZE_FLAG)" $(PARALLEL_BUILD)
+ 
+ iptables-install:
+ 	install -D iptables/iptables $(INSTALLDIR)/iptables/usr/sbin/iptables
+@@ -1581,7 +1563,7 @@
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC" \
+ 		LIBS="-lpthread" \
+-		$(CONFIGURE) --prefix=/usr --disable-udev ac_cv_lib_rt_clock_gettime=no
++		$(CONFIGURE) --prefix=/usr --disable-udev --disable-timerfd ac_cv_lib_rt_clock_gettime=no
+ 
+ libusb10: libusb10/Makefile
+ 	@$(SEP)
+@@ -1843,7 +1825,7 @@
+ 
+ sqlite/stamp-h1:
+ 	cd sqlite && autoreconf -fsi && \
+-		CC=$(CC) CFLAGS="-Os $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CC=$(CC) CFLAGS="-Os -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --enable-shared --enable-static \
+ 			--disable-readline --disable-dynamic-extensions --enable-threadsafe
+@@ -2104,7 +2086,7 @@
+ 			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
+ 		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
+ 			-L$(TOP)/jpeg -L$(TOP)/flac/src/libFLAC/.libs -L$(TOP)/libid3tag/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/ffmpeg/libavformat -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavutil" \
+-		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm" \
++		LIBS="-lvorbis -logg -lsqlite3 -lexif -ljpeg -lFLAC -lid3tag -lz -lavformat -lavcodec -lavutil -lpthread -lm -lgcc_s" \
+ 		ac_cv_lib_id3tag__lz___id3_file_open=yes \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
+ 		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
+@@ -2313,7 +2295,7 @@
+ pcre/stamp-h1:
+ 	$(call patch_files,pcre)
+ 	cd pcre && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking --enable-utf8 --enable-unicode-properties --disable-cpp
+ 	[ -d pcre/m4 ] || mkdir pcre/m4
+ 	@touch $@
+@@ -2365,7 +2347,7 @@
+ 
+ libpng/stamp-h1:
+ 	cd libpng && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include" \
+ 		LDFLAGS="-L$(TOP)/zlib/staged/usr/lib" \
+ 		$(CONFIGURE) --prefix=/usr --enable-static --enable-shared
+@@ -2503,8 +2485,8 @@
+ 	cd nginx && \
+ 		./configure --crossbuild=Linux::$(ARCH) \
+ 			--with-cc="$(CC)" \
+-			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include $(if $(TCONFIG_BCMARM),,-I$(TOP)/libatomic_ops/src/$(comma)libs)" \
+-			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(TCONFIG_BCMARM),,-L$(TOP)/libatomic_ops/src)" \
++			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include" \
++			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib" \
+ 			--prefix=/usr \
+ 			--sbin-path=/usr/sbin \
+ 			--conf-path=/etc/nginx/nginx.conf \
+@@ -2522,7 +2504,6 @@
+ 			--with-http_gzip_static_module \
+ 			--with-http_v2_module \
+ 			--with-http_realip_module \
+-			$(if $(TCONFIG_BCMARM),,--with-libatomic=$(TOP)/libatomic_ops) \
+ 			$(if $(TCONFIG_IPV6),--with-ipv6,)
+ 	@touch $@
+ 
+@@ -2884,7 +2865,7 @@
+ 			-DCMAKE_C_FLAGS="-Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
+ 			-DCMAKE_CXX_FLAGS="-Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600 -fno-exceptions -fno-rtti" \
+ 			-DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -fPIC" \
+-			-DENABLE_LIGHTWEIGHT=TRUE -DENABLE_UTP=TRUE -DENABLE_NLS=FALSE -DENABLE_CLI=FALSE -DENABLE_GTK=FALSE -DENABLE_TESTS=FALSE \
++			-DENABLE_LIGHTWEIGHT=TRUE -DENABLE_UTP=TRUE -DENABLE_NLS=FALSE -DENABLE_CLI=FALSE -DENABLE_GTK=FALSE -DENABLE_QT=FALSE -DENABLE_TESTS=FALSE \
+ 			-DENABLE_NLS=FALSE -DINSTALL_DOC=FALSE -DUSE_SYSTEM_UTP=FALSE -DUSE_SYSTEM_DHT=FALSE -DUSE_SYSTEM_B64=FALSE -DWITH_SYSTEMD=FALSE \
+ 			-DCURL_INCLUDE_DIR=$(TOP)/libcurl/include \
+ 			-DCURL_LIBRARY=$(TOP)/libcurl/lib/.libs/libcurl.so \
+@@ -2941,21 +2922,10 @@
+ 	@rm -f libnfsidmap/stamp-h1
+ 	@rm -rf libnfsidmap/staged
+ 
+-portmap:
+-	@$(SEP)
+-	$(MAKE) -C portmap CFLAGS="-Os -Wall $(EXTRACFLAGS)" NO_TCP_WRAPPER=y NO_PIE=y RPCUSER=nobody $(PARALLEL_BUILD)
+-
+-portmap-install:
+-	install -D portmap/portmap $(INSTALLDIR)/portmap/usr/sbin/portmap
+-	$(STRIP) -s $(INSTALLDIR)/portmap/usr/sbin/portmap
+-
+-portmap-clean:
+-	-@$(MAKE) -C portmap clean
+-
+ e2fsprogs/stamp-h1:
+ 	$(call patch_files,e2fsprogs)
+ 	cd e2fsprogs && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CFLAGS="-Os -Wall -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc --enable-elf-shlibs --disable-tls --disable-defrag $(if $(TCONFIG_BCMARM),ac_cv_lib_pthread_sem_init=no,) \
+ 			--disable-jbd-debug --disable-blkid-debug --disable-testio-debug --disable-backtrace --disable-e2initrd-helper \
+@@ -3014,13 +2984,13 @@
+ 		CFLAGS="-Os -Wall -fno-delete-null-pointer-checks -funit-at-a-time -pipe -ffunction-sections -fdata-sections \
+ 			$(if $(TCONFIG_BCMARM),-marm,$(if $(TCONFIG_MIPSR2),-march=mips32r2 -mips32r2 -mtune=mips32r2,-march=mips32 -mips32 -mtune=mips32)) \
+ 			-I$(TOP)/libevent/staged/usr/local/include \
+-			-I$(TOP)/libnfsidmap/staged/usr/include -ffunction-sections -fdata-sections" \
++			-I$(TOP)/libnfsidmap/staged/usr/include -I$(TOP)/libtirpc/tirpc -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-L$(TOP)/libevent/staged/usr/local/lib \
+-			-L$(TOP)/libnfsidmap/staged/usr/lib -ffunction-sections -fdata-sections -Wl,--gc-sections" \
++			-L$(TOP)/libnfsidmap/staged/usr/lib -ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libtirpc/src/.libs" \
+ 			knfsd_cv_bsd_signals=no \
+ 		CC_FOR_BUILD=$(CC) $(CONFIGURE) \
+ 			--disable-gss --without-tcp-wrappers --disable-nfsv4 --disable-ipv6 --disable-uuid --disable-mount \
+-			--disable-tirpc --disable-dependency-tracking $(if $(TCONFIG_BCMARM),--disable-nfsv41 --disable-nfsdcltrack,)
++			--enable-tirpc --disable-dependency-tracking $(if $(TCONFIG_BCMARM),--disable-nfsv41 --disable-nfsdcltrack,) --with-tirpcinclude="$(TOP)/libtirpc/tirpc"
+ 	@touch $@
+ 
+ nfs-utils: nfs-utils/stamp-h1
+@@ -3029,11 +2999,11 @@
+ 
+ nfs-utils-install:
+ 	install -d $(INSTALLDIR)/nfs-utils/usr/sbin
+-	install -D nfs-utils/utils/nfsd/nfsd $(INSTALLDIR)/nfs-utils/usr/sbin/nfsd
+-	install -D nfs-utils/utils/showmount/showmount $(INSTALLDIR)/nfs-utils/usr/sbin/showmount
+-	install -D nfs-utils/utils/exportfs/exportfs $(INSTALLDIR)/nfs-utils/usr/sbin/exportfs
+-	install -D nfs-utils/utils/statd/statd $(INSTALLDIR)/nfs-utils/usr/sbin/statd
+-	install -D nfs-utils/utils/mountd/mountd $(INSTALLDIR)/nfs-utils/usr/sbin/mountd
++	install -D nfs-utils/utils/nfsd/.libs/nfsd $(INSTALLDIR)/nfs-utils/usr/sbin/nfsd
++	install -D nfs-utils/utils/showmount/.libs/showmount $(INSTALLDIR)/nfs-utils/usr/sbin/showmount
++	install -D nfs-utils/utils/exportfs/.libs/exportfs $(INSTALLDIR)/nfs-utils/usr/sbin/exportfs
++	install -D nfs-utils/utils/statd/.libs/statd $(INSTALLDIR)/nfs-utils/usr/sbin/statd
++	install -D nfs-utils/utils/mountd/.libs/mountd $(INSTALLDIR)/nfs-utils/usr/sbin/mountd
+ 	$(STRIP) -s $(INSTALLDIR)/nfs-utils/usr/sbin/*
+ 
+ nfs-utils-clean:
+@@ -3456,7 +3426,7 @@
+ iperf/stamp-h1:
+ 	$(call patch_files,iperf)
+ 	cd iperf && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
+ 		ac_cv_func_clock_gettime="no" \
+ 		ac_cv_func_daemon="no" \
+ 		$(CONFIGURE) --prefix=/usr --disable-profiling --without-openssl
+@@ -3483,7 +3453,7 @@
+ 
+ libdaemon/stamp-h1:
+ 	cd libdaemon && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking ac_cv_func_setpgrp_void=yes
+ 	touch $@
+@@ -3530,7 +3500,7 @@
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
+ 		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		LIBDAEMON_CFLAGS="-I$(TOP)/libdaemon" \
+-		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS2)" \
++		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon $(EXTRALDFLAGS)" \
+ 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc localstatedir=/var --with-distro=none \
+ 			--enable-introspection=no \
+ 			--disable-nls --disable-glib --disable-libevent --disable-gobject \
+@@ -3911,6 +3881,47 @@
+ 	@rm -f irqbalance/stamp-h1
+ 	$(call unpatch_files,irqbalance)
+ 
++libtirpc/stamp-h1:
++	cd $(TOP)/libtirpc && \
++	CFLAGS="$(CFLAG_OPTIMIZE) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
++	CPPFLAGS="$(CFLAG_OPTIMIZE) -Wall -ffunction-sections -fdata-sections -fPIC" \
++	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
++	$(CONFIGURE) --prefix=/usr --host=mipsel-linux --sysconfdir=/etc --disable-static --disable-gssapi
++	@touch $@
++
++libtirpc: libtirpc/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C libtirpc $(PARALLEL_BUILD)
++
++libtirpc-install:
++	install -d $(INSTALLDIR)/libtirpc/usr/lib
++	install -D libtirpc/src/.libs/libtirpc.so.3.0.0 $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3
++	$(STRIP) $(INSTALLDIR)/libtirpc/usr/lib/libtirpc.so.3
++
++libtirpc-clean:
++	-@$(MAKE) -C libtirpc clean
++	-@rm -rf libtirpc/Makefile libtirpc/stamp-h1
++
++rpcbind/stamp-h1:
++	cd $(TOP)/rpcbind && \
++	CFLAGS="$(CFLAG_OPTIMIZE) -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libtirpc/tirpc" \
++	CPPFLAGS="$(CFLAG_OPTIMIZE) -Wall -ffunction-sections -fdata-sections -fPIC" \
++	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/libtirpc/src/.libs" \
++	PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):$(TOP)/libtirpc" \
++	$(CONFIGURE) --prefix=/usr  --bindir=/usr/sbin   --with-rpcuser=nobody   --enable-warmstarts  --without-systemdsystemunitdir 
++
++rpcbind: rpcbind/stamp-h1
++	@$(SEP)
++	@$(MAKE) -C rpcbind $(PARALLEL_BUILD)
++
++rpcbind-install:
++	install -D rpcbind/rpcbind $(INSTALLDIR)/rpcbind/usr/sbin/rpcbind
++	$(STRIP) -s $(INSTALLDIR)/rpcbind/usr/sbin/rpcbind
++
++rpcbind-clean:
++	-@$(MAKE) -C rpcbind clean
++	-@rm -rf lirpcbind/Makefile rpcbind/stamp-h1
++
+ 
+ #
+ # Generic rules

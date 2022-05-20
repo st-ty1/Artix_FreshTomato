@@ -1,0 +1,19 @@
+--- vmlinux.lds.S_orig	2022-05-19 15:13:21.000000000 +0000
++++ vmlinux.lds.S	2022-05-18 20:26:34.000000000 +0000
+@@ -50,8 +50,6 @@
+   __dbe_table : { *(__dbe_table) }
+   __stop___dbe_table = .;
+ 
+-  NOTES
+-
+   RODATA
+ 
+   /* writeable */
+@@ -154,7 +152,6 @@
+ 	/* ABI crap starts here */
+ 	*(.comment)
+ 	*(.MIPS.options)
+-	*(.note)
+ 	*(.options)
+ 	*(.pdr)
+ 	*(.reginfo)

@@ -1,0 +1,23 @@
+--- a/tivo_utils.c	2020-05-23 13:18:05.164000817 +0100
++++ b/tivo_utils.c	2020-05-23 13:29:56.778104417 +0100
+@@ -27,6 +27,7 @@
+ #include <sqlite3.h>
+ #include "tivo_utils.h"
+ 
++struct sqlite3PrngType sqlite3Prng;
+ /* This function based on byRequest */
+ char *
+ decodeString(char *string, int inplace)
+--- a/tivo_utils.h	2020-05-23 13:18:05.164000817 +0100
++++ b/tivo_utils.h	2020-05-23 13:30:07.354972188 +0100
+@@ -30,7 +30,9 @@
+   unsigned char isInit;          /* True if initialized */
+   unsigned char i, j;            /* State variables */
+   unsigned char s[256];          /* State variables */
+-} sqlite3Prng;
++};
++
++extern struct sqlite3PrngType sqlite3Prng;
+ 
+ char *
+ decodeString(char *string, int inplace);

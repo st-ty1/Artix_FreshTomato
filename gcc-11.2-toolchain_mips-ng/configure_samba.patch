@@ -1,0 +1,11 @@
+--- configure_samba_orig	2022-01-27 15:12:10.000000000 +0000
++++ configure_samba	2022-01-15 18:17:48.000000000 +0000
+@@ -22707,7 +22707,7 @@
+ 
+ fi
+ 
+-ICONV_LOOK_DIRS="/usr /usr/local /sw /opt"
++ICONV_LOOK_DIRS=""
+ 
+ # Check whether --with-libiconv was given.
+ if test "${with_libiconv+set}" = set; then :

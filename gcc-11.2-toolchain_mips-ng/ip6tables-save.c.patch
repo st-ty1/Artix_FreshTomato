@@ -1,0 +1,15 @@
+--- ip6tables-save.c.orig	2022-04-06 12:26:23.000000000 +0000
++++ ip6tables-save.c	2022-04-06 12:29:14.000000000 +0000
+@@ -318,11 +318,8 @@
+  * :Chain name POLICY packets bytes
+  * rule
+  */
+-#ifdef IPTABLES_MULTI
++
+ int ip6tables_save_main(int argc, char *argv[])
+-#else
+-int main(int argc, char *argv[])
+-#endif
+ {
+ 	const char *tablename = NULL;
+ 	int c;
