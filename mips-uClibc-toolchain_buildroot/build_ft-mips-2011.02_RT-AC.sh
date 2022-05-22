@@ -11,7 +11,7 @@ FT_PATCHES_DIR=$HOME/Artix_FreshTomato/mips-uClibc-toolchain_buildroot
 ## path to mips-toolchain with gcc 4.2.4 and binutils 2.20.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2011.02/output/host
 
-export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc/usr/bin:$PATH
+export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-4.2.4/usr/bin:$PATH
 RT_VERS="src-rt-6.x"
 
 cd $FT_REPO_DIR 
@@ -24,8 +24,8 @@ clear
 
 ### insert new toolchain
 rm -rf  $FT_REPO_DIR/tools/brcm
-mkdir -p $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-11.2-ng/usr
-cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-11.2-ng/usr
+mkdir -p $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-4.2.4/usr
+cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-4.2.4/usr
 
 
 cd $FT_REPO_DIR/release/$RT_VERS
