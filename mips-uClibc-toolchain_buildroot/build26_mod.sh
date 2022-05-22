@@ -46,14 +46,14 @@ mv mipsel-linux-uclibc/sysroot/usr/include/* include
 ## remove original toolchain
 #####################################
 cd $HOME/freshtomato-mips/tools/brcm
-rm -rf hndtools-mipsel-linux
-rm -rf hndtools-mipsel-uclibc
+rm -f hndtools-mipsel-linux
+rm -f hndtools-mipsel-uclibc
 
 #####################################
 ## install new toolchain
 #####################################
 
-cp -vf $HOME/buildroot-2011.02/output/host/usr K26/hndtools-mipsel-uclibc-4.2.4
+cp -rf $HOME/buildroot-2011.02/output/host/usr K26/hndtools-mipsel-uclibc-4.2.4
 
 ln -nsf K26/hndtools-mipsel-uclibc-4.2.4 hndtools-mipsel-linux
 ln -nsf K26/hndtools-mipsel-uclibc-4.2.4 hndtools-mipsel-uclibc
