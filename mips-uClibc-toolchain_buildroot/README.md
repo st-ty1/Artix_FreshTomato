@@ -16,9 +16,13 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
    
 
 - Create a subfolder dl_save in your local buildroot-2011.02 directory, generate an archive of the linux sources in FT repos (archive has to be named to "linux-2.6.22.19.tar.xz"),  and place archive into the dl_save folder.
-		mkdir $HOME/buildroot-2011.02/dl_save		
+		
+		mkdir $HOME/buildroot-2011.02/dl_save
+		
 		cd $HOME/freshtomato-mips/release/src-rt-6.x/linux
+		
 		tar cJvf linux-2.6.tar.xz linux-2.6.22.19
+		
 		mv linux-2.6.22.19.tar.xz $HOME/buildroot-2011.02/dl_save
 
 - Then, modifications of some buildroot files are also needed ( The mods are listed detailed in needed_modifications.txt.):
