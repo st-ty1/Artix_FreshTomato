@@ -25,7 +25,7 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
 		
 		mv linux-2.6.22.19.tar.xz $HOME/buildroot-2011.02/dl_save
 
-- Then, modifications of some buildroot files are also needed ( The mods are listed detailed in needed_modifications.txt.):
+- Then, some buildroot files have to be replaced (The mods are listed in detail in modifications_buildroot-files.txt.):
 	- Copy .config of this repo to the buildroot-2011.02 directory.
 	- Copy kernel-headers.mk in config of this repo to folder buildroot-2011.02/toolchain/kernel-headers.
 	- Copy Makefile.in of this repo to folder buildroot-2011.02/packages.
@@ -34,6 +34,7 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
 	- Copy 1030_gcc_inline_functions.patch of this repo to buildroot-2011.02/toolchain/gcc/4.2.4 .
 	- Copy 020-fcommon-gcc10-binutils.patch to buildroot-2011.02/package/binutils/binutils-2.20.1 and buildroot-2011.02/package/binutils/binutils-2.19.1.
 
-- Shell script build_ft-mips-2011.02_RT-AC.sh shows a way, how to integrate this mips-toolchain into the sources of FT (for use with sources of asuswrt-Merlin/John's fork the paths in the script have to be amended respectively). At the moment the script does not work yet as some patches for httpd, iperf, e2fsprogs, libiconv and php5 are missing.
+- Shell script build_ft-mips-2011.02_RT-AC.sh shows a way, how to integrate this mips-toolchain into the sources of FT (for use with sources of asuswrt-Merlin/John's fork the paths in the script have to be 
+  amended respectively), as some patches are also needed.
 
 BR st-ty1\/_st_ty\/st_ty_

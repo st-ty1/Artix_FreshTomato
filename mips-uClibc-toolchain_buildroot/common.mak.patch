@@ -1,0 +1,20 @@
+--- common.mak.orig	2022-05-25 07:19:06.000000000 +0000
++++ common.mak	2022-05-24 21:21:49.000000000 +0000
+@@ -48,7 +48,7 @@
+ export HOST := arm-linux
+ else
+ export PLATFORM := mipsel-uclibc
+-export CROSS_COMPILE := mipsel-uclibc-
++export CROSS_COMPILE := mipsel-linux-uclibc-
+ export CROSS_COMPILER := $(CROSS_COMPILE)
+ export CONFIGURE := ./configure --host=mipsel-linux --build=$(BUILD)
+ export HOSTCONFIG := linux-mipsel
+@@ -97,7 +98,7 @@
+ endif
+ endif # TCONFIG_BCMARM
+ 
+-export LIBDIR := $(TOOLCHAIN)/lib
++export LIBDIR := $(TOOLCHAIN)/mipsel-linux-uclibc/sysroot/lib
+ export USRLIBDIR := $(TOOLCHAIN)/usr/lib
+ 
+ export PLATFORMDIR := $(TOP)/$(PLATFORM)

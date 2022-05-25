@@ -1,0 +1,38 @@
+--- Makefile.orig	2022-05-25 07:19:06.000000000 +0000
++++ Makefile	2022-05-24 19:58:47.000000000 +0000
+@@ -722,14 +732,14 @@
+ 	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
+ ifeq ($(TCONFIG_USB),y)
+ ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
++	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ else
+ 	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ endif
+ endif # TCONFIG_USB
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
+ ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
++	install $(LIBDIR)/../usr/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ else
+ 	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+ endif # TCONFIG_BCMARM
+@@ -760,8 +770,8 @@
+ else
+ 	@$(SRCBASE)/btools/libfoo.pl --noopt
+ endif
+-	@chmod 0555 $(TARGETDIR)/lib/*.so*
+-	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
++	@chmod 0555 $(TARGETDIR)/lib/*.so* || true
++	@chmod 0555 $(TARGETDIR)/usr/lib/*.so* || true
+ 
+ # moved to run after libfoo.pl - to make sure shared libs include all symbols needed by extras
+ # separated/copied extra stuff
+@@ -2405,6 +2415,7 @@
+ 		PHP_FCGI_LIBXML_DIR="$(TOP)/libxml2/staged/usr" \
+ 		ac_cv_func_memcmp_working=yes \
+ 		cv_php_mbstring_stdarg=yes \
++		lt_cv_sys_lib_search_path_spec="$(TOOLCHAIN)/mipsel-linux-uclibc/sysroot"\
+ 		$(CONFIGURE) --prefix=/usr \
+ 			--enable-shared \
+ 			--disable-static \
