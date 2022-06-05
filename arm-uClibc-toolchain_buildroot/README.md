@@ -1,9 +1,7 @@
-arm-uClibc-toolchain_buildroot
 HowTo: Rebuild arm-toolchain (gcc 4.5.3 + uClibc 0.9.3X.X) for FreshTomato with Buildroot (2012.02) 
 
 
-1.) Get the source code of "buildroot-2012.02" which is available from published ASUS GPL codes and copy it into a new folder of your 
-    user directory.
+1.) Get the source code of "buildroot-2012.02" which is available from published ASUS GPL codes and copy it into a new folder of your user directory.
 
 2.) Make following script-files in buildroot-directory executable:
 	 
@@ -55,7 +53,7 @@ of original FT-arm-toolchain to buildroot-2012.02/output/host/usr/arm-brcm-linux
 
 2.) Copy hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h of original FT-arm-toolchain to buildroot-2012.02/output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include of your toolchain
 
-Replacement of files in steps 1.) and 2.) are needed as these two files has been patched after first release of original FT-arm-toolchain.
+Replacement of files in steps 1.) and 2.) are needed as these two files have been patched after first release of original FT-arm-toolchain.
 
 3.) Copy content of buildroot-2012.02/output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib to buildroot-2012.02/output/host/usr/lib
 
