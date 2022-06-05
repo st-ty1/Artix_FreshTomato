@@ -222,7 +222,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
 		--disable-shared \
-		--disable-libssp \
+		--enable-libssp \
 		--without-headers \
 		--with-newlib \
 		--disable-multilib \
@@ -293,7 +293,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
 		--enable-shared \
-		--disable-libssp \
+		--enable-libssp \
 		--disable-multilib \
 		--enable-tls \
 		$(GCC_WITH_HOST_GMP) \
@@ -374,7 +374,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--disable-__cxa_atexit \
 		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
-		--disable-libssp \
+		--enable-libssp \
 		--disable-multilib \
 		--enable-tls \
 		$(GCC_SHARED_LIBGCC) \
