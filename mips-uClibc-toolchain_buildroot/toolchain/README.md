@@ -33,7 +33,8 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
 	- Copy gcc-uclibc-4.x.mk of this repo to folder buildroot-2011.02/toolchain/gcc. 
 	- Copy 1030_gcc_inline_functions.patch of this repo to buildroot-2011.02/toolchain/gcc/4.2.4 .
 	- Copy 020-fcommon-gcc10-binutils.patch to buildroot-2011.02/package/binutils/binutils-2.20.1 and buildroot-2011.02/package/binutils/binutils-2.19.1.
-          (The mods of each file are listed in detail in modifications_buildroot-files.txt.)
+
+  (The mods of each file are listed in detail in needed_modifications.txt.)
 
 - If you are using kernel headers of RT-N-branch, copy also linux-2.6.22.19-unifdef.c-rename-getline.patch of this repo to folder buildroot-2011.02/toolchain/kernel-headers .
   
