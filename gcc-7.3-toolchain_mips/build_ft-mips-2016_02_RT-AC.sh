@@ -6,10 +6,7 @@
 FT_REPO_DIR=$HOME/freshtomato-mips
 
 ## path to the FreshTomato patches for new mips-toolchain
-FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-5.3-toolchain_mips
-
-## path to the FreshTomato patches for new mips-toolchain
-FT_PATCHES_DIR2=$HOME/Artix_FreshTomato/gcc-7.3-toolchain_mips
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-7.3-toolchain_mips
 
 ## path to mips-toolchain with gcc 7.3 and binutils 2.28.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_mips/output/host
@@ -55,7 +52,6 @@ patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src/router/ebtable
 
 ## router/httpd
 patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr/mipsel-brcm-linux-uclibc/sysroot/usr/include/ctype.h
-patch -i $FT_PATCHES_DIR/Makefile_httpd.patch $FT_REPO_DIR/release/src/router/httpd/Makefile
 
 ## router/hotplug2; 3rd patch new with gcc 7.x
 patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src/router/hotplug2/mem_utils.c
