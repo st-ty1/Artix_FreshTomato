@@ -1,4 +1,6 @@
 toolchain with gcc-7.3, binutils-2.28.1, uclibc 0.9.32.1 and kernel headers of FT-sources:
+
+(Of course, creating an analogous arm-toolchain should be possible, too. As I generally expect to face more trouble with building mips-toolchains due to older kernel, I always start with mips-toolchains.)
  
 Only two additional patches needed (compared to gcc-5.3-toolchain). 
 
