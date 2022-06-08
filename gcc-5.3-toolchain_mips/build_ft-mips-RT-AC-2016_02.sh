@@ -47,7 +47,6 @@ patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src/router/ebtable
 
 ## router/httpd
 patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-5.3/usr/mipsel-brcm-linux-uclibc/sysroot/usr/include/ctype.h
-patch -i $FT_PATCHES_DIR/Makefile_httpd.patch $FT_REPO_DIR/release/src/router/httpd/Makefile
 
 ## router/hotplug2
 patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src/router/hotplug2/mem_utils.c
