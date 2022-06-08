@@ -1,7 +1,5 @@
 Building of mipsel-uClibc-toolchain with buildroot vers. 2011.02 (tested only on Artix/Arch Linux; not tested on Debian/Ubuntu, but should also work).
 
-This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The original way used in FreshTomato and asuswrt-Merlin/John's fork for building their toolchain breaks, as the source code there is way too old. A far more update version is available under https://github.com/wl500g/toolchain, but also this toolchain generation process still needs some of  patches listed here. A mipsel-uClibc-toolchain can also be built by crosstools-ng. But also with crosstools-ng, the patches used here, have also to be implemented due to old source code of gcc-4.2.4 and binutils 2.20.1).
-
 - Download buildroot-2011.02 from https://buildroot.org/downloads/buildroot-2011.02.tar.gz
 
 - Extract sources into a new folder in your home directory (e.g. $HOME/buildroot-2011.02)
@@ -38,7 +36,4 @@ This is an alternate way of building the mipsel-uClibc-toolchain (rem.: The orig
 
 - If you are using kernel headers of RT-N-branch, copy also linux-2.6.22.19-unifdef.c-rename-getline.patch of this repo to folder buildroot-2011.02/toolchain/kernel-headers .
   
-- Shell script build_ft-mips-2011.02_RT-AC.sh shows a way, how to integrate this mips-toolchain into the sources of FT (for use with sources of asuswrt-Merlin/John's fork the paths in the script have to be 
-  amended respectively), as some patches are also needed.
-
 BR st-ty1\/_st_ty\/st_ty_
