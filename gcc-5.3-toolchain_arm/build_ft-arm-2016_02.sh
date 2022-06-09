@@ -30,9 +30,6 @@ cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/h
 patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/common.mak
 
-## router/libbcm
-patch -i $FT_PATCHES_DIR/Makefile_libbcm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/libbcm/Makefile
-
 ## router/rc
 patch -i $FT_PATCHES_DIR/services.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/rc/services.c
 
