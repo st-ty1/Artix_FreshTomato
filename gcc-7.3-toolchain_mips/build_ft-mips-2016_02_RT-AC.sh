@@ -41,7 +41,7 @@ patch -i $FT_PATCHES_DIR/Makefile_lzma-loader.patch $FT_REPO_DIR/release/src/lzm
 ## router/rc
 patch -i $FT_PATCHES_DIR/services.c.patch $FT_REPO_DIR/release/src/router/rc/services.c
 
-## router/shared  - neu
+## router/shared
 patch -i $FT_PATCHES_DIR/shutils.h.patch $FT_REPO_DIR/release/src/router/shared/shutils.h
 
 ## router/ebtables
@@ -55,17 +55,17 @@ patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src/router/hotpl
 patch -i $FT_PATCHES_DIR/hotplug2_utils.c.patch $FT_REPO_DIR/release/src/router/hotplug2/hotplug2_utils.c
 patch -i $FT_PATCHES_DIR/hotplug2.c.patch $FT_REPO_DIR/release/src/router/hotplug2/hotplug2.c
 
-## router/dnscrypt - due to message "using unsafe headers" - nur bei AIO
+## router/dnscrypt - due to message "using unsafe headers"
 patch -i $FT_PATCHES_DIR/configure.ac_dnscrypt.patch $FT_REPO_DIR/release/src/router/dnscrypt/configure.ac
 
-## router/glib; multiple definitions - nur bei AIO
+## router/glib; multiple definitions
 patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src/router/glib/glib.h
 
 ## router/samba3
 ##      due to message "using unsafe libraries in usr/local/lib" and "using unsafe headers in usr/local/include" (ICONV_LOOK_DIRS)
 patch -i $FT_PATCHES_DIR/configure_samba.patch $FT_REPO_DIR/release/src/router/samba3/source3/configure
 
-## router/iptables; thanks to source code of github asuswrt-john
+## router/iptables
 cp -vf $FT_PATCHES_DIR/122_new-toolchain_small.patch $FT_REPO_DIR/release/src/router/patches/iptables
 
 ## router/zebra
