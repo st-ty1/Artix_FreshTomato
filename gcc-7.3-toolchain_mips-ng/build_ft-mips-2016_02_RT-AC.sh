@@ -37,9 +37,6 @@ patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common
 patch -i $FT_PATCHES_DIR/head.S.patch $FT_REPO_DIR/release/src/lzma-loader/head.S
 patch -i $FT_PATCHES_DIR/Makefile_lzma-loader.patch $FT_REPO_DIR/release/src/lzma-loader/Makefile
 
-## router/libbcmcrypto
-patch -i $FT_PATCHES_DIR/Makefile_libbcmcrypto.patch $FT_REPO_DIR/release/src/router/libbcmcrypto/Makefile
-
 ## router/rc
 patch -i $FT_PATCHES_DIR/services.c.patch $FT_REPO_DIR/release/src/router/rc/services.c
 
