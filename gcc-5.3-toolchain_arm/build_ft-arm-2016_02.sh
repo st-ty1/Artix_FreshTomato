@@ -41,7 +41,6 @@ patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/ro
 
 ## router/httpd
 patch -i $FT_PATCHES_DIR/ctype.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h
-patch -i $FT_PATCHES_DIR/Makefile_httpd.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/httpd/Makefile
 
 ## router/hotplug2
 patch -i $FT_PATCHES_DIR/mem_utils.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/hotplug2/mem_utils.c
@@ -57,19 +56,14 @@ patch -i $FT_PATCHES_DIR/netlink_wireguard.h.patch $FT_REPO_DIR/release/src-rt-6
 ## router/dnscrypt - due to message "using unsafe headers"
 patch -i $FT_PATCHES_DIR/configure.ac_dnscrypt.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/dnscrypt/configure.ac
 
-# router/glib multiple definitions - alternate 1
+# router/glib multiple definitions
 patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/glib/glib.h
-
-# router/glib multiple definitions - alternate 2
-#patch -i $FT_PATCHES_DIR/glib_mod1.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/glib/glib.h
-#patch -i $FT_PATCHES_DIR/gmessages.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/glib/gmessages.c
-
 
 ## kernel
 patch -p1 -d$FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
 cp -rf  $ASUSWRT_PATCHES_DIR/Makefile_linux_arm $ASUSWRT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/Makefile
 
-## module: et-driver  +++++ trotz Fehler beim patchen kein crash!!
+## module: et-driver
 patch -i $FT_PATCHES_DIR/et_linux.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/et_linux.c
 patch -i $FT_PATCHES_DIR/etc.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etc.c
 patch -i $FT_PATCHES_DIR/etc_adm.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etc_adm.c
