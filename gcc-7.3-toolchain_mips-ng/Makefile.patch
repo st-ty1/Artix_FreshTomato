@@ -88,27 +88,6 @@
  
  	@cd $(TARGETDIR) && $(TOP)/others/rootprep.sh
  
-@@ -753,13 +735,13 @@
- 
- 	@echo ---
- 
--ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
--ifneq ($(TCONFIG_BCMARM),y)
--	@$(SRCBASE)/btools/libfoo.pl
--endif
--else
--	@$(SRCBASE)/btools/libfoo.pl --noopt
--endif
-+#ifeq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
-+#ifneq ($(TCONFIG_BCMARM),y)
-+#	@$(SRCBASE)/btools/libfoo.pl
-+#endif
-+#else
-+#	@$(SRCBASE)/btools/libfoo.pl --noopt
-+#endif
- 	@chmod 0555 $(TARGETDIR)/lib/*.so*
- 	@chmod 0555 $(TARGETDIR)/usr/lib/*.so*
- 
 @@ -1380,7 +1362,7 @@
  	@$(SEP)
  	$(call patch_files,iptables)
@@ -118,15 +97,6 @@
  
  iptables-install:
  	install -D iptables/iptables $(INSTALLDIR)/iptables/usr/sbin/iptables
-@@ -1843,7 +1825,7 @@
- 
- sqlite/stamp-h1:
- 	cd sqlite && autoreconf -fsi && \
--		CC=$(CC) CFLAGS="-Os $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+		CC=$(CC) CFLAGS="-Os -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --enable-shared --enable-static \
- 			--disable-readline --disable-dynamic-extensions --enable-threadsafe
 @@ -2104,7 +2086,7 @@
  			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
  		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
@@ -136,24 +106,6 @@
  		ac_cv_lib_id3tag__lz___id3_file_open=yes \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
-@@ -2313,7 +2295,7 @@
- pcre/stamp-h1:
- 	$(call patch_files,pcre)
- 	cd pcre && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking --enable-utf8 --enable-unicode-properties --disable-cpp
- 	[ -d pcre/m4 ] || mkdir pcre/m4
- 	@touch $@
-@@ -2365,7 +2347,7 @@
- 
- libpng/stamp-h1:
- 	cd libpng && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include" \
- 		LDFLAGS="-L$(TOP)/zlib/staged/usr/lib" \
- 		$(CONFIGURE) --prefix=/usr --enable-static --enable-shared
 @@ -2503,8 +2485,8 @@
  	cd nginx && \
  		./configure --crossbuild=Linux::$(ARCH) \
@@ -173,15 +125,6 @@
  			$(if $(TCONFIG_IPV6),--with-ipv6,)
  	@touch $@
  
-@@ -2884,7 +2865,7 @@
- 			-DCMAKE_C_FLAGS="-Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600" \
- 			-DCMAKE_CXX_FLAGS="-Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC --param large-function-growth=800 --param max-inline-insns-single=3600 -fno-exceptions -fno-rtti" \
- 			-DCMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections -fPIC" \
--			-DENABLE_LIGHTWEIGHT=TRUE -DENABLE_UTP=TRUE -DENABLE_NLS=FALSE -DENABLE_CLI=FALSE -DENABLE_GTK=FALSE -DENABLE_TESTS=FALSE \
-+			-DENABLE_LIGHTWEIGHT=TRUE -DENABLE_UTP=TRUE -DENABLE_NLS=FALSE -DENABLE_CLI=FALSE -DENABLE_GTK=FALSE -DENABLE_QT=FALSE -DENABLE_TESTS=FALSE \
- 			-DENABLE_NLS=FALSE -DINSTALL_DOC=FALSE -DUSE_SYSTEM_UTP=FALSE -DUSE_SYSTEM_DHT=FALSE -DUSE_SYSTEM_B64=FALSE -DWITH_SYSTEMD=FALSE \
- 			-DCURL_INCLUDE_DIR=$(TOP)/libcurl/include \
- 			-DCURL_LIBRARY=$(TOP)/libcurl/lib/.libs/libcurl.so \
 @@ -2941,21 +2922,10 @@
  	@rm -f libnfsidmap/stamp-h1
  	@rm -rf libnfsidmap/staged
@@ -239,24 +182,6 @@
  	$(STRIP) -s $(INSTALLDIR)/nfs-utils/usr/sbin/*
  
  nfs-utils-clean:
-@@ -3456,7 +3426,7 @@
- iperf/stamp-h1:
- 	$(call patch_files,iperf)
- 	cd iperf && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		ac_cv_func_clock_gettime="no" \
- 		ac_cv_func_daemon="no" \
- 		$(CONFIGURE) --prefix=/usr --disable-profiling --without-openssl
-@@ -3483,7 +3453,7 @@
- 
- libdaemon/stamp-h1:
- 	cd libdaemon && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking ac_cv_func_setpgrp_void=yes
- 	touch $@
 @@ -3530,7 +3500,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
  		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
