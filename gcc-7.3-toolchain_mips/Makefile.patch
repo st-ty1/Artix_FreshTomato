@@ -86,15 +86,6 @@
  
  iptables-install:
  	install -D iptables/iptables $(INSTALLDIR)/iptables/usr/sbin/iptables
-@@ -1843,7 +1845,7 @@
- 
- sqlite/stamp-h1:
- 	cd sqlite && autoreconf -fsi && \
--		CC=$(CC) CFLAGS="-Os $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+		CC=$(CC) CFLAGS="-Os -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --enable-shared --enable-static \
- 			--disable-readline --disable-dynamic-extensions --enable-threadsafe
 @@ -2104,7 +2106,7 @@
  			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
  		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
@@ -104,24 +95,6 @@
  		ac_cv_lib_id3tag__lz___id3_file_open=yes \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
-@@ -2313,7 +2315,7 @@
- pcre/stamp-h1:
- 	$(call patch_files,pcre)
- 	cd pcre && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking --enable-utf8 --enable-unicode-properties --disable-cpp
- 	[ -d pcre/m4 ] || mkdir pcre/m4
- 	@touch $@
-@@ -2365,7 +2367,7 @@
- 
- libpng/stamp-h1:
- 	cd libpng && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include" \
- 		LDFLAGS="-L$(TOP)/zlib/staged/usr/lib" \
- 		$(CONFIGURE) --prefix=/usr --enable-static --enable-shared
 @@ -2503,8 +2505,8 @@
  	cd nginx && \
  		./configure --crossbuild=Linux::$(ARCH) \
@@ -141,15 +114,6 @@
  			$(if $(TCONFIG_IPV6),--with-ipv6,)
  	@touch $@
  
-@@ -2955,7 +2956,7 @@
- e2fsprogs/stamp-h1:
- 	$(call patch_files,e2fsprogs)
- 	cd e2fsprogs && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+		CFLAGS="-Os -Wall -fPIC $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --sysconfdir=/etc --enable-elf-shlibs --disable-tls --disable-defrag $(if $(TCONFIG_BCMARM),ac_cv_lib_pthread_sem_init=no,) \
- 			--disable-jbd-debug --disable-blkid-debug --disable-testio-debug --disable-backtrace --disable-e2initrd-helper \
 @@ -3029,11 +3030,11 @@
  
  nfs-utils-install:
@@ -167,24 +131,6 @@
  	$(STRIP) -s $(INSTALLDIR)/nfs-utils/usr/sbin/*
  
  nfs-utils-clean:
-@@ -3456,7 +3457,7 @@
- iperf/stamp-h1:
- 	$(call patch_files,iperf)
- 	cd iperf && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS)" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS)" \
- 		ac_cv_func_clock_gettime="no" \
- 		ac_cv_func_daemon="no" \
- 		$(CONFIGURE) --prefix=/usr --disable-profiling --without-openssl
-@@ -3483,7 +3484,7 @@
- 
- libdaemon/stamp-h1:
- 	cd libdaemon && autoreconf -fsi && \
--		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
-+		CFLAGS="-Os -fPIC -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
- 		$(CONFIGURE) --prefix=/usr --disable-dependency-tracking ac_cv_func_setpgrp_void=yes
- 	touch $@
 @@ -3530,7 +3531,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
  		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
