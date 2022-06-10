@@ -6,7 +6,7 @@
 FT_REPO_DIR=$HOME/freshtomato-mips
 
 ## path to the FreshTomato patches for new mips-toolchain
-FT_PATCHES_DIR=$HOME/Artix_FreshTomato/mips-uClibc-toolchain_buildroot
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-4.2.4-toolchain_mips
 
 ## path to mips-toolchain with gcc 4.2.4 and binutils 2.20.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2011.02/output/host
