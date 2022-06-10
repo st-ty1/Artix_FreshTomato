@@ -28,7 +28,6 @@ rm -rf  $FT_REPO_DIR/tools/brcm
 mkdir -p $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr
 cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr
 
-exit
 #### userland
 ## router/Makefiles
 patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src/router/Makefile

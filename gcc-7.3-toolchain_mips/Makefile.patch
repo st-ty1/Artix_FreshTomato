@@ -1,6 +1,6 @@
---- Makefile.orig	2022-04-14 15:44:25.000000000 +0000
-+++ Makefile	2022-04-14 16:06:53.000000000 +0000
-@@ -411,7 +411,7 @@
+--- Makefile.orig	2022-06-10 14:34:42.000000000 +0000
++++ Makefile	2022-06-10 14:36:48.000000000 +0000
+@@ -414,7 +414,7 @@
  obj-$(TCONFIG_NGINX) += pcre
  obj-$(TCONFIG_NGINX) += libncurses
  ifneq ($(TCONFIG_BCMARM),y)
@@ -9,7 +9,7 @@
  endif
  obj-$(TCONFIG_NGINX) += libiconv
  obj-$(TCONFIG_NGINX) += libxml2
-@@ -555,14 +555,14 @@
+@@ -558,14 +558,14 @@
  endif
  
  kernel: $(LINUXDIR)/.config
@@ -27,7 +27,7 @@
  	fi
  	$(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR) TCONFIG_MIPSR2=$(TCONFIG_MIPSR2) $(PARALLEL_BUILD)
  else # TCONFIG_BCMARM
-@@ -630,7 +630,7 @@
+@@ -633,7 +633,7 @@
  endif # !TCONFIG_BCMARM
  	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv et/* . && rm -rf et || true
  	cd $(TARGETDIR)/lib/modules/*/kernel/drivers/net && mv wl/* . && rm -rf wl || true
@@ -36,7 +36,7 @@
  	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs2/* . && rm -rf jffs2 || true
  	cd $(TARGETDIR)/lib/modules/*/kernel/fs && mv jffs/* . && rm -rf jffs || true
  	cd $(TARGETDIR)/lib/modules/*/kernel/lib && mv zlib_inflate/* . && rm -rf zlib_inflate || true
-@@ -710,26 +710,28 @@
+@@ -713,26 +713,28 @@
  endif
  
  # uClibc
@@ -77,7 +77,7 @@
  else
  	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
  endif # TCONFIG_BCMARM
-@@ -1380,7 +1382,7 @@
+@@ -1383,7 +1385,7 @@
  	@$(SEP)
  	$(call patch_files,iptables)
  	cp -f iptables/extensions/libipt_ipp2p_K26.c iptables/extensions/libipt_ipp2p.c
@@ -86,7 +86,7 @@
  
  iptables-install:
  	install -D iptables/iptables $(INSTALLDIR)/iptables/usr/sbin/iptables
-@@ -2104,7 +2106,7 @@
+@@ -2108,7 +2110,7 @@
  			-I$(TOP)/sqlite -I$(TOP)/jpeg -I$(TOP)/libexif -I$(TOP)/libid3tag -I$(TOP)/libogg/include -I$(TOP)/libvorbis/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/shared" \
  		LDFLAGS="-Wl,--gc-sections -ffunction-sections -fdata-sections -L$(TOP)/libvorbis/lib/.libs -L$(TOP)/libogg/src/.libs -L$(TOP)/sqlite/.libs -L$(TOP)/libexif/libexif/.libs \
  			-L$(TOP)/jpeg -L$(TOP)/flac/src/libFLAC/.libs -L$(TOP)/libid3tag/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/ffmpeg/libavformat -L$(TOP)/ffmpeg/libavcodec -L$(TOP)/ffmpeg/libavutil" \
@@ -95,18 +95,19 @@
  		ac_cv_lib_id3tag__lz___id3_file_open=yes \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz_avformat_open_input=no \
  		ac_cv_lib_avformat__lavcodec__lavutil__lz___av_open_input_file=yes \
-@@ -2503,8 +2505,8 @@
+@@ -2508,9 +2510,8 @@
  	cd nginx && \
  		./configure --crossbuild=Linux::$(ARCH) \
  			--with-cc="$(CC)" \
--			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include $(if $(TCONFIG_BCMARM),,-I$(TOP)/libatomic_ops/src/$(comma)libs)" \
+-			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -fPIC -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include $(if $(TCONFIG_BCMARM),,-I$(TOP)/libatomic_ops/src/$(comma)libs)" \
 -			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib $(if $(TCONFIG_BCMARM),,-L$(TOP)/libatomic_ops/src)" \
-+			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include" \
-+			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib" \
- 			--prefix=/usr \
+-			--prefix=/usr \
++			--with-cc-opt="-Os -Wall $(EXTRACFLAGS) -fPIC -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/pcre -I$(TOP)/zlib/staged/usr/include" \
++			--with-ld-opt="-L$(TOP)/pcre/.libs -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib" \			--prefix=/usr \
  			--sbin-path=/usr/sbin \
  			--conf-path=/etc/nginx/nginx.conf \
-@@ -2522,7 +2524,6 @@
+ 			--error-log-path=/tmp/var/log/nginx/error.log \
+@@ -2527,7 +2528,6 @@
  			--with-http_gzip_static_module \
  			--with-http_v2_module \
  			--with-http_realip_module \
@@ -114,7 +115,7 @@
  			$(if $(TCONFIG_IPV6),--with-ipv6,)
  	@touch $@
  
-@@ -3029,11 +3030,11 @@
+@@ -3034,11 +3034,11 @@
  
  nfs-utils-install:
  	install -d $(INSTALLDIR)/nfs-utils/usr/sbin
@@ -131,7 +132,7 @@
  	$(STRIP) -s $(INSTALLDIR)/nfs-utils/usr/sbin/*
  
  nfs-utils-clean:
-@@ -3530,7 +3531,7 @@
+@@ -3540,7 +3540,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/lib" \
  		LDFLAGS="-L$(TOP)/expat/.libs -ldl -lpthread -ffunction-sections -fdata-sections -Wl,--gc-sections" \
  		LIBDAEMON_CFLAGS="-I$(TOP)/libdaemon" \

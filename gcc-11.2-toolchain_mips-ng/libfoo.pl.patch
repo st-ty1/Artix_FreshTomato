@@ -1,5 +1,5 @@
---- libfoo.pl.orig	2022-04-14 15:44:25.000000000 +0000
-+++ libfoo.pl	2022-04-15 14:40:26.000000000 +0000
+--- libfoo.pl.orig	2022-06-10 14:50:14.000000000 +0000
++++ libfoo.pl	2022-06-10 14:51:08.000000000 +0000
 @@ -94,7 +94,7 @@
  	while (<$f>) {
  		print LOG;
@@ -34,7 +34,7 @@
  
  if ($openssldir eq "openssl") {
  	genSO("${root}/usr/lib/libcrypto.so.1.0.0", "${router}/${openssldir}/libcrypto.a");
-@@ -616,16 +609,21 @@
+@@ -616,11 +609,11 @@
  genSO("${root}/usr/lib/libavformat.so.52", "${router}/ffmpeg/libavformat/libavformat.a", "", "-L${router}/ffmpeg/libavutil -L${router}/ffmpeg/libavcodec -L${router}/zlib");
  
  genSO("${root}/usr/lib/liblzo2.so.2.0.0", "${router}/lzo/src/.libs/liblzo2.a");
@@ -51,19 +51,8 @@
  
  genSO("${root}/usr/lib/libbcmcrypto.so", "${router}/libbcmcrypto/libbcmcrypto.a");
  
- #shibby
--genSO("${root}/usr/lib/libcurl.so.4.7.0", "${router}/libcurl/lib/.libs/libcurl.a", "", "-L${router}/zlib -L${router}/${openssldir}");
-+if ($openssldir eq "openssl") {
-+	genSO("${root}/usr/lib/libcurl.so.4.7.0", "${router}/libcurl/lib/.libs/libcurl.a", "", "-L${router}/zlib -L${router}/openssl");
-+}
-+else {
-+	genSO("${root}/usr/lib/libcurl.so.4.7.0", "${router}/libcurl/lib/.libs/libcurl.a", "", "-L${router}/zlib -L${router}/openssl-1.1");
-+}
- genSO("${root}/usr/lib/libevent-2.1.so.7", "${router}/libevent/.libs/libevent.a");
- genSO("${root}/usr/lib/libdaemon.so.0.5.0", "${router}/libdaemon/libdaemon/.libs/libdaemon.a");
- genSO("${root}/usr/lib/libiconv.so.2.6.1", "${router}/libiconv/lib/.libs/libiconv.a");
-@@ -635,7 +633,6 @@
- genSO("${root}/usr/lib/libxml2.so.2.9.13", "${router}/libxml2/.libs/libxml2.a", "", "-L${router}/zlib");
+@@ -635,7 +628,6 @@
+ genSO("${root}/usr/lib/libxml2.so.2.9.14", "${router}/libxml2/.libs/libxml2.a", "", "-L${router}/zlib");
  genSO("${root}/usr/lib/libpcre.so.1.2.12", "${router}/pcre/.libs/libpcre.a");
  genSO("${root}/usr/lib/libpcreposix.so.0.0.7", "${router}/pcre/.libs/libpcreposix.a");
 -genSO("${root}/usr/lib/libatomic_ops.so.1.0.3", "${router}/libatomic_ops/src/.libs/libatomic_ops.a");
