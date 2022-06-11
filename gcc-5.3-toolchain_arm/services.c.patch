@@ -1,6 +1,6 @@
---- services.c.orig	2021-12-30 19:54:43.443929000 +0100
-+++ services.c	2021-12-23 17:26:47.581022500 +0100
-@@ -2995,7 +2995,7 @@
+--- services.c.orig	2022-06-11 15:43:23.000000000 +0000
++++ services.c	2022-06-11 15:43:27.000000000 +0000
+@@ -3041,7 +3041,7 @@
  	unsigned char ea[ETHER_ADDR_LEN];
  	char serial[18], uuid[37];
  	char *buf, *p, *q;
@@ -9,7 +9,7 @@
  
  	if (!nvram_get_int("ms_enable"))
  		return;
-@@ -3064,11 +3064,11 @@
+@@ -3110,11 +3110,11 @@
  				/* path<restrict[A|V|P|] */
  				p = buf;
  				while ((q = strsep(&p, ">")) != NULL) {

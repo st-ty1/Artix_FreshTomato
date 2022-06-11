@@ -17,7 +17,7 @@ cd $FT_REPO_DIR
 git clean -dxf 
 git reset --hard
 git checkout arm-master
-git pull
+#git pull
 
 clear
 
@@ -26,15 +26,15 @@ rm -rf  $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.3
 mkdir -p $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr
 cp -rf $FT_TOOLCHAIN_DIR/usr/* $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-uclibc-5.3/usr
 
+## normal Artix-related Makefile patch
+patch -i $FT_PATCHES_DIR/../Makefile.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
+
 ## router/Makefile
 patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
 patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/common.mak
 
 ## router/rc
 patch -i $FT_PATCHES_DIR/services.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/rc/services.c
-
-## router/shared
-patch -i $FT_PATCHES_DIR/shutils.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/shared/shutils.h
 
 ## router/ebtables
 patch -i $FT_PATCHES_DIR/libebtc.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/ebtables/libebtc.c
@@ -61,7 +61,7 @@ patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/route
 
 ## kernel
 patch -p1 -d$FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
-cp -rf  $ASUSWRT_PATCHES_DIR/Makefile_linux_arm $ASUSWRT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/Makefile
+patch -i  $FT_PATCHES_DIR/Makefile_linux_arm.patch $FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/Makefile
 
 ## module: et-driver
 patch -i $FT_PATCHES_DIR/et_linux.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/et_linux.c
@@ -71,10 +71,6 @@ patch -i $FT_PATCHES_DIR/etc47xx.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et
 patch -i $FT_PATCHES_DIR/etcgmac.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etcgmac.c
 patch -i $FT_PATCHES_DIR/etc_fa.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/et/sys/etc_fa.c
 
-## module: 4g modem driver cdc-ncm.c
-patch -i $FT_PATCHES_DIR/string.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/include/linux/string.h
-patch -i $FT_PATCHES_DIR/kernel.h.patch $FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/include/linux/kernel.h
-patch -i $FT_PATCHES_DIR/string.c.patch $FT_REPO_DIR/release/src-rt-6.x.4708/linux/linux-2.6.36/lib/string.c
 
 cd $FT_REPO_DIR/release/src-rt-6.x.4708
 

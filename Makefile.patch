@@ -1,6 +1,6 @@
---- Makefile.orig	2022-05-06 19:04:07.586501600 +0200
-+++ Makefile	2022-05-06 19:05:22.246501600 +0200
-@@ -3633,7 +3633,7 @@
+--- Makefile.orig	2022-06-11 16:06:58.000000000 +0000
++++ Makefile	2022-06-11 16:07:03.000000000 +0000
+@@ -3642,7 +3642,7 @@
  
  zfs/stamp-h1:
  	$(call patch_files,zfs)
@@ -9,7 +9,7 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
  		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include -I$(TOP)/util-linux/staged/usr/include -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/gettext-tiny/staged/usr/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/util-linux/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -L$(TOP)/gettext-tiny/staged/usr/lib" \
-@@ -3855,8 +3855,8 @@
+@@ -3864,8 +3864,8 @@
  	$(call patch_files,glib2)
  	cd glib2 && ./autogen.sh && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
