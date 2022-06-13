@@ -65,8 +65,9 @@ patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src/router/glib/glib.
 ##      due to message "using unsafe libraries in usr/local/lib" and "using unsafe headers in usr/local/include" (ICONV_LOOK_DIRS)
 patch -i $FT_PATCHES_DIR/configure_samba.patch $FT_REPO_DIR/release/src/router/samba3/source3/configure
 
-## router/iptables; thanks to source code of github asuswrt-john; 1st patch amended for gcc-7.3/uclibc;  2nd patch new with gcc 7.x
+## router/iptables
 cp -vf $FT_PATCHES_DIR/122_new-toolchain_small.patch $FT_REPO_DIR/release/src/router/patches/iptables
+patch -i $FT_PATCHES_DIR/101-tomato-additional-files.patch.patch $FT_REPO_DIR/release/src/router/patches/iptables/101-tomato-additional-files.patch
 
 ## router/zebra
 patch -i $FT_PATCHES_DIR/zebra.h.patch $FT_REPO_DIR/release/src/router/zebra/lib/zebra.h
