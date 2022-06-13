@@ -60,13 +60,8 @@ patch -i $FT_PATCHES_DIR/glib.h.patch $FT_REPO_DIR/release/src/router/glib/glib.
 ##      "using unsafe headers in usr/local/include" (ICONV_LOOK_DIRS)
 patch -i $FT_PATCHES_DIR/configure_samba.patch $FT_REPO_DIR/release/src/router/samba3/source3/configure
 
-## router/iptables; thanks to iptables source code in https://github.com/john9527/asuswrt-merlin
-patch -i $FT_PATCHES_DIR/ip6tables.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables.c
-patch -i $FT_PATCHES_DIR/libip6tc.c.patch $FT_REPO_DIR/release/src/router/iptables/libiptc/libip6tc.c
-patch -i $FT_PATCHES_DIR/iptables-multi.c.patch $FT_REPO_DIR/release/src/router/iptables/iptables-multi.c
-patch -i $FT_PATCHES_DIR/ip6tables-save.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-save.c
-patch -i $FT_PATCHES_DIR/ip6tables-restore.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-restore.c
-patch -i $FT_PATCHES_DIR/ip6tables-standalone.c.patch $FT_REPO_DIR/release/src/router/iptables/ip6tables-standalone.c
+## router/iptables
+cp -vf $FT_PATCHES_DIR/122_new-toolchain_small.patch $FT_REPO_DIR/release/src/router/patches/iptables
 
 ## router/zebra (https://www.iteye.com/blog/siwind-1160830)
 patch -i $FT_PATCHES_DIR/zebra.h.patch $FT_REPO_DIR/release/src/router/zebra/lib/zebra.h
