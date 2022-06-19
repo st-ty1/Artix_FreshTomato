@@ -13,15 +13,15 @@ $ Artix.exe
 [PC-NAME Artix]# pacman -Syu
 [PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc
 [PC-NAME Artix]# nano /etc/pacman.conf  (enable multilib and lib32 repositories by uncomment the [lib32] sections: 
-					[lib32]
-					Include = /etc/pacman.d/mirrorlist
-                                         )
+					   [lib32]
+					   Include = /etc/pacman.d/mirrorlist
+                                        Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)
 [PC-NAME Artix]# pacman -Syy
 [PC-NAME Artix]# pacman -S lib32-glibc lib32-gcc-libs lib32-zlib
-[PC-NAME Artix]# nano /etc/wsl.conf  	(add the following:
+[PC-NAME Artix]# nano /etc/wsl.conf  (add the following lines:
 					[interop]
 					appendWindowsPath=false
-					)
+				      Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)
 [PC-NAME Artix]# echo "%wheel ALL=(ALL)  ALL" > /etc/sudoers.d/01wheel
 [PC-NAME Artix]# useradd -m -G wheel <username>
 [PC-NAME Artix]# passwd <username>
@@ -30,8 +30,10 @@ $ Artix.exe
 $ Artix.exe config --default-user <username>
 $ Artix.exe
    ------ automatic switch to Linux  -------
-[<username>@PC-NAME ~]$ cd $HOME
-[<username>@PC-NAME ~]$ git config --global core.eol lf
+[PC-NAME Artix]$ cd $HOME
+[PC-NAME Artix]$ nano .bashrc  	(add the following with a new line at the end of the file:
+					cd ~
+				  Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)[<username>@PC-NAME ~]$ git config --global core.eol lf
 [<username>@PC-NAME ~]$ git config --global core.autocrlf false
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-mips 
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-arm	
