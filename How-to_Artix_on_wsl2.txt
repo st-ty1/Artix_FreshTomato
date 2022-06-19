@@ -6,18 +6,15 @@ $ cd %USERPROFILE%\wsl\artix
 $ curl -LJO https://github.com/hdk5/ArtixWSL/releases/download/latest/Artix-runit.zip
 $ tar -xf Artix-runit.zip
 $ wsl --import artix %USERPROFILE%\wsl\artix rootfs.tar.gz
-$ ./artix
+$ Artix.exe
    ------  automatic switch to Linux  -------
 [PC-NAME Artix]# pacman-key --init
-[PC-NAME Artix]# pacman-key --populate archlinux artix
+[PC-NAME Artix]# pacman-key --populate artix
 [PC-NAME Artix]# pacman -Syu
 [PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc
-[PC-NAME Artix]# nano /etc/pacman.conf  (enable multilib and lib32 repositories by uncomment the [multilib] and [lib32] sections: 
+[PC-NAME Artix]# nano /etc/pacman.conf  (enable multilib and lib32 repositories by uncomment the [lib32] sections: 
 					[lib32]
 					Include = /etc/pacman.d/mirrorlist
-                                        ...	
-					[multilib]
-                                        Include = /etc/pacman.d/mirrorlist-arch
                                          )
 [PC-NAME Artix]# pacman -Syy
 [PC-NAME Artix]# pacman -S lib32-glibc lib32-gcc-libs lib32-zlib
