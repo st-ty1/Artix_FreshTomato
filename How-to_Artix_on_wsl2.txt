@@ -12,7 +12,7 @@ $ Artix.exe
 [PC-NAME Artix]# pacman-key --populate artix
 [PC-NAME Artix]# pacman -Syu
 [PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc
-[PC-NAME Artix]# nano /etc/pacman.conf  (enable multilib and lib32 repositories by uncomment the [lib32] sections: 
+[PC-NAME Artix]# nano /etc/pacman.conf  (enable lib32 repositories by uncomment the [lib32] section: 
 					   [lib32]
 					   Include = /etc/pacman.d/mirrorlist
                                         Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)
