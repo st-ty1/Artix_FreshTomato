@@ -6,7 +6,7 @@ Instead of the packages needed for building FreshTomato on Debian (which are men
 make, gcc, which, autoconf, automake, pkgconf, patch, bison, flex, cmake, rpcsvc-proto, gperf, python, intltool, re2c and gtk-doc.
 
 The precompiled 32-bit host-tools of FT need also following packages: lib32-glibc, lib32-gcc-libs and lib32-zlib
-(Therefore, don't forget to uncomment the lines of the "Multilib" and the "lib32" section in /etc/pacman.conf).
+(Therefore, don't forget to uncomment the lines of the "lib32" section in /etc/pacman.conf).
 
 For generating/editing Artix-specific patches installing of package diffutils should be helpful. If you are working with Artix or Arch Linux 
 on wsl2/Windows then you should also install the nano package or you can use a smart editor on Windows (like Notepad++).
