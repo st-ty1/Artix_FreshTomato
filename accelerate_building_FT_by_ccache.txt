@@ -1,0 +1,40 @@
+How-to: Accelerate build process of FT by ccache
+=================================================
+
+1. Start shell and install ccache:
+	sudo pacman -S ccache
+
+2. Install links
+	cd /usr/lib/ccache/bin
+	
+	for mips:
+	sudo ln -s /usr/bin/ccache mipsel-linux-gcc
+	sudo ln -s /usr/bin/ccache mipsel-linux-uclibc-gcc
+	sudo ln -s /usr/bin/ccache mipsel-linux-uclibc-g++
+	sudo ln -s /usr/bin/ccache mipsel-linux-uclibc-c++
+	sudo ln -s /usr/bin/ccache mipsel-linux-uclibc-gcc-4.2.4
+	
+	for arm:
+	sudo ln -s /usr/bin/ccache arm-brcm-linux-uclibcgnueabi-cc
+	sudo ln -s /usr/bin/ccache arm-brcm-linux-uclibcgnueabi-gcc
+	sudo ln -s /usr/bin/ccache arm-brcm-linux-uclibcgnueabi-g++
+	sudo ln -s /usr/bin/ccache arm-brcm-linux-uclibcgnueabi-c++
+	sudo ln -s /usr/bin/ccache arm-brcm-linux-uclibcgnueabi-gcc-4.5.3
+
+3. Insert path to links: 
+	mips: replace in freshtomato-arm/src/release/src-rt-6.x.4708/Makefile line 36:
+		export PATH := $(PATH):$(PWD)/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin
+	by 
+		export PATH := $(PATH):/usr/lib/ccache/bin:$(PWD)/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin
+
+	arm: replace in freshtomato-mips/src/release/src/Makefile line 37:
+		PATH := $(RELEASEDIR)/tools:$(PATH):$(CC_LINUX_DIR):$(CC_UCLIBC_DIR)
+	by 
+		PATH := $(RELEASEDIR)/tools:$(PATH):/usr/lib/ccache/bin:$(CC_LINUX_DIR):$(CC_UCLIBC_DIR)
+
+4. Start build process of FT in appropriate folder of FT as usaual with "make ..."
+
+5. Start further shell to check with "ccache -s", if ccache is working.
+
+BR
+st-ty1
