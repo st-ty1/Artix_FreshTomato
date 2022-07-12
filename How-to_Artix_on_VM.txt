@@ -27,10 +27,10 @@ After system has booted start typing:
 	/bin/sh5 # rc-update add net.<interface> default
 	/bin/sh5 # rc-update add dhcpcd default
 	/bin/sh5 # pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils gtk-doc
-	/bin/sh5 # nano /etc/pacman.conf # enable lib32 repositories by uncomment the [lib32] sections: 
+	/bin/sh5 # nano /etc/pacman.conf # enable lib32 repositories by uncomment the [lib32] section: 
 					[lib32]
 					Include = /etc/pacman.d/mirrorlist
-                                        )
+                                        
 	/bin/sh5 # pacman -Syy
 	/bin/sh5 # pacman -S sudo lib32-glibc lib32-gcc-libs lib32-zlib git wget
 	/bin/sh5 # nano /etc/sudoer 	   	(To allow members of group wheel sudo access: %wheel      ALL=(ALL) ALL)
