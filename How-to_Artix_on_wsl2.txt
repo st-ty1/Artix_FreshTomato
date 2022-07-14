@@ -1,11 +1,11 @@
 From windows command prompt:
 ===========================
 
-$ mkdir %USERPROFILE%\wsl\artix
-$ cd %USERPROFILE%\wsl\artix
+$ mkdir %homedrive%%homepath%\wsl\artix
+$ cd %homedrive%%homepath%\wsl\artix
 $ curl -LJO https://github.com/hdk5/ArtixWSL/releases/download/latest/Artix-runit.zip
 $ tar -xf Artix-runit.zip
-$ wsl --import artix %USERPROFILE%\wsl\artix rootfs.tar.gz
+$ wsl --import artix %homedrive%%homepath%\wsl\artix rootfs.tar.gz
 $ Artix.exe
    ------  automatic switch to Linux  -------
 [PC-NAME Artix]# pacman-key --init
