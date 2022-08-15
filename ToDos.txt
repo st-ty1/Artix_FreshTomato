@@ -1,0 +1,3 @@
+Probably, source code of zfs needs a patch, if building FT-arm on Artix.
+https://www.linksysinfo.org/index.php?threads/freshtomato-arm-development-discussion-only-for-support-always-open-your-own-thread.74117/post-336750
+I will check it, if this is caused only by additional software on host (desktop environment) and can be avoided by using wsl2.
