@@ -11,7 +11,7 @@ $ Artix.exe
 [PC-NAME Artix]# pacman-key --init
 [PC-NAME Artix]# pacman-key --populate artix
 [PC-NAME Artix]# pacman -Syu
-[PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc wget ninja
+[PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc wget ninja libtool
 [PC-NAME Artix]# nano /etc/pacman.conf  (enable lib32 repositories by uncomment the [lib32] section: 
 					   [lib32]
 					   Include = /etc/pacman.d/mirrorlist
@@ -33,7 +33,8 @@ $ Artix.exe
 [PC-NAME Artix]$ cd $HOME
 [PC-NAME Artix]$ nano .bashrc  	(add the following with a new line at the end of the file:
 					cd ~
-				  Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)[<username>@PC-NAME ~]$ git config --global core.eol lf
+				  Save changes with <Ctrl>-X, confirm saving the buffer with "y" and confirm file name with <Return>)
+[<username>@PC-NAME ~]$ git config --global core.eol lf
 [<username>@PC-NAME ~]$ git config --global core.autocrlf false
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-mips 
 [<username>@PC-NAME ~]$ git clone https://bitbucket.org/pedro311/freshtomato-arm	
