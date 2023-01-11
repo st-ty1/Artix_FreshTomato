@@ -3,7 +3,7 @@ FROM artixlinux/openrc
 ENV TZ=Europe/Berlin
 
 RUN pacman --noconfirm -Syu \
-	&& pacman --noconfirm -S make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c git gtk-doc \
+	&& pacman --noconfirm -S make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c git gtk-doc wget ninja libtool \
 	&& gawk -v beg='#[lib32]' -v num=2 '$0==beg{c=num} c&&c--{sub(/#/,"")} 1' /etc/pacman1.conf > /etc/pacman1.conf \
 	&& mv /etc/pacman1.conf /etc/pacman.conf \
 	&& pacman --noconfirm -Syu \
