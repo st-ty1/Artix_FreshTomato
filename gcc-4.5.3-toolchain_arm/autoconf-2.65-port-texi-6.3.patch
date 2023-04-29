@@ -1,0 +1,23 @@
+ * doc/autoconf.texi: Remove obsolete @setcontentsaftertitlepage
+that provokes a warning from Texinfo 6.3.
+---
+ doc/autoconf.texi | 3 ---
+ 1 file changed, 3 deletions(-)
+
+
+diff --git a/doc/autoconf.texi b/doc/autoconf.texi
+index 029ddd6..ddbeddf 100644
+--- a/doc/autoconf.texi
++++ b/doc/autoconf.texi
+@@ -5,9 +5,6 @@
+ @include version.texi
+ @settitle Autoconf
+ @setchapternewpage odd
+-@ifnothtml
+-@setcontentsaftertitlepage
+-@end ifnothtml
+ @finalout
+ 
+ @c @ovar(ARG)
+-- 
+2.7.4
