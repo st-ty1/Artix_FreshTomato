@@ -1,7 +1,7 @@
 arm-uClibc-toolchain_buildroot
 HowTo: Rebuild arm-toolchain (gcc 4.5.3 + uClibc 0.9.3X.X) for FreshTomato with Buildroot (2012.02) 
 
-0.) rsync must be installed
+0.) rsync must be installed.
 
 All of the folwing steps are enclosed in toolchain_arm.sh.
 
@@ -20,7 +20,7 @@ All of the folwing steps are enclosed in toolchain_arm.sh.
 
 7.) Copy autoconf-2.65-texi-patch2.patch and autoconf-2.65-port-texi-6.3.patch to buildroot-2012.02/package/autoconf 
 
-8.) Copy 900-gcc46-texi.patch, 901_gcc_missing.patch and 902_cfns_fix mismatch in gnu_inline attributes.patch to 
+8.) Copy 900-gcc46-texi.patch, 901_gcc_missing.patch and 902_cfns_fix_mismatch_in_gnu_inline_attributes.patch to 
       buildroot-2012.02/toolchain/gcc/4.5.3 
    
 9.) Replace buildroot-2012.02/toolchain/gcc/gcc-uclibc-4.x.mk by gcc-uclibc-4.x.mk of this repo (Makefile=missing is added to all 3 build-stages of gcc-4.5.3). 
@@ -36,7 +36,7 @@ All of the folwing steps are enclosed in toolchain_arm.sh.
          make clean
          make
 
-	 No older gcc-compiler is needed for building process of toolchain. I.e., toolchain can be built with gcc-10.1.0 (on Artix/Arch-Linux). After building process is finished, toolchain is located under BR2_STAGING_DIR (if you have chosen default configuartion in .config file, this means buildroot-2012.02/output/host/usr).
+   There is no need for an older gcc-compiler to build the toolchain. I.e., toolchain can be built with gcc 12 (on Artix/Arch-Linux). After building process is  finished, toolchain is located under BR2_STAGING_DIR (if you have chosen default configuration in .config file, this means buildroot-2012.02/output/host/usr).
 
 In order to use this toolchain as toolchain for FT:
 
@@ -51,6 +51,6 @@ Replacement of files in steps 1.) and 2.) are needed as these two files has been
 
 16.) Remove old original toolchain in your FT-repo. 
 
-17.) Copy new toolchain under buildroot-2012.02/output/host/usr into \<path to your local FT-arm-repo\>/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/
+17.) Copy new toolchain under buildroot-2012.02/output/host/usr into \<path to your local FT-arm-repo\>/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3 .
 
 
