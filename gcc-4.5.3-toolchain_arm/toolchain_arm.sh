@@ -35,7 +35,7 @@ make clean
 make
 
 cp $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/linux/if_pppox.h output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/linux/if_pppox.h
-cp $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h  output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include of your toolchain
-cp -vrf output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib output/host/usr/lib
+cp $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include/ctype.h output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/usr/include
+cp -vrf output/host/usr/arm-brcm-linux-uclibcgnueabi/sysroot/lib output/host/usr/lib
 rm -rf $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3 
 cp -vr output/host/usr $FT_REPO_DIR/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3/
