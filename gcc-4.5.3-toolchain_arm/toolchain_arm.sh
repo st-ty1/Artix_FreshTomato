@@ -14,7 +14,7 @@ cp $TOOLCHAIN_PATCH_DIR/defconfig-arm-uclibc .config
 #hosttools
 cp $TOOLCHAIN_PATCH_DIR/gmp.mk package/gmp 
 cp $TOOLCHAIN_PATCH_DIR/mpfr.mk package/mpfr 
-rm package/mpfr-3.0.1_p4.patch
+rm package/mpfr/mpfr-3.0.1_p4.patch
 cp $TOOLCHAIN_PATCH_DIR/m4.mk package/m4
 cp $TOOLCHAIN_PATCH_DIR/autoconf-2.65-texi-patch2.patch package/autoconf 
 cp $TOOLCHAIN_PATCH_DIR/autoconf-2.65-port-texi-6.3.patch  package/autoconf
