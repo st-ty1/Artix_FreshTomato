@@ -26,7 +26,7 @@ cp $TOOLCHAIN_PATCH_DIR/gcc-uclibc-4.x.mk toolchain/gcc
 cp $TOOLCHAIN_PATCH_DIR/uClibc-0.9.32.config toolchain/uClibc
 cp $TOOLCHAIN_PATCH_DIR/uClibc-0.9.32.1-gen_wctype.patch toolchain/uClibc
 rm fs/skeleton/var/cache
-
+mkdir dl_save
 cd $FT_REPO_DIR/release/src-rt-6.x.4708/linux
 tar cJvf linux-2.6.tar.xz linux-2.6
 mv linux-2.6.tar.xz $HOME/buildroot-2012.02/dl_save/linux-2.6.tar.xz
