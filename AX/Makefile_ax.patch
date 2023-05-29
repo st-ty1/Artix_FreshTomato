@@ -1,0 +1,37 @@
+--- Makefile_ax.orig	2023-05-29 19:09:00.308408600 +0200
++++ Makefile_ax	2023-05-29 19:26:24.173874262 +0200
+@@ -4073,7 +4077,8 @@
+ 	touch $@
+ 
+ libdaemon: libdaemon/stamp-h1
+-	$(MAKE) -C $@ && $(MAKE) $@-stage
++	$(MAKE) -C $@ && $(MAKE) $@-stage && sed 's|/usr/lib|$(STAGEDIR)/usr/lib|g' -i $(STAGEDIR)/usr/lib/libdaemon.la
++	
+ 
+ libdaemon-install: libdaemon
+ 	install -D libdaemon/libdaemon/.libs/libdaemon.so.0.5.0 $(INSTALLDIR)/libdaemon/usr/lib/libdaemon.so.0.5.0
+@@ -6166,7 +6171,7 @@
+ 
+ openpam/Makefile:
+ 	( cd openpam ; \
+-		LDFLAGS=-ldl \
++		LDFLAGS="-L$(TOOLCHAIN)/arm-buildroot-linux-gnueabi/sysroot/lib -L$(TOOLCHAIN)/arm-buildroot-linux-gnueabi/sysroot/usr/lib" \
+ 		$(CONFIGURE) \
+ 		--prefix=/usr \
+ 		--bindir=/usr/sbin \
+@@ -6437,6 +6442,7 @@
+ pcre-8.31/stamp-h1:
+ 	cd pcre-8.31 && \
+ 	CC=$(CC) CXX=$(CXX) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) CFLAGS="-Os -Wall $(EXTRACFLAGS)" LIBS="$(EXTRALDFLAGS)" \
++	LDFLAGS="-L$(TOOLCHAIN)/arm-buildroot-linux-gnueabi/sysroot/lib -L$(TOOLCHAIN)/arm-buildroot-linux-gnueabi/sysroot/usr/lib" \
+ 	./$(CONFIGURE) --prefix=/usr --disable-dependency-tracking
+ 	touch $@
+ 	[ -d pcre-8.31/m4 ] || mkdir pcre-8.31/m4
+@@ -6469,6 +6475,7 @@
+ 
+ libxml2: libxml2/stamp-h1
+ 	$(MAKE) -j 8 -C libxml2 all && $(MAKE) $@-stage
++	sed 's|/usr/lib|$(STAGEDIR)/usr/lib|g' -i $(STAGEDIR)/usr/lib/libxml2.la
+ 
+ libxml2-install: libxml2
+ 	@$(SEP)

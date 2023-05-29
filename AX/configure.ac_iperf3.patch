@@ -1,0 +1,10 @@
+--- configure.ac_iperf3.orig	2023-05-29 19:09:00.308408600 +0200
++++ configure.ac_iperf3	2023-05-29 09:57:52.228343931 +0200
+@@ -42,6 +42,7 @@
+ # Checks for tools: c compiler, ranlib (used for creating static libraries),
+ # symlinks and libtool
+ AC_PROG_CC
++AC_PROG_CPP
+ AC_PROG_RANLIB
+ AC_PROG_LN_S
+ AC_PROG_LIBTOOL
