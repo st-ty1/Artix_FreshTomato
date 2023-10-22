@@ -32,6 +32,8 @@ patch -i  $FT_PATCHES_DIR/AX/Makefile_ax.patch $FT_REPO_DIR/release/src/router/M
 
 # intermediate patch, only needed with actual iperf3 version; should be obsolete when using higher versions of iperf3 in future
 patch -i  $FT_PATCHES_DIR/AX/configure.ac_iperf3.patch $FT_REPO_DIR/release/src/router/iperf3/configure.ac
-
-cd $HOME/freshtomato-ax/release/src-rt-5.04axhnd.675x/
-make tuf-ax3000_v2 #1> log.txt 2>&1  #1>log.txt
+which automake
+cp -v  $FT_PATCHES_DIR/AX/Makefile_build $FT_REPO_DIR/release/src-rt-5.04axhnd.675x/build/Makefile
+exit
+cd $HOME/freshtomato-ax/release/src-rt-5.04axhnd.675x
+make tuf-ax3000_v2 1> log.txt 2>&1  #1>log.txt

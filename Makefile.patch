@@ -1,6 +1,6 @@
---- Makefile.orig	2022-06-11 16:06:58.000000000 +0000
-+++ Makefile	2022-06-11 16:07:03.000000000 +0000
-@@ -3642,7 +3642,7 @@
+--- Makefile.orig	2023-10-22 12:49:18.125932200 +0200
++++ Makefile	2023-10-22 12:54:07.165935700 +0200
+@@ -3772,7 +3772,7 @@
  
  zfs/stamp-h1:
  	$(call patch_files,zfs)
@@ -9,14 +9,15 @@
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
  		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include -I$(TOP)/util-linux/staged/usr/include -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/gettext-tiny/staged/usr/include" \
  		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/util-linux/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -L$(TOP)/gettext-tiny/staged/usr/lib" \
-@@ -3864,8 +3864,8 @@
- 	$(call patch_files,glib2)
+@@ -3997,9 +3997,9 @@
  	cd glib2 && ./autogen.sh && \
  		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC" \
--		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/glib2" \
--		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi" \
-+		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include -I$(TOP)/gettext-tiny/include" \
-+		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib -ldl -lpthread -lz -liconv -lffi -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib" \
- 		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/lib/libffi-3.2.1/include" \
+ 		CPPFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -fPIC -I$(TOP)/libiconv/staged/usr/include -I$(TOP)/zlib/staged/usr/include \
+-			-I$(TOP)/glib2 $(if $(TCONFIG_NGINX),-I$(TOP)/pcre,)" \
++			-I$(TOP)/gettext-tiny/include $(if $(TCONFIG_NGINX),-I$(TOP)/pcre,)" \
+ 		LDFLAGS="-Wl,--gc-sections -fPIC -L$(TOP)/libiconv/staged/usr/lib -L$(TOP)/libffi/staged/usr/lib -L$(TOP)/zlib/staged/usr/lib $(if $(TCONFIG_NGINX),-L$(TOP)/pcre/.libs,) \
+-			-ldl -lpthread -lz -liconv -lffi $(if $(TCONFIG_NGINX),-lpcre,)" \
++			-ldl -lpthread -lz -liconv -lffi $(if $(TCONFIG_NGINX),-lpcre,) -L$(TOOLCHAIN)/lib -L$(TOOLCHAIN)/arm-brcm-linux-uclibcgnueabi/sysroot/usr/lib" \
+ 		LIBFFI_CFLAGS="-I$(TOP)/libffi/staged/usr/include" \
  		LIBFFI_LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so" \
- 		LIBS="$(TOP)/libffi/staged/usr/lib/libffi.so $(TOP)/libiconv/staged/usr/lib/libiconv.so" \
+ 		$(if $(TCONFIG_NGINX),PCRE_CFLAGS="-I$(TOP)/pcre" PCRE_LIBS="$(TOP)/pcre/.libs/libpcre.so",) \

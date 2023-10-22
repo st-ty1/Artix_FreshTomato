@@ -12,12 +12,12 @@ After system has booted start typing:
 	artix:[artix]# su
 	root:[root]# fstabgen /mnt >> /mnt/etc/fstab
 	root:[root]# artix-chroot /mnt
-	/bin/sh5 # nano /etc/locale.gen	 (Select language configuration "en_US.UTF-8 UTF-8","de_DE.UTF-8 UTF-8" by deleting the #)
+	/bin/sh5 # nano /etc/locale.gen	 (Select your language configuration, e.g. "de_DE.UTF-8 UTF-8", by deleting the #)
 	/bin/sh5 # locale-gen
-	/bin/sh5 # nano /etc/locale.conf 	(Add your language to the system by adding this line: export "LANG=en_US.UTF-8" LANG=de_DE.UTF-8)
+	/bin/sh5 # nano /etc/locale.conf 	(Add your language to the system by adding this line: export "LANG=de_DE.UTF-8")
 	/bin/sh5 # echo KEYMAP=de-latin1-nodeadkeys > /etc/vconsole.conf
 	/bin/sh5 # nano /etc/conf.d/keymaps 	   (add: keymap="de-latin1")
-	/bin/sh5 # ln –sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime 	(List of all the zones of the world: ls /usr/share/zoneinfo)
+	/bin/sh5 # ln –sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime 	(replace Europe/Berlin by your own timesone; to list of all the zones of the world: ls /usr/share/zoneinfo)
 	/bin/sh5 # hwclock --systohc
 	/bin/sh5 # passwd 			   (type your password)
 	/bin/sh5 # nano /etc/hostname		 (type any name)
