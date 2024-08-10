@@ -18,9 +18,6 @@ Any additional package, like graphical environments, can make build process more
 At the moment, Makefile.patch is needed for compiling FT sources on Artix/Arch Linux.
 You can apply patch to directly to .../router/Makefile before starting building process or use one of the supplied scripts of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
 
-(Makefile_arm_alternate.patch: Instead of removing the *.la-files in router/Makefile, same effect can be reached by amending the *.la-files instead of an amended LIB path. This is done by applying Makefile_arm_alternate.patch on Makefile.
-Currently, this patch needs to be updated, due to some new additional *.la-files in FT source code.)
-
 Best practice:
    - Copy or clone this repo into a subfolder of your home directory. 
    - Make the shell script executable you need for your router model (depending on architecture of CPU of router) .
