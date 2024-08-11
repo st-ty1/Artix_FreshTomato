@@ -1,11 +1,26 @@
---- Makefile.orig	2023-10-22 12:49:18.125932200 +0200
-+++ Makefile	2023-10-22 12:54:07.165935700 +0200
-@@ -3772,7 +3772,7 @@
+--- Makefile	2024-08-11 14:08:06.114532100 +0200
++++ Makefile_mod	2024-08-11 14:10:43.244536191 +0200
+@@ -1856,6 +1856,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ all $(PARALLEL_BUILD)
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/sqlite/staged install
++	sed "s|'/usr/lib|'$(TOP)/sqlite/staged/usr/lib|g" -i $(TOP)/sqlite/staged/usr/lib/libsqlite3.la
  
- zfs/stamp-h1:
- 	$(call patch_files,zfs)
--	cd zfs && \
-+	cd zfs && ./autogen.sh && \
- 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
- 		CPPFLAGS="-I$(TOP)/zlib/staged/usr/include -I$(TOP)/util-linux/staged/usr/include -I$(TOP)/$(OPENSSLDIR)/staged/usr/include -I$(TOP)/gettext-tiny/staged/usr/include" \
- 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/zlib/staged/usr/lib -L$(TOP)/util-linux/staged/usr/lib -L$(TOP)/$(OPENSSLDIR)/staged/usr/lib -L$(TOP)/gettext-tiny/staged/usr/lib" \
+ sqlite-install:
+ ifeq ($(or $(TCONFIG_NGINX),$(TCONFIG_MEDIA_SERVER)),y)
+@@ -2475,6 +2476,7 @@
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/libpng/staged install
+ 	@rm -f $(TOP)/libpng/staged/usr/lib/libpng.la
+ 	@rm -f $(TOP)/libpng/staged/usr/lib/libpng12.la
++	sed "s|'/usr/lib|'$(TOP)/libpng/staged/usr/lib|g" -i $(TOP)/libpng/staged/usr/lib/libpng16.la
+ 
+ libpng-install:
+ 	install -D libpng/.libs/libpng16.so.16.43.0 $(INSTALLDIR)/libpng/usr/lib/libpng16.so.16.43.0
+@@ -3786,6 +3788,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ $(PARALLEL_BUILD)
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/expat/staged install
++	sed "s|'/usr/lib|'$(TOP)/expat/staged/usr/lib|g" -i $(TOP)/expat/staged/usr/lib/libexpat.la
+ 
+ expat-install:
+ 	install -D expat/staged/usr/lib/libexpat.so.1.9.2 $(INSTALLDIR)/expat/usr/lib/libexpat.so.1.9.2

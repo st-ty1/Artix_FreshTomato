@@ -13,6 +13,7 @@ git checkout arm-master
 clear
 
 patch -i $FT_PATCHES_DIR/Makefile.patch $FT_REPO_DIR/release/src-rt-6.x.4708/router/Makefile
+patch -i $FT_PATCHES_DIR/libfoo.patch $FT_REPO_DIR/release/src-rt-6.x.4708/btools/libfoo.pl
 patch -p1 -d $FT_REPO_DIR/release/src-rt-6.x.4708/router/zfs < $FT_PATCHES_DIR/zfs.patch	
 
 cd release/src-rt-6.x.4708

@@ -1,0 +1,13 @@
+--- libfoo.pl	2024-08-11 14:08:05.874532100 +0200
++++ libfoo.pl_mod	2024-08-10 17:06:19.071914367 +0200
+@@ -696,8 +696,8 @@
+ genSO("${root}/usr/lib/libiperf.so.0.0.0", "${router}/iperf/src/.libs/libiperf.a", "${stripshared}");
+ genSO("${root}/usr/lib/libncurses.so.6", "${router}/libncurses/lib/libncurses.a", "${stripshared}");
+ 
+-genSO("${root}/usr/lib/libavahi-common.so.3.5.4", "${router}/avahi/avahi-common/.libs/libavahi-common.a", "${stripshared}");
+-genSO("${root}/usr/lib/libavahi-core.so.7.1.0", "${router}/avahi/avahi-core/.libs/libavahi-core.a", "${stripshared}", "-L${router}/avahi/avahi-common/.libs");
++genSO("${root}/usr/lib/libavahi-common.so.3.5.4", "${router}/avahi/avahi-common/.libs/libavahi-common.a", "${stripshared}", "-L${router}/expat/staged/usr/lib");
++genSO("${root}/usr/lib/libavahi-core.so.7.1.0", "${router}/avahi/avahi-core/.libs/libavahi-core.a", "${stripshared}", "-L${router}/avahi/avahi-common/.libs", "-L${router}/expat/staged/usr/lib");
+ 
+ genSO("${root}/usr/lib/libext2fs.so.2.4", "${router}/e2fsprogs/lib/libext2fs.a", "${stripshared}", "-L${router}/e2fsprogs/lib");
+ genSO("${root}/usr/lib/libuuid.so.1.2", "${router}/e2fsprogs/lib/libuuid.a", "${stripshared}", "-L${router}/e2fsprogs/lib");
