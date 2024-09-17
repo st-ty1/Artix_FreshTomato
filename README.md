@@ -12,10 +12,11 @@ The precompiled 32-bit host-tools of FT need also following packages: lib32-glib
 If you are working with Artix or Arch Linux 
 on wsl2/Windows then you should also install the nano package or you can use a smart editor on Windows (like Notepad++).
 
-It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches there is a manual in this repo) without (!) any desktop environment or unneeded packages, to keep the needed patches as low as possible. 
-Any additional package, like graphical environments, can make build process more complicate, as executables on Artix/Arch Linux are build with shared libs, which can mislead the building tools within the FT sources, at worst.
+It is recommended to use Artix on wsl2/Windows or as a VM  (for both approaches there is a manual in this repo) without (!) any desktop environment or unneeded packages, to keep the number of needed patches as low as possible. 
+Any additional package, like graphical environments, can require additional patches (e.g. have a look at build_ft-mips-RT-AC.sh),
+ as executables on Artix/Arch Linux are build with shared libs, which can mislead the building tools used by FT sources, at worst.
 
-At the moment, Makefile.patch is needed for compiling FT sources on Artix/Arch Linux.
+At the moment, only Makefile.patch is needed for compiling FT sources on Artix/Arch Linux.
 You can apply patch to directly to .../router/Makefile before starting building process or use one of the supplied scripts of this repo after cloning it locally. Please check if path in the script file to your local FT repo is correct.
 
 Best practice:
