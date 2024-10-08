@@ -1,6 +1,6 @@
---- Makefile	2024-09-13 13:21:53.957772700 +0200
-+++ Makefile_mod	2024-09-13 12:20:43.967896541 +0200
-@@ -1855,6 +1854,7 @@
+--- Makefile	2024-10-04 20:10:39.780174300 +0200
++++ Makefile_mod	2024-10-04 20:12:37.220176100 +0200
+@@ -1866,6 +1866,7 @@
  	@$(SEP)
  	@$(MAKE) -C $@ all $(PARALLEL_BUILD)
  	@$(MAKE) -C $@ DESTDIR=$(TOP)/sqlite/staged install
@@ -8,11 +8,20 @@
  
  sqlite-install:
  ifeq ($(or $(TCONFIG_NGINX),$(TCONFIG_MEDIA_SERVER)),y)
-@@ -3788,6 +3788,7 @@
+@@ -3809,7 +3810,7 @@
+ 	@rm -f libdaemon/stamp-h1
+ 
+ expat/stamp-h1:
+-	cd expat && \
++	cd expat && autoreconf -fsi && \
+ 		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		CXXFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+@@ -3820,6 +3821,7 @@
  	@$(SEP)
  	@$(MAKE) -C $@ $(PARALLEL_BUILD)
  	@$(MAKE) -C $@ DESTDIR=$(TOP)/expat/staged install
 +	sed "s|'/usr/lib|'$(TOP)/expat/staged/usr/lib|g" -i $(TOP)/expat/staged/usr/lib/libexpat.la
  
  expat-install:
- 	install -D expat/staged/usr/lib/libexpat.so.1.9.2 $(INSTALLDIR)/expat/usr/lib/libexpat.so.1.9.2
+ 	install -D expat/staged/usr/lib/libexpat.so.1.9.3 $(INSTALLDIR)/expat/usr/lib/libexpat.so.1.9.3
