@@ -18,23 +18,23 @@ Follow these steps:
    
     - for MIPS-routers and RT-N-image:
 	
-	      docker build -r artixlinux/ft-mips-rt-n -f artix_ft-mips-rt-n .
+	      docker build -t artixlinux/ft-mips-rt-n -f artix_ft-mips-rt-n .
    
     - for MIPS-routers and RT-AC-image:
 	
-	      docker build -r artixlinux/ft-mips-rt-ac -f artix_ft-mips-rt-ac .
+	      docker build -t artixlinux/ft-mips-rt-ac -f artix_ft-mips-rt-ac .
    
     - for MIPS-routers and RT-image:
 	
-	      docker build -r artixlinux/ft-mips-rt -f artix_ft-mips-rt .
+	      docker build -t artixlinux/ft-mips-rt -f artix_ft-mips-rt .
    
     - for ARM-routers and SDK6-image:
 	
-	      docker build -r artixlinux/ft-arm -f artix_ft-mips-arm .
+	      docker build -t artixlinux/ft-arm -f artix_ft-mips-arm .
    
     - for ARM-routers and SDK7-image:
 	
-	      docker build -r artixlinux/ft-arm7 -f artix_ft-mips-arm7 .
+	      docker build -t artixlinux/ft-arm7 -f artix_ft-mips-arm7 .
    
 3. For starting the build process of FT, you have to append the firmware type you want to build at the nd of the "docker build" command, and you should also insert the TZ database name of your preferred time zone as environment variable in the "docker build" command (preset time zone: Europe/Berlin). "-v $HOME:/image" is needed to copy the firmware from inside docker container to host of container.
   
