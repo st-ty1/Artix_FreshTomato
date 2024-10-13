@@ -1,0 +1,11 @@
+FROM artixlinux/artixlinux:base-openrc
+
+ENV TZ=Europe/Berlin
+
+RUN pacman --noconfirm -Syu \
+	&& pacman --noconfirm -S make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c git gtk-doc wget ninja libtool \
+	&& sed -i '/# An/i\[lib32\]\nInclude=\/etc\/pacman.d\/mirrorlist\n' /etc/pacman.conf \
+	&& pacman --noconfirm -Syu \
+	&& pacman --noconfirm -S lib32-glibc lib32-gcc-libs lib32-zlib \
+	&& ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+	&& git clone https://bitbucket.org/pedro311/freshtomato-arm.git
