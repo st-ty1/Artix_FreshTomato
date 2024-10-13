@@ -1,4 +1,4 @@
-FROM artixlinux/openrc
+FROM artixlinux/artixlinux:base-openrc
 
 ENV TZ=Europe/Berlin
 
