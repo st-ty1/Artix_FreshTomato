@@ -7,11 +7,11 @@ Follow these steps:
     
     for MIPS-routers:
 
-		docker build -r artixlinux/ft-mips-init -f artix_ft-mips_init .
+		docker build -t artixlinux/ft-mips-init -f artix_ft-mips_init .
     
     for ARM-routers:
 
-		docker build -r artixlinux/ft-arm-init -f artix_ft-arm_init .
+		docker build -t artixlinux/ft-arm-init -f artix_ft-arm_init .
 
 2. Build an add-on image, based on init-image of step 1., with updating Archlinux packages and cloning Artix_Freshtomato repo.
    Choose one of the dockerfiles according to the CPU architecture and the supported SDK version of your router
