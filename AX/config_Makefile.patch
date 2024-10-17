@@ -1,0 +1,16 @@
+--- Makefile_config_orig	2024-10-16 20:09:50.540361125 +0200
++++ Makefile_config	2024-10-15 19:38:14.396236750 +0200
+@@ -101,7 +101,7 @@
+ .PHONY: ncurses
+ 
+ ncurses:
+-	@echo "main() {}" > lxtemp.c
++	@echo "void main() {}" > lxtemp.c
+ 	@if $(HOSTCC) lxtemp.c $(LIBS) ; then \
+ 		rm -f lxtemp.c a.out; \
+ 	else \
+@@ -121,3 +121,4 @@
+ clean:
+ 	rm -f *.o *~ core $(TARGETS) $(MCONF_OBJS) $(CONF_OBJS) \
+ 		conf mconf zconf.tab.c zconf.tab.h lex.zconf.c lkc_defs.h
++
