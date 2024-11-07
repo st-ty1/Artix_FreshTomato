@@ -10,6 +10,8 @@ $ Artix.exe
    ------  automatic switch to Linux  -------
 [PC-NAME Artix]# pacman-key --init
 [PC-NAME Artix]# pacman-key --populate artix
+[PC-NAME Artix]# pacman -Sy
+[PC-NAME Artix]# pacman -S glibc   (You have to confirm  "Remove glibc-linux4?" with "y")
 [PC-NAME Artix]# pacman -Syu
 [PC-NAME Artix]# pacman -S sudo nano make gcc which autoconf automake pkgconf patch bison flex cmake rpcsvc-proto gperf python intltool re2c diffutils git gtk-doc wget ninja libtool python-distutils-extra
 [PC-NAME Artix]# nano /etc/pacman.conf  (enable lib32 repositories by uncomment the [lib32] section: 
