@@ -7,8 +7,8 @@
 	- packages/binutils into the /package subfolder of your local buildroot-2016.02 directory
     Copy gcc.mk of this repo into /package/gcc subfolder of your local buildroot-2016.02 directory.
 6.) Replace uclibc.mk in package/uclibc subfolder of your local buildroot-2016.02 directory by uclibc.mk of this package.
-7.) Replace uClibc-0.9.32.config in package/uclibc subfolder of your local buildroot-2016.02 directory by uClibc-0.9.32.config of this package (or by uClibc-0.9.32.config_nptl, if you want to build a nptl-version). 
-8.) Copy uClibc-0.9.32.1-gen_wctype.patch (and for versions with nptl also 0071-Fix-libgcc_s_resume-issue.patch) of this repo in packages/uclibc/0.9.32.1 of your local buildroot-2016.02 directory.
+7.) Replace uClibc-0.9.32.config in package/uclibc subfolder of your local buildroot-2016.02 directory by uClibc-0.9.32.config_nptl of this package. 
+8.) Copy uClibc-0.9.32.1-gen_wctype.patch (and for versions with nptl also 0071-Fix-libgcc_s_resume-issue.patch) of this repo into packages/uclibc/0.9.32.1 folder of your local buildroot-2016.02 directory.
 9.) Ccreate subfolder dl_save in your local buildroot-2016.02 directory, generate an archive of the linux sources in FT repos (file name has to be "linux-2.6.tar.xz") and place the archive into the dl_save folder:
 		mkdir $HOME/buildroot-2016.02_mips/dl_save		
 		cd $HOME/freshtomato-mips/release/src-rt-6.x/linux
