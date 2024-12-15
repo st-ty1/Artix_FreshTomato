@@ -1,0 +1,11 @@
+--- /home/stephan/freshtomato-mips_orig/release/src/router/libbcmcrypto/Makefile	2024-12-08 19:58:15.784198171 +0100
++++ /home/stephan/freshtomato-mips/release/src/router/libbcmcrypto/Makefile	2024-12-07 16:53:07.337543215 +0100
+@@ -14,7 +14,7 @@
+ 
+ include ../common.mak
+ 
+-CFLAGS	+= -Wsign-compare -I. -I../httpd -I$(SRCBASE)/include -Wall
++CFLAGS	+= -Wsign-compare -I. -I../httpd -I$(SRCBASE)/include -Wall -fPIC
+ #CFLAGS	+= -g -DDEBUG
+ CFLAGS	+= -s -O2 $(EXTRACFLAGS)
+ LDFLAGS += -L.

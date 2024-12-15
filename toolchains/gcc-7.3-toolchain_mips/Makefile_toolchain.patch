@@ -1,0 +1,39 @@
+--- /home/stephan/freshtomato-mips_orig/release/src/router/Makefile	2024-12-08 19:58:12.434197825 +0100
++++ /home/stephan/freshtomato-mips/release/src/router/Makefile	2024-12-08 20:43:00.211441213 +0100
+@@ -504,10 +504,10 @@
+ 
+ ifneq ($(TCONFIG_BCMARM),y)
+ 	@if ! grep -q "CONFIG_EMBEDDED_RAMDISK=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) zImage CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) zImage CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	if grep -q "CONFIG_MODULES=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) modules CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	$(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR) TCONFIG_MIPSR2=$(TCONFIG_MIPSR2) $(PARALLEL_BUILD)
+ else # TCONFIG_BCMARM
+@@ -669,13 +669,13 @@
+ 	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
+ 	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
+ ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
++	install $(LIBDIR)/librt-0.9.32.1.so $(TARGETDIR)/lib/librt.so.0
+ else
+ 	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ endif
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO)$(TCONFIG_BBT),)
+  ifneq ($(TCONFIG_BCMARM),y)
+-	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
++	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+  else
+ 	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+  endif # TCONFIG_BCMARM
+@@ -1229,6 +1229,7 @@
+ 		AR=$(AR:$(CROSS_COMPILE)%=%) \
+ 		NM=$(NM:$(CROSS_COMPILE)%=%) \
+ 		RANLIB=$(RANLIB:$(CROSS_COMPILE)%=%) \
++		LDLIBS="-latomic" \
+ 		./Configure $(HOSTCONFIG)-freshtomato $(if $(TCONFIG_OPTIMIZE_SIZE),-Os,-O3) --prefix=/usr --openssldir=/etc/ssl \
+ 			-ffunction-sections -fdata-sections -Wl,--gc-sections \
+ 			shared $(OPENSSL_OPTIONS) --api=1.0.0 \

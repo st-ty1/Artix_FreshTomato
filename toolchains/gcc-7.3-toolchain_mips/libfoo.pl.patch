@@ -1,34 +1,29 @@
-518c518
-< 	$cmd = "mipsel-uclibc-gcc -shared -nostdlib -Wl,-s,-z,combreloc -Wl,--warn-common -Wl,--fatal-warnings -Wl,--gc-sections ${opt} -Wl,-soname=${name} -o ${so}";
----
-> 	$cmd = "mipsel-brcm-linux-uclibc-gcc -shared -nostdlib -Wl,-s,-z,combreloc -Wl,--warn-common -Wl,--gc-sections -Wl,--fatal-warnings ${opt} -Wl,-soname=${name} -o ${so}";
-588,595c588,595
-< genSO("${root}/lib/libc.so.0", "${uclibc}/lib/libc.a", "", "-Wl,-init=__uClibc_init ${uclibc}/lib/optinfo/interp.os");
-< genSO("${root}/lib/libresolv.so.0", "${uclibc}/lib/libresolv.a", "${stripshared}");
-< genSO("${root}/lib/libcrypt.so.0", "${uclibc}/lib/libcrypt.a", "${stripshared}");
-< genSO("${root}/lib/libm.so.0", "${uclibc}/lib/libm.a");
-< genSO("${root}/lib/libpthread.so.0", "${uclibc}/lib/libpthread.a", "${stripshared}", "-u pthread_mutexattr_init -Wl,-init=__pthread_initialize_minimal_internal");
-< genSO("${root}/lib/libutil.so.0", "${uclibc}/lib/libutil.a", "${stripshared}");
-< #genSO("${root}/lib/libdl.so.0", "${uclibc}/lib/libdl.a", "${stripshared}");
-< #genSO("${root}/lib/libnsl.so.0", "${uclibc}/lib/libnsl.a", "${stripshared}");
----
-> #genSO("${root}/lib/libc.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libc.a", "", "-Wl,-init=__uClibc_init ${uclibc}/lib/optinfo/interp.os");
-> genSO("${root}/lib/libresolv.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libresolv.a", "${stripshared}");
-> genSO("${root}/lib/libcrypt.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libcrypt.a", "${stripshared}");
-> genSO("${root}/lib/libm.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libm.a");
-> genSO("${root}/lib/libpthread.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libpthread.so", "${stripshared}",);
-> genSO("${root}/lib/libutil.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libutil.a", "${stripshared}");
-> #genSO("${root}/lib/libdl.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libdl.a", "${stripshared}");
-> #genSO("${root}/lib/libnsl.so.0", "${uclibc}/mipsel-brcm-linux-uclibc/sysroot/usr/lib/libnsl.a", "${stripshared}");
-619,623c619,623
-< #genSO("${root}/usr/lib/libiptc.so", "${router}/iptables/libiptc/libiptc.a");
-< #genSO("${root}/usr/lib/libshared.so", "${router}/shared/libshared.a");
-< #genSO("${root}/usr/lib/libnvram.so", "${router}/nvram/libnvram.a");
-< #genSO("${root}/usr/lib/libusb-1.0.so.0", "${router}/libusb10/libusb/.libs/libusb-1.0.a");
-< #genSO("${root}/usr/lib/libusb-0.1.so.4", "${router}/libusb/libusb/.libs/libusb.a", "", "-L${router}/libusb10/libusb/.libs");
----
-> genSO("${root}/usr/lib/libiptc.so", "${router}/iptables/libiptc/libiptc.a");
-> genSO("${root}/usr/lib/libshared.so", "${router}/shared/libshared.a");
-> genSO("${root}/usr/lib/libnvram.so", "${router}/nvram/libnvram.a");
-> genSO("${root}/usr/lib/libusb-1.0.so.0", "${router}/libusb10/libusb/.libs/libusb-1.0.a");
-> genSO("${root}/usr/lib/libusb-0.1.so.4", "${router}/libusb/libusb/.libs/libusb.a", "", "-L${router}/libusb10/libusb/.libs");
+--- libfoo.pl_orig	2024-12-08 19:58:09.314195900 +0100
++++ libfoo.pl	2024-12-15 20:17:44.702538879 +0100
+@@ -17,7 +17,7 @@
+ my $router = $ENV{"SRCBASE"} . "/router";
+ my $openssldir = $ENV{"OPENSSLDIR"};
+ my $is_arm = $ENV{"CONFIG_BCMWL6A"};
+-my $uclibc_lib = $ENV{"TOOLCHAIN"} . "/lib";
++my $uclibc_lib = $ENV{"TOOLCHAIN"} . "/mipsel-brcm-linux-uclibc/sysroot/usr/lib";
+ my $uclibc_bin = $ENV{"TOOLCHAIN"} . "/bin";
+ my $stripshared;
+ 
+@@ -566,7 +566,7 @@
+ 		$cmd = $uclibc_bin . "/arm-brcm-linux-uclibcgnueabi-gcc -shared -nostdlib -Wl,-s,-z,combreloc -Wl,--warn-common -Wl,--gc-sections ${opt} -Wl,-soname=${name} -o ${so}";
+ 	}
+ 	else {
+-		$cmd = $uclibc_bin . "/mipsel-uclibc-gcc -shared -nostdlib -Wl,-s,-z,combreloc -Wl,--warn-common -Wl,--fatal-warnings -Wl,--gc-sections ${opt} -Wl,-soname=${name} -o ${so}";
++		$cmd = $uclibc_bin . "/mipsel-linux-gcc -shared -nostdlib -Wl,-s,-z,combreloc -Wl,--warn-common -Wl,--gc-sections ${opt} -Wl,-soname=${name} -o ${so}";
+ 	}
+ 
+ 	foreach (@{$elf_lib{$name}}) {
+@@ -638,7 +638,7 @@
+ }
+ 
+ if ($is_arm ne "y") { # MIPS only
+-	genSO("${root}/lib/libc.so.0", "${uclibc_lib}/libc.a", "", "-Wl,-init=__uClibc_init ${uclibc_lib}/optinfo/interp.os");
++	genSO("${root}/lib/libc.so.0", "${uclibc_lib}/libc.so", "", "-Wl,-init=__uClibc_init ${uclibc_lib}/interp.os");
+ 	genSO("${root}/lib/libresolv.so.0", "${uclibc_lib}/libresolv.a", "${stripshared}");
+ 	genSO("${root}/lib/libcrypt.so.0", "${uclibc_lib}/libcrypt.a", "${stripshared}");
+ 	genSO("${root}/lib/libm.so.0", "${uclibc_lib}/libm.a");

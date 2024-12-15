@@ -6,12 +6,14 @@
 FT_REPO_DIR=$HOME/freshtomato-mips
 
 ## path to the FreshTomato patches for new mips-toolchain
-FT_PATCHES_DIR=$HOME/Artix_FreshTomato/gcc-7.3-toolchain_mips
+FT_PATCHES_DIR=$HOME/Artix_FreshTomato/toolchains/gcc-7.3-toolchain_mips
 
 ## path to mips-toolchain with gcc 7.3 and binutils 2.28.1
 FT_TOOLCHAIN_DIR=$HOME/buildroot-2016.02_mips/output/host
 
 export PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr/bin:$PATH
+export LD_LIBRARY_PATH=$FT_REPO_DIR/tools/brcm/K26/hndtools-mipsel-uclibc-7.3/usr/lib
+
 RT_VERS="src-rt-6.x"
 
 cd $FT_REPO_DIR 
@@ -37,8 +39,8 @@ patch -i $FT_PATCHES_DIR/common.mak.patch $FT_REPO_DIR/release/src/router/common
 patch -i $FT_PATCHES_DIR/head.S.patch $FT_REPO_DIR/release/src/lzma-loader/head.S
 patch -i $FT_PATCHES_DIR/Makefile_lzma-loader.patch $FT_REPO_DIR/release/src/lzma-loader/Makefile
 
-## router/rc
-patch -i $FT_PATCHES_DIR/services.c.patch $FT_REPO_DIR/release/src/router/rc/services.c
+## libbcmcrypto
+patch -i $HOME/Dokumente/freshtomato/mips/Makefile_libbcmcrypto.patch $FT_REPO_DIR/release/src/router/libbcmcrypto/Makefile
 
 ## router/shared
 patch -i $FT_PATCHES_DIR/shutils.h.patch $FT_REPO_DIR/release/src/router/shared/shutils.h
@@ -66,21 +68,18 @@ patch -i $FT_PATCHES_DIR/configure_samba.patch $FT_REPO_DIR/release/src/router/s
 
 ## router/iptables
 cp -vf $FT_PATCHES_DIR/122_new-toolchain_small.patch $FT_REPO_DIR/release/src/router/patches/iptables
+patch -i $FT_PATCHES_DIR/101-tomato-additional-files.patch.patch $FT_REPO_DIR/release/src/router/patches/iptables/101-tomato-additional-files.patch
 
 ## router/zebra
 patch -i $FT_PATCHES_DIR/zebra.h.patch $FT_REPO_DIR/release/src/router/zebra/lib/zebra.h
 
-## router/openvpn_plugin_auth_nvram
-patch -i $FT_PATCHES_DIR/Makefile_openvpn_plugin_auth_nvram.patch $FT_REPO_DIR/release/src/router/openvpn_plugin_auth_nvram/Makefile
-
 ## others 
-## changed, gcc 7.3
 patch -i $FT_PATCHES_DIR/libfoo.pl.patch $FT_REPO_DIR/release/src/btools/libfoo.pl
 
 ### kernel built-in
 ## off warnings  not used
 patch -i $FT_PATCHES_DIR/Makefile_linux.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/Makefile
-patch -p1 -d$FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6 < $FT_PATCHES_DIR/FT_mod/linux-2.6.32.60-gcc5.patch
+patch -p1 -d$FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6 < $FT_PATCHES_DIR/linux-2.6.32.60-gcc5.patch
 
 ## binutils >=2.24 differentiate much more between soft-float and hard-float; adapted from https://marc.info/?l=linux-mips&m=141302219906796&w=2
 patch -i $FT_PATCHES_DIR/r4k_fpu.S.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/arch/mips/kernel/r4k_fpu.S
@@ -111,6 +110,9 @@ patch -i $FT_PATCHES_DIR/etcgmac.c.patch $FT_REPO_DIR/release/$RT_VERS/et/sys/et
 
 ## compressed kernel -  variant not needed by Asus RT-N66U
 patch -i $FT_PATCHES_DIR/bzip2_inflate.c.patch $FT_REPO_DIR/release/$RT_VERS/shared/bzip2_inflate.c
+
+## needed for gcc-14
+patch -i $FT_PATCHES_DIR/mksquashfs.patch $FT_REPO_DIR/release/$RT_VERS/linux/linux-2.6/scripts/squashfs/mksquashfs.c
 
 cd $FT_REPO_DIR/release/$RT_VERS
 

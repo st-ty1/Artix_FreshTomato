@@ -1,0 +1,20 @@
+--- /home/stephan/freshtomato-mips_orig/release/src/router/patches/iptables/101-tomato-additional-files.patch	2024-12-08 19:58:24.204199248 +0100
++++ /home/stephan/freshtomato-mips/release/src/router/patches/iptables/101-tomato-additional-files.patch	2024-12-08 20:13:38.496180400 +0100
+@@ -3257,7 +3257,7 @@
+ +}
+ +
+ +/* validate netmask */
+-+inline int valid_netmask(u_int32_t netmask) {
+++static inline int valid_netmask(u_int32_t netmask) {
+ +  while (netmask & 0x80000000)
+ +    netmask <<= 1;
+ +  if (netmask != 0)
+@@ -3266,7 +3266,7 @@
+ +}
+ +
+ +/* validate network/netmask pair */
+-+inline int valid_network_and_netmask(struct t_ipt_account_info *info) {
+++static inline int valid_network_and_netmask(struct t_ipt_account_info *info) {
+ +  if (!valid_netmask(info->netmask))
+ +    return 0;
+ +  if ((info->network & info->netmask) != info->network)

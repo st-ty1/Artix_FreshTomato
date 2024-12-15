@@ -1,7 +1,7 @@
---- common.mak_orig	2022-01-27 15:12:09.000000000 +0000
-+++ common.mak_neu	2022-01-27 09:34:29.000000000 +0000
-@@ -48,7 +48,7 @@
- export HOST := arm-linux
+--- /home/stephan/freshtomato-mips_orig/release/src/router/common.mak	2024-12-08 19:58:13.024197877 +0100
++++ /home/stephan/freshtomato-mips/release/src/router/common.mak	2024-12-07 19:01:26.805137636 +0100
+@@ -55,15 +55,15 @@
+ export USRLIBDIR := $(TOOLCHAIN)/$(ARCH)-brcm-linux-uclibcgnueabi/sysroot/usr/lib
  else
  export PLATFORM := mipsel-uclibc
 -export CROSS_COMPILE := mipsel-uclibc-
@@ -9,3 +9,13 @@
  export CROSS_COMPILER := $(CROSS_COMPILE)
  export CONFIGURE := ./configure --host=mipsel-linux --build=$(BUILD)
  export HOSTCONFIG := linux-mipsel
+ export ARCH := mips
+ export HOST := mipsel-linux
+ export TOOLCHAIN := $(shell cd $(dir $(shell which $(CROSS_COMPILE)strip))/.. && pwd -P)
+-export LIBDIR := $(TOOLCHAIN)/lib
+-export USRLIBDIR := $(TOOLCHAIN)/usr/lib
++export LIBDIR := $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib
++export USRLIBDIR := $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/usr/lib
+ endif
+ 
+ export PLT := $(ARCH)

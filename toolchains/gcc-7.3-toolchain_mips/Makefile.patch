@@ -1,60 +1,104 @@
---- Makefile.orig	2022-06-10 14:34:42.000000000 +0000
-+++ Makefile	2022-06-10 14:36:48.000000000 +0000
-@@ -713,26 +713,28 @@
- endif
+--- Makefile_orig	2024-12-08 19:58:12.434197900 +0100
++++ Makefile	2024-12-15 20:20:45.150956941 +0100
+@@ -358,8 +358,8 @@
+ obj-$(TCONFIG_HFS)		+= $(if $(TCONFIG_BCMARM),$(SSL_TARGET) diskdev_cmds-332.25)
+ obj-$(TCONFIG_TOR)		+= zlib libevent $(SSL_TARGET) tor
+ obj-$(TCONFIG_TINC)		+= zlib $(SSL_TARGET) lzo lz4 tinc
+-obj-$(TCONFIG_NGINX)		+= zlib $(SSL_TARGET) sqlite libcurl $(if $(TCONFIG_BCMARM),,spawn-fcgi) $(PCRE_TARGET) libncurses $(if $(TCONFIG_BCMARM),,libatomic_ops) \
+-				   libiconv libxml2 libpng libjpeg-turbo mysql libzip $(if $(TCONFIG_BCMARM),libffi gettext-tiny glib2) $(PHP_TARGET) nginx
++obj-$(TCONFIG_NGINX)		+= zlib $(SSL_TARGET) sqlite libcurl $(if $(TCONFIG_BCMARM),,spawn-fcgi) $(PCRE_TARGET) libncurses \
++				   libiconv libxml2 libpng libjpeg-turbo libzip $(if $(TCONFIG_BCMARM),libffi gettext-tiny glib2) mysql $(PHP_TARGET) nginx
+ obj-$(TCONFIG_MDNS)		+= libdaemon expat avahi
+ obj-$(TCONFIG_ZFS)		+= zlib $(SSL_TARGET) libiconv gettext-tiny util-linux zfs
+ obj-$(TCONFIG_IRQBALANCE)	+= zlib libffi libiconv gettext-tiny $(PCRE_TARGET) glib2 irqbalance
+@@ -504,10 +504,10 @@
  
- # uClibc
--	install $(LIBDIR)/ld-uClibc.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libcrypt.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libpthread.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libgcc_s.so.1 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/ld-uClibc.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libcrypt.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libpthread.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libgcc_s.so.1 $(TARGETDIR)/lib/
- 	$(STRIP) $(TARGETDIR)/lib/libgcc_s.so.1
--	install $(LIBDIR)/libc.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libdl.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
--	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libc.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libdl.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libm.so.0 $(TARGETDIR)/lib/
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libnsl.so.0 $(TARGETDIR)/lib/
-+ifneq ($(TCONFIG_BCMARM)$(TCONFIG_SSH),)
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/libutil.so.0 $(TARGETDIR)/lib/
-+endif
- ifeq ($(TCONFIG_USB),y)
+ ifneq ($(TCONFIG_BCMARM),y)
+ 	@if ! grep -q "CONFIG_EMBEDDED_RAMDISK=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) zImage CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) zImage CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	if grep -q "CONFIG_MODULES=y" $(LINUXDIR)/.config ; then \
+-		$(MAKE) -C $(LINUXDIR) modules CC=$(KERNELCC) $(PARALLEL_BUILD); \
++		$(MAKE) -C $(LINUXDIR) modules CROSS_COMPILE=mipsel-brcm-linux-uclibc- $(PARALLEL_BUILD); \
+ 	fi
+ 	$(MAKE) -C $(LINUXDIR)/arch/mips/brcm-boards/bcm947xx/compressed srctree=$(LINUXDIR) TCONFIG_MIPSR2=$(TCONFIG_MIPSR2) $(PARALLEL_BUILD)
+ else # TCONFIG_BCMARM
+@@ -668,14 +668,15 @@
+ 	install $(LIBDIR)/libm.so.0 $(TARGETDIR)/lib/
+ 	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
+ 	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
++	install $(LIBDIR)/libatomic.so.1 $(TARGETDIR)/lib/
  ifneq ($(TCONFIG_BCMARM),y)
 -	install $(LIBDIR)/librt-0.9.30.1.so $(TARGETDIR)/lib/librt.so.0
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
++	install $(LIBDIR)/librt-0.9.32.1.so $(TARGETDIR)/lib/librt.so.0
  else
--	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/sysroot/lib/librt.so.0 $(TARGETDIR)/lib/librt.so.0
+ 	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/librt.so.0
  endif
- endif # TCONFIG_USB
- ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO),)
- ifneq ($(TCONFIG_BCMARM),y)
+ ifneq ($(TCONFIG_NGINX)$(TCONFIG_NANO)$(TCONFIG_BBT),)
+  ifneq ($(TCONFIG_BCMARM),y)
 -	install $(LIBDIR)/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
-+	install $(TOOLCHAIN)/mipsel-brcm-linux-uclibc/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
- else
- 	install $(LIBDIR)/../arm-linux/lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
- endif # TCONFIG_BCMARM
-@@ -3034,11 +3034,11 @@
++	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+  else
+ 	install $(LIBDIR)/../../lib/libstdc++.so.6 $(TARGETDIR)/lib/libstdc++.so.6
+  endif # TCONFIG_BCMARM
+@@ -1229,6 +1230,7 @@
+ 		AR=$(AR:$(CROSS_COMPILE)%=%) \
+ 		NM=$(NM:$(CROSS_COMPILE)%=%) \
+ 		RANLIB=$(RANLIB:$(CROSS_COMPILE)%=%) \
++		LDLIBS="-latomic" \
+ 		./Configure $(HOSTCONFIG)-freshtomato $(if $(TCONFIG_OPTIMIZE_SIZE),-Os,-O3) --prefix=/usr --openssldir=/etc/ssl \
+ 			-ffunction-sections -fdata-sections -Wl,--gc-sections \
+ 			shared $(OPENSSL_OPTIONS) --api=1.0.0 \
+@@ -1884,6 +1886,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ all $(PARALLEL_BUILD)
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/sqlite/staged install
++	sed "s|'/usr/lib|'$(TOP)/sqlite/staged/usr/lib|g" -i $(TOP)/sqlite/staged/usr/lib/libsqlite3.la
  
- nfs-utils-install:
- 	install -d $(INSTALLDIR)/nfs-utils/usr/sbin
--	install -D nfs-utils/utils/nfsd/nfsd $(INSTALLDIR)/nfs-utils/usr/sbin/nfsd
--	install -D nfs-utils/utils/showmount/showmount $(INSTALLDIR)/nfs-utils/usr/sbin/showmount
--	install -D nfs-utils/utils/exportfs/exportfs $(INSTALLDIR)/nfs-utils/usr/sbin/exportfs
--	install -D nfs-utils/utils/statd/statd $(INSTALLDIR)/nfs-utils/usr/sbin/statd
--	install -D nfs-utils/utils/mountd/mountd $(INSTALLDIR)/nfs-utils/usr/sbin/mountd
-+	install -D nfs-utils/utils/nfsd/nfsd $(INSTALLDIR)/nfs-utils/usr/sbin/nfsd
-+	install -D nfs-utils/utils/showmount/showmount $(INSTALLDIR)/nfs-utils/usr/sbin/showmount
-+	install -D nfs-utils/utils/exportfs/exportfs $(INSTALLDIR)/nfs-utils/usr/sbin/exportfs
-+	install -D nfs-utils/utils/statd/statd $(INSTALLDIR)/nfs-utils/usr/sbin/statd
-+	install -D nfs-utils/utils/mountd/mountd $(INSTALLDIR)/nfs-utils/usr/sbin/mountd
- 	$(STRIP) -s $(INSTALLDIR)/nfs-utils/usr/sbin/*
+ sqlite-install:
+ ifeq ($(or $(TCONFIG_NGINX),$(TCONFIG_MEDIA_SERVER)),y)
+@@ -2589,7 +2592,6 @@
+ 		ac_cv_php_xml2_config_path="$(TOP)/libxml2/staged/usr/bin/xml2-config" \
+ 		ac_cv_u8t_decompose=yes \
+ 		ac_cv_have_pcre2_jit=no \
+-		$(if $(TCONFIG_BCMARM),,ac_cv_header_atomic_h=no) \
+ 		$(CONFIGURE) --prefix=/usr \
+ 			--enable-cli \
+ 			$(if $(TCONFIG_BCMARM),--enable-fpm --disable-cgi,--enable-cgi) \
+@@ -2742,7 +2744,6 @@
+ 			--with-http_realip_module \
+ 			--without-http_upstream_zone_module \
+ 			$(if $(TCONFIG_WOLFSSL),--with-wolfssl=$(TOP)/wolfssl/staged/usr,) \
+-			$(if $(TCONFIG_BCMARM),,--with-libatomic=$(TOP)/libatomic_ops) \
+ 			$(if $(TCONFIG_IPV6),--with-ipv6,)
+ 	@touch $@
  
- nfs-utils-clean:
+@@ -3822,8 +3823,8 @@
+ 	@rm -f libdaemon/stamp-h1
+ 
+ expat/stamp-h1:
+-	cd expat && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
++	cd expat && autoreconf -fsi && \
++		CFLAGS="-Os -Wall $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
+ 		CXXFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections" \
+ 		$(CONFIGURE) --prefix=/usr --without-docbook --without-examples --without-tests --disable-dependency-tracking
+@@ -3833,6 +3834,7 @@
+ 	@$(SEP)
+ 	@$(MAKE) -C $@ $(PARALLEL_BUILD)
+ 	@$(MAKE) -C $@ DESTDIR=$(TOP)/expat/staged install
++	sed "s|'/usr/lib|'$(TOP)/expat/staged/usr/lib|g" -i $(TOP)/expat/staged/usr/lib/libexpat.la
+ 
+ expat-install:
+ 	install -D expat/staged/usr/lib/libexpat.so.1.10.0 $(INSTALLDIR)/expat/usr/lib/libexpat.so.1.10.0
+@@ -3847,7 +3849,7 @@
+ avahi/stamp-h1:
+ 	$(call patch_files,avahi)
+ 	cd avahi && autoreconf -fsi && \
+-		CFLAGS="-Os -Wall $(EXTRACFLAGS) -ffunction-sections -fdata-sections -I$(TOP)/expat/staged/usr/include" \
++		CFLAGS="-Os -Wall $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections -I$(TOP)/expat/staged/usr/include" \
+ 		LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -L$(TOP)/expat/staged/usr/lib -ldl -lpthread" \
+ 		LIBDAEMON_CFLAGS="-I$(TOP)/libdaemon" \
+ 		LIBDAEMON_LIBS="-L$(TOP)/libdaemon/libdaemon/.libs -ldaemon" \

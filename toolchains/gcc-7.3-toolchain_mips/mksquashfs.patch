@@ -1,0 +1,12 @@
+--- mksquashfs.c_orig	2024-12-07 14:09:22.144182700 +0100
++++ mksquashfs.c	2024-12-14 12:45:58.268952116 +0100
+@@ -82,6 +82,9 @@
+ 					EXIT_MKSQUASHFS();\
+ 				} while(0)
+ 
++
++int dir_scan2(squashfs_inode *inode, struct dir_info *dir_info);
++
+ int delete = FALSE;
+ long long total_compressed = 0, total_uncompressed = 0;
+ int fd;
