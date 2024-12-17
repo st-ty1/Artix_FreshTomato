@@ -1,5 +1,3 @@
-repo will be updated in near future:
-
 toolchain with gcc-7.3, binutils-2.28.1, uclibc 0.9.32.1 and kernel headers of FT-sources
 
 Start with build_ft-mips-2016_02_RT-AC.sh script. 
